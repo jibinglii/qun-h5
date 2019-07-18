@@ -11,24 +11,24 @@ import 'vant/lib/toast/style'
 import mixins from './mixins/index'
 import '$utils/rem'
 import * as filters from './filters'
-import VueCookies from 'vue-cookies';
+import VueCookies from 'vue-cookies'
 // const FastClick = require('fastclick');
 import Lazyload from 'vant/lib/lazyload'
-Vue.use(Lazyload)
 import { Alert, Confirm } from 'wc-messagebox'
 import 'wc-messagebox/style.css'
+
+import VueFab from 'vue-float-action-button'
+
+import FastClick from 'fastclick'
+Vue.use(Lazyload)
 Vue.use(Alert)
 Vue.use(Confirm)
 Vue.use(VueCookies)
-
-import VueFab from 'vue-float-action-button'
 Vue.use(VueFab, {
-    // opitons 可选iconfont图标或MaterialIcons
-    // iconType: 'MaterialDesign'
-    iconType: 'iconfont'
-});
-
-import FastClick from 'fastclick'
+  // opitons 可选iconfont图标或MaterialIcons
+  // iconType: 'MaterialDesign'
+  iconType: 'iconfont'
+})
 Vue.config.productionTip = false
 Vue.mixin(mixins)
 sync(store, router)
@@ -36,25 +36,24 @@ Vue.prototype.$toast = Toast
 Vue.prototype.$notify = Notify
 Vue.prototype.$http = http
 Vue.prototype.$user = () => {
-    return store.getters.currentUser
+  return store.getters.currentUser
 }
 Vue.prototype.$currentStore = () => {
-    return store.getters.currentStore
+  return store.getters.currentStore
 }
 Object.keys(filters).forEach(key => {
-    Vue.filter(key, filters[key])
-});
+  Vue.filter(key, filters[key])
+})
 
 FastClick.attach(document.body)
 store.dispatch('storeInfo')
 setTimeout(() => {
-    new Vue({
-        store,
-        router,
-        render: h => h(Root)
-    }).$mount('#app')
+  new Vue({
+    store,
+    router,
+    render: h => h(Root)
+  }).$mount('#app')
 }, 200)
-
 
 // import Vconsole from 'vconsole';
 // let vConsole = new Vconsole()
