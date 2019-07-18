@@ -1,0 +1,30 @@
+// Variables
+@import "variables";
+@import "../css/weui.mini.css";
+@import url('//at.alicdn.com/t/font_1165461_v6f1hk18eu.css');
+
+body{
+  // font-family: PingFang-SC-Medium;
+  background-color: #f2f2f2;
+}
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.infinite-status-prompt{
+  height: 2.5rem;
+  line-height: 2.5rem;
+  font-size: 13px;
+  color: #999;
+}
+.van-notify{
+  font-size: 12px;
+  padding: 5px;
+  text-align: center;
+}
+.van-button--primary {
+  background: #000;
+  color: #ffffff;
+  border: none;
+}
