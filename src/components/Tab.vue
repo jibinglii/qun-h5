@@ -1,13 +1,6 @@
 <template>
   <div class="fixed-bottom">
     <div class="weui-tabbar">
-      <router-link :to="{name: 'contact'}" class="weui-tabbar__item" :class="{'has-new-msg': isHasNewMsg}" v-show="canContact">
-        <span style="display: inline-block;position: relative;">
-            <img src="../assets/images/kefu.png" alt="" class="kefu">
-            <span class="weui-badge weui-badge_dot" style="position: absolute;top: 2px;right: -5px;"
-                  :class="{'has-new-msg': isHasNewMsg}"></span>
-        </span>
-      </router-link>
       <a
         class="weui-tabbar__item"
         :class="{active: item.url == currentUrl}"
@@ -32,13 +25,9 @@
       }
     },
     computed: {
-      ...mapGetters(['isHasNewMsg']),
       currentUrl() {
         return this.$route.name;
       },
-      canContact () {
-        return this.$user().id != this.$currentStore().user_id
-      }
     },
     methods: {
       go(item, index) {
@@ -51,10 +40,6 @@
           {
             text: "首页",
             url: "home"
-          },
-          {
-            text: "全部商品",
-            url: "store.store"
           },
           {
             text: "我的",
@@ -80,28 +65,9 @@
       width: 100%;
       background-color: white;
 
-      .kefu {
-        width: 45px;
-      }
 
       .weui-tabbar__item {
         border-right: solid 1px #f2f2f2;
-        padding: 0;
-
-        &:nth-child(1) {
-          padding: 5px 0 0;
-          flex: 0.8;
-          span > .weui-badge {
-            display: none;
-          }
-          span > .has-new-msg {
-            display: block;
-          }
-        }
-
-        &:nth-child(3) {
-          flex: 1.5;
-        }
       }
 
       .weui-tabbar__item:last-child {
@@ -119,7 +85,7 @@
         text-align: center;
         color: #999;
         font-size: 16px;
-        line-height: 50px;
+        line-height: 40px;
       }
     }
   }

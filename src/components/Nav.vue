@@ -1,19 +1,5 @@
 <template>
   <div class="nav-block">
-    <div class="nav">
-      <div class="nav-link">
-        <a href=""></a>
-        <router-link :to="{name: 'home'}">店铺主页</router-link>
-      </div>
-      <span class="explode">|</span>
-      <div class="nav-link">
-        <router-link :to="{name: 'me.me'}">个人中心</router-link>
-      </div>
-      <span class="explode">|</span>
-      <div class="nav-link">
-        <a href="https:/soogua.aixuexue.net/download/index.html" target="_blank">下载搜瓜</a>
-      </div>
-    </div>
     <div class="logo">
       <div class="logo-img">
         <img
@@ -21,7 +7,7 @@
           alt
         >
       </div>
-      <p>专业虚拟商品交易平台</p>
+      <p>专业虚拟资产交易平台</p>
     </div>
   </div>
 </template>

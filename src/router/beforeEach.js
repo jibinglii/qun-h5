@@ -6,11 +6,6 @@ const beforeEach = (to, from, next) => {
   /**
    * Otherwise  if authentication is required login.
    */
-  // window.scroll({
-  //   top: 0,
-  //   left: 0,
-  //   behavior: 'smooth'
-  // })
   vuex
     .dispatch('checkUserToken')
     .then(() => {
