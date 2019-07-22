@@ -2,15 +2,15 @@
   <div class="personCenter">
     <div class="header">
       <div class="user-icon">
-        <img :src="avatar" alt>
+        <img :src="currentUser.avatar" alt>
       </div>
       <h3>
-        {{ nickname }}
+        {{ currentUser.nickname }}
         <router-link :to="{ name: 'me.modifyuseinfo'}">
           <img src="../../assets/images/bianji.png">
         </router-link>
       </h3>
-      <span>{{sign }}</span>
+      <span>{{ currentUser.sign }}</span>
     </div>
     <cell-group
       :title="item.title"
@@ -47,20 +47,23 @@ export default {
   },
   data() {
     return {
-      nickname: this.$user().nickname,
-      sign: this.$user().sign,
-      avatar: [this.$user().avatar],
       list: [
         {
-          title: '常用工具',
+          title: '基础功能',
           show: true,
           sub: [
             {
-              title: '意见反馈',
-              url: 'me.feedback',
-              img: '/images/me/fankui.png',
+              title: '结算管理',
+              url: 'me.settlemanage',
+              img: '/images/me/jiesuan.png',
               show: true
-            },
+            }
+          ]
+        },
+        {
+          title: '扩展功能',
+          show: true,
+          sub: [
             {
               title: '使用帮助',
               url: 'me.helps',
@@ -68,7 +71,7 @@ export default {
               show: true
             },
             {
-              title: '账号设置',
+              title: '更多',
               url: 'me.accountsetting',
               img: '/images/me/seting.png',
               show: true
@@ -79,7 +82,7 @@ export default {
     };
   },
   computed: {
-    
+    ...mapGetters(["currentUser"])
   },
   created () {
     document.title = '我的'

@@ -3,29 +3,35 @@
   <div>
     <x-header title="提现"></x-header>
     <div class="card">
-      <van-cell-group>
+      <van-cell-group v-show="downIcon" class="cell-select">
         <van-cell title="到账银行卡">
           <span @click="showlist()" class="default_text">
             <i class="iconfont" :class="'icon-' + bankImg"></i>
             {{bankName}}
-            <van-icon name="arrow" v-show="downIcon"/>
-            <van-icon name="arrow-down" v-show="!downIcon"/>
+            <van-icon name="arrow" />
           </span>
         </van-cell>
-        <ul v-show="flag" class="select_box">
-          <li
-            @click="checkThis(item)"
-            v-for="(item, index) in bank_cards"
-            :key="index"
-          >
+      </van-cell-group>
+
+      <van-cell-group v-show="!downIcon" class="cell-selected">
+        <van-cell title="到账银行卡">
+          <span @click="showlist()" class="default_text">
+            <i class="iconfont" :class="'icon-' + bankImg"></i>
+            {{bankName}}
+            <van-icon name="arrow-down" />
+          </span>
+        </van-cell>
+        <ul class="select_box">
+          <li @click="checkThis(item)" v-for="(item, index) in bank_cards" :key="index">
             <i class="iconfont" :class="'icon-' + item.bank"></i>
             <a href="javascript:void(0);">{{item.bank_info.bankName}} {{item.bankno_last4}}</a>
           </li>
         </ul>
       </van-cell-group>
+
       <van-cell-group>
         <p class="title">提现金额</p>
-        <van-field v-model="amount" placeholder="请输入提现金额" class="amountInput"/>
+        <van-field v-model="amount" placeholder="请输入提现金额" class="amountInput" />
       </van-cell-group>
       <div class="dec" v-if="showBalance">
         钱包余额
@@ -34,7 +40,7 @@
       </div>
       <div class="dec" v-if="showDec">
         额外扣除
-        <span>￥{{amount}}</span>（费率0.10%）
+        <span>￥{{amount*0.01}}</span>（手续费0.01%）
       </div>
       <div class="btn">
         <van-button
@@ -47,28 +53,15 @@
       </div>
     </div>
     <router-link :to="{name: 'me.helps'}" class="quesBotm">常见问题</router-link>
-    <van-popup
-      v-model="isShow"
-      position="bottom"
-      :overlay="true"
-    >
+    <van-popup v-model="isShow" position="bottom" :overlay="true">
       <div class="password-zone">
-        <div
-          class="close"
-          @click="close()"
-        ><i class="iconfont icon-close"></i></div>
+        <div class="close" @click="close()">
+          <i class="iconfont icon-close"></i>
+        </div>
         <div class="title">请输入支付密码</div>
-        <van-password-input
-          :value="showValue"
-          :info="info"
-          @focus="showKeyboard = true"
-        />
+        <van-password-input :value="showValue" :info="info" @focus="showKeyboard = true" />
         <!-- 数字键盘 -->
-        <van-number-keyboard
-          :show="showKeyboard"
-          @input="onInput"
-          @delete="onDelete"
-        />
+        <van-number-keyboard :show="showKeyboard" @input="onInput" @delete="onDelete" />
       </div>
     </van-popup>
   </div>
@@ -88,14 +81,15 @@ import "vant/lib/button/style";
 import Icon from "vant/lib/icon";
 import "vant/lib/icon/style";
 import { mapGetters } from "vuex";
-import Popup from 'vant/lib/popup';
-import 'vant/lib/popup/style';
-import PasswordInput from 'vant/lib/password-input'
-import NumberKeyBoard from 'vant/lib/number-keyboard'
-import 'vant/lib/password-input/style';
-import 'vant/lib/number-keyboard/style';
+import Popup from "vant/lib/popup";
+import "vant/lib/popup/style";
+import PasswordInput from "vant/lib/password-input";
+import NumberKeyBoard from "vant/lib/number-keyboard";
+import "vant/lib/password-input/style";
+import "vant/lib/number-keyboard/style";
 
-import user from '$api/user'
+import user from "$api/user";
+import { parse } from 'path';
 
 export default {
   name: "withdraw",
@@ -123,53 +117,57 @@ export default {
       downIcon: true,
       isShow: false,
       showKeyboard: true,
-      showValue: '',
-      info: '',
-      bank: ''
+      showValue: "",
+      info: "",
+      bank: ""
     };
   },
 
   computed: {
     ...mapGetters(["currentUser"]),
     canSubmit() {
-      if (this.amount != "") {
+      if (this.amount != "" && parseInt(this.amount)>0) {
         return true;
       }
       return false;
     }
   },
   created() {
-    this.$http
-      .get("/api/v1/bankcard/", { loading: true })
-      .then(({ data }) => {
-        this.bank_cards = data.bank_cards;
-        if (this.bank_cards.length == 0){
-          this.$alert('您还没有添加银行卡，点击前往添加').then(() => {
-            let redirect = encodeURIComponent(window.location.href);
-            this.$router.replace({name: 'banks.add', query: {redirect: redirect}})
-          })
-        }
-      })
+    this.$http.get("/api/v1/bankcard/", { loading: true }).then(({ data }) => {
+      this.bank_cards = data.bank_cards;
+      if (this.bank_cards.length == 0) {
+        this.$alert("您还没有添加银行卡，点击前往添加").then(() => {
+          let redirect = encodeURIComponent(window.location.href);
+          this.$router.replace({
+            name: "banks.add",
+            query: { redirect: redirect }
+          });
+        });
+      }
+    });
   },
   methods: {
     onInput(key) {
       this.showValue = (this.showValue + key).slice(0, 6);
       if (this.showValue.length == 6) {
         // 验证密码
-        this.$toast.loading({message: '正在验证码支付密码...', mask: true});
-        user.veryPPwd(this.showValue, true).then(({ data }) => {
-          this.confirm()
-        }).catch(({ response }) => {
-          this.$toast({message: '支付密码输入错误'})
-          this.showValue = ''
-        })
+        this.$toast.loading({ message: "正在验证码支付密码...", mask: true });
+        user
+          .veryPPwd(this.showValue, true)
+          .then(({ data }) => {
+            this.confirm();
+          })
+          .catch(({ response }) => {
+            this.$toast({ message: "支付密码输入错误" });
+            this.showValue = "";
+          });
       }
     },
     onDelete() {
       this.showValue = this.showValue.slice(0, this.showValue.length - 1);
     },
     close() {
-      this.isShow = false
+      this.isShow = false;
     },
     showlist: function() {
       this.flag = !this.flag;
@@ -180,7 +178,7 @@ export default {
       this.bankImg = bank.bank;
       this.flag = !this.flag;
       this.downIcon = !this.downIcon;
-      this.bank = bank
+      this.bank = bank;
     },
     withdrawBtn() {
       this.showBalance = false;
@@ -188,21 +186,21 @@ export default {
       this.amount = this.currentUser.wallet.amount;
     },
     pay() {
-      if (this.bank == '') {
-        this.$alert('请先选择银行卡').then(() => {
-          this.showlist()
-        })
+      if (this.bank == "") {
+        this.$alert("请先选择银行卡").then(() => {
+          this.showlist();
+        });
       } else {
-        this.isShow = true
+        this.isShow = true;
       }
     },
-    confirm(){
-      let param = {bank_id: this.bank.id, amount: this.amount}
-      this.$toast.loading({mask: true})
-      this.$http.post('api/v2/user/withdraws/apply', param).then(()=>{
-        this.$toast.success('提现申请提交成功')
-        this.$router.back()
-      })
+    confirm() {
+      let param = { bank_id: this.bank.id, amount: this.amount };
+      this.$toast.loading({ mask: true });
+      this.$http.post("api/v2/user/withdraws/apply", param).then(() => {
+        this.$toast.success("提现申请提交成功");
+        this.$router.back();
+      });
     }
   }
 };
@@ -212,6 +210,7 @@ export default {
   width: 94%;
   margin: 10px auto;
   background: #ffffff;
+
   /deep/.van-cell-group {
     .van-dropdown-menu {
       height: 24px;
@@ -256,20 +255,20 @@ export default {
       width: 100%;
       position: absolute;
       z-index: 99999;
-      padding: 0 0 0.426667rem 0;
-      background-color: #ffffff;
       li {
         display: flex;
         align-items: center;
         padding: 0.426667rem;
-        border-bottom: solid 1px #f2f2f2;
+        border: solid 1px #a3a3a3;
+        border-top: none;
+        background: #fff;
         img {
-          padding-right: 0.426667rem;
+          padding-right: 0.526667rem;
           width: 0.64rem;
           height: 0.64rem;
         }
         a {
-          font-size: 0.597333rem;
+          font-size: 0.7rem;
         }
       }
     }
@@ -314,6 +313,20 @@ export default {
     }
   }
 }
+
+.cell-select {
+  .van-cell {
+    border: solid 1px #ffffff;
+    background: #fff;
+  }
+}
+.cell-selected {
+  .van-cell {
+    border: solid 1px #a3a3a3;
+    background: #fafafa;
+  }
+}
+
 .quesBotm {
   width: 100%;
   position: fixed;

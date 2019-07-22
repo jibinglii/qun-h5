@@ -15,7 +15,7 @@ export default {
     ArrowUpIcon, GlobalFab
   },
   computed: {
-
+    ...mapGetters(['currentUser'])
   },
   methods: {
   },

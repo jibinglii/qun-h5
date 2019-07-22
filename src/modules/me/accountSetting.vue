@@ -12,9 +12,14 @@
         :to="{name: 'me.edit-pay-pwd'}"
       />
       <van-cell
-        title="收付款账号"
+        title="收款账号管理"
         is-link
         :to="{name: 'banks'}"
+      />
+      <van-cell
+        title="意见反馈"
+        is-link
+        :to="{name: 'me.feedback'}"
       />
     </van-cell-group>
     <div class="btn">

@@ -102,7 +102,7 @@ export default {
     };
   },
   computed: {
-    
+    ...mapGetters(["currentStore"])
   },
   methods: {
     ...mapActions(["attemptLogin", "attemptLoginByCode"]),
