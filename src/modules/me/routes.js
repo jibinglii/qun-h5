@@ -1,118 +1,91 @@
 export default [{
-        path: 'me/me',
-        name: 'me.me',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./me')
+    path: 'me/me',
+    name: 'me.me',
+    meta: {
+        requiresAuth: true
     },
-    {
-        path: 'me/storemanage',
-        name: 'me.storemanage',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./storeManage')
+    component: () =>
+        import('./me')
+},
+{
+    path: 'me/accountsetting',
+    name: 'me.accountsetting',
+    meta: {
+        requiresAuth: true
     },
-    {
-        path: 'me/accountsetting',
-        name: 'me.accountsetting',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./accountSetting')
+    component: () =>
+        import('./accountSetting')
+},
+{
+    path: 'me/modifyuseinfo',
+    name: 'me.modifyuseinfo',
+    meta: {
+        requiresAuth: true
     },
-    {
-        path: 'me/modifyuseinfo',
-        name: 'me.modifyuseinfo',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./modifyUseInfo')
+    component: () =>
+        import('./modifyUseInfo')
+},
+{
+    path: 'me/edit-pay-pwd',
+    name: 'me.edit-pay-pwd',
+    meta: {
+        requiresAuth: true
     },
-    {
-        path: 'me/edit-pay-pwd',
-        name: 'me.edit-pay-pwd',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./EditPayPwd')
+    component: () =>
+        import('./EditPayPwd')
+},
+{
+    path: 'me/set-pay-pwd',
+    name: 'me.set-pay-pwd',
+    meta: {
+        requiresAuth: true
     },
-    {
-        path: 'me/set-pay-pwd',
-        name: 'me.set-pay-pwd',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./SetPayPwd')
+    component: () =>
+        import('./SetPayPwd')
+},
+{
+    path: 'me/help',
+    name: 'me.helps',
+    meta: {
+        requiresAuth: false
     },
-    {
-        path: 'me/opp',
-        name: 'me.opp',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./Opp')
+    component: () =>
+        import('./Help')
+},
+{
+    path: 'me/help/view/:id.html',
+    name: 'me.helps.view',
+    meta: {
+        requiresAuth: false
     },
-    {
-        path: 'me/help',
-        name: 'me.helps',
-        meta: {
-            requiresAuth: false
-        },
-        component: () =>
-            import ('./Help')
+    component: () =>
+        import('./HelpInfo')
+},
+{
+    path: 'me/help/list/:id.html',
+    name: 'me.helps.list',
+    meta: {
+        requiresAuth: false
     },
-    {
-        path: 'me/help/view/:id.html',
-        name: 'me.helps.view',
-        meta: {
-            requiresAuth: false
-        },
-        component: () =>
-            import ('./HelpInfo')
+    component: () =>
+        import('./HelpList')
+},
+{
+    path: 'me/help/feedback.html',
+    name: 'me.feedback',
+    meta: {
+        requiresAuth: true
     },
-    {
-        path: 'me/help/list/:id.html',
-        name: 'me.helps.list',
-        meta: {
-            requiresAuth: false
-        },
-        component: () =>
-            import ('./HelpList')
+    component: () =>
+        import('./Feedback')
+},
+{
+    path: 'me/settlemanage',
+    name: 'me.settlemanage',
+    meta: {
+        requiresAuth: true
     },
-    {
-        path: 'me/help/feedback.html',
-        name: 'me.feedback',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./Feedback')
-    },
-    {
-        path: 'store/setting.html',
-        name: 'store.setting',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./StoreSetting')
-    },
-    {
-        path: 'me/settlemanage',
-        name: 'me.settlemanage',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./settleManage')
-    },
+    component: () =>
+        import('./settleManage')
+},
 ]

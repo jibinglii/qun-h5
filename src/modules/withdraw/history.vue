@@ -4,7 +4,7 @@
     <div class="withdraw-list">
       <div class="item" v-for="item in items" :key="item.id">
         <div class="amount">
-          <p class="p">{{ item.amount|formatMoney}}</p>
+          <p class="p">提现￥{{ item.amount|formatMoney}}</p>
           <p class="time">{{ item.created_at}}</p>
         </div>
         <div class="info">

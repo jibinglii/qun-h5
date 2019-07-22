@@ -2,22 +2,18 @@
   <div class="body">
     <x-header title="登录" back-url="home"></x-header>
     <div class="bg">
-      <img :src="currentStore.logo" alt />
-      <div>
-        <h4>{{ currentStore.name }}</h4>
-        <!--      <p>{{ currentStore.desc }}</p>-->
-      </div>
+      <img src="/images/login/bg.jpg" width="100%" />
     </div>
     <div class="login-box">
       <div class="item">
         <div class="icon">
-          <img src="/images/shop/login/mobile.png" />
+          <img src="/images/login/mobile.png" />
         </div>
         <input type="tel" placeholder="请输入手机号码" v-model="param.username" />
       </div>
       <div class="item" v-if="type == 'code'">
         <div class="icon">
-          <img src="/images/shop/login/password.png" />
+          <img src="/images/login/password.png" />
         </div>
         <input type="tel" placeholder="请输入验证码" v-model="param.code" class="code" />
         <div class="code-btn-box">
@@ -30,7 +26,7 @@
       </div>
       <div class="item" v-else>
         <div class="icon">
-          <img src="/images/shop/login/password.png" />
+          <img src="/images/login/password.png" />
         </div>
         <input type="password" placeholder="请输入您的密码" v-model="param.password" />
       </div>
@@ -66,11 +62,11 @@
         />
         <span class="weui-agree__text">
           我已阅读并同意
-          <a @click="showAgree" href="javascript:void(0)">《搜瓜用户服务协议》</a>
+          <a @click="showAgree" href="javascript:void(0)">《搜瓜群盟用户服务协议》</a>
         </span>
       </label>
     </div>
-    <agree title="商品寄售服务协议" ref="agree" :content="registerProtocol" />
+    <agree title="搜瓜群盟用户服务协议" ref="agree" :content="registerProtocol" />
     <nav-block></nav-block>
   </div>
 </template>
@@ -108,7 +104,6 @@ export default {
   computed: {
     ...mapGetters(["currentStore"])
   },
-  // components: {  },
   methods: {
     ...mapActions(["attemptLogin", "attemptLoginByCode"]),
     wechat () {
@@ -168,7 +163,7 @@ export default {
     },
     login() {
       if (!this.isagree) {
-        this.$alert("您必须同意《搜瓜用户服务协议》才能继续登录");
+        this.$alert("您必须同意服务协议才能继续登录");
       } else {
         this.$toast.loading({mask: true})
         if (this.type == 'code') {
@@ -222,7 +217,7 @@ export default {
         redirect = decodeURIComponent(redirect)
         location.replace(redirect);
       } else {
-        this.$router.push({ name: 'home', params: {store: window.STORE_ID} })
+        this.$router.push({ name: 'home', params: {} })
       }
       this.$toast.success('欢迎回来~')
     },
@@ -239,16 +234,6 @@ export default {
 .body {
   background-color: white;
 }
-.bg {
-  height: 10rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  img {
-    width: 90px;
-    height: 90px;
-  }
-}
 .login-box {
   padding: 10px 30px;
   margin-top: 10px;
@@ -261,7 +246,7 @@ export default {
     position: relative;
     height: 50px;
     margin-top: 15px;
-    background: url("/images/shop/login/line.png") no-repeat;
+    background: url("/images/login/line.png") no-repeat;
     background-size: contain;
     background-position-y: bottom;
     display: flex;
@@ -296,7 +281,7 @@ export default {
         border: none;
         padding: 5px 8px;
         box-sizing: border-box;
-        background-image: url("/images/shop/login/code_btn.png");
+        background-image: url("/images/login/code_btn.png");
         background-size: 100% 100%;
         background-repeat: no-repeat;
         font-size: 12px;
@@ -310,7 +295,7 @@ export default {
     border: none;
     margin-top: 44px;
     color: white;
-    background-image: url("/images/shop/login/login_btn.png");
+    background-image: url("/images/login/login_btn.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }

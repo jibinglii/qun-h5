@@ -34,7 +34,7 @@
         class="add"
         @click="$router.push({name: 'banks.add'})"
       >
-        <img src="/images/shop/bank-add.png" />
+        <img src="/images/bank/bank-add.png" />
         <br />
         添加
       </li>

@@ -67,11 +67,11 @@ export default {
         }
         .icon {
             flex: 3;
-            background:url(/images/shop/radio-nochecked.png) no-repeat center right;
+            background:url(/images/radio-nochecked.png) no-repeat center right;
             background-size: 30px 30px;
         }
         .active{
-            background:url(/images/shop/radio-checked.png) no-repeat center right;
+            background:url(/images/radio-checked.png) no-repeat center right;
             background-size: 30px 30px;
         }
     }

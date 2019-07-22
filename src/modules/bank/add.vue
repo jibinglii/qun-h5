@@ -84,21 +84,21 @@ export default {
         {
           title:'银行卡',
           value: 'bank',
-          icon:'/images/shop/bank.png',
+          icon:'/images/bank/bank.png',
           checked: true,
           show: true
         },
         {
           title:'支付宝',
           value: 'alipay',
-          icon:'/images/shop/alipay.png',
+          icon:'/images/bank/alipay.png',
           checked: false,
           show: true
         },
         {
           title:'微信',
           value: 'wechat',
-          icon:'/images/shop/weixin.png',
+          icon:'/images/bank/weixin.png',
           checked: true,
           show: true
         }

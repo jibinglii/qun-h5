@@ -6,12 +6,7 @@
     <div class="header">
       <h1>您好</h1>
       <h1>我们为您提供更多帮助</h1>
-      <!-- <div class="help-search">
-                <span class="icon">
-                    <img src="/images/shop/search.png" alt="">
-                </span>
-                <input type="search" placeholder="输入关键词搜索问题与答案">
-            </div> -->
+
     </div>
     <!-- 常见问题 -->
     <div class="item faq">
@@ -30,7 +25,7 @@
         >
           <div class="icon">
             <img
-              src="/images/shop/help/tips.png"
+              src="/images/help/tips.png"
               alt=""
             >
           </div>
@@ -82,32 +77,32 @@ export default {
       faqGroups: [
         {
           id: 19,
-          icon: '/images/shop/help/help-f-1.png',
+          icon: '/images/help/help-f-1.png',
           title: '支付',
           desc: '如何支付，支付安全保证'
         },
         {
           id: 20,
-          icon: '/images/shop/help/help-f-2.png',
+          icon: '/images/help/help-f-2.png',
           title: '退换货',
           desc: '如何申请退款，修改订单'
         },
         {
           id: 21,
-          icon: '/images/shop/help/help-f-3.png',
+          icon: '/images/help/help-f-3.png',
           title: '账户设置',
           desc: '修改密码，修改账户信息'
         },
         {
           id: 22,
-          icon: '/images/shop/help/help-f-4.png',
+          icon: '/images/help/help-f-4.png',
           title: '优惠 & 积分',
           desc: '积分如何使用，优惠券，邀请好友'
         }
       ]
     }
   },
-  methods: {
+thods: {
     getHot() {
       article.hot().then(({ data }) => {
         this.loading = false
@@ -125,7 +120,7 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  background-image: url("/images/shop/help-bg.jpg");
+  background-image: url("/images/help/help-bg.jpg");
   background-size: 100%;
   padding: 2rem 0;
   position: relative;

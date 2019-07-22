@@ -10,7 +10,6 @@
           <img src="../../assets/images/bianji.png">
         </router-link>
       </h3>
-
       <span>{{ currentUser.sign }}</span>
     </div>
     <cell-group
@@ -39,7 +38,7 @@ import { mapGetters } from "vuex";
 import CellGroup from "./components/CellGroup";
 import Cell from "./components/Cell";
 export default {
-  name: "storeManage",
+  name: "meManage",
   components: {
     Tab,
     XHeader,
@@ -50,99 +49,31 @@ export default {
     return {
       list: [
         {
-          title: "我是买家",
+          title: '基础功能',
           show: true,
           sub: [
-            {
-              title: '我的订单',
-              url: 'orders',
-              img: '/images/store/order.png',
-              show: true
-            }
-          ]
-        },
-        {
-          title: '我是卖家',
-          show: this.$currentStore().user_id == this.$user().id  || (
-            _.indexOf(this.$user().roles,'代理') != -1 || _.indexOf(this.$user().roles,'分销员') != -1
-          ),
-          sub: [
-            {
-              title: '店铺管理',
-              url: 'me.storemanage',
-              img: '/images/store/dianpu.png',
-              show: this.$currentStore().user_id == this.$user().id && (_.indexOf(this.$currentStore().roles,'渠道店铺') != -1 || _.indexOf(this.$currentStore().roles,'推广店铺') != -1)
-            },
-            {
-              title: '商品管理',
-              url: 'seller/goods',
-              img: '/images/store/shangpin.png',
-              show: this.$currentStore().user_id == this.$user().id && (_.indexOf(this.$currentStore().roles,'渠道店铺') != -1 || _.indexOf(this.$currentStore().roles,'推广店铺') != -1)
-            },
-            {
-              title: '商品管理',
-              url: 'seller/goods',
-              img: '/images/store/shangpin.png',
-              show: this.$currentStore().user_id != this.$user().id && _.indexOf(this.$user().roles,'分销员') != -1
-            },
-            {
-              title: '分销管理',
-              url: 'distribution.distribution',
-              img: '/images/store/fenxiao.png',
-              show: this.$currentStore().user_id == this.$user().id && !(_.indexOf(this.$currentStore().roles,'渠道店铺') != -1),
-            },
             {
               title: '结算管理',
               url: 'me.settlemanage',
-              img: '/images/store/jiesuan.png',
+              img: '/images/me/jiesuan.png',
               show: true
-            },
-            {
-              title: '广告管理',
-              url: 'ad.list',
-              img: '/images/store/ad.png',
-              show: this.$currentStore().user_id == this.$user().id && (_.indexOf(this.$currentStore().roles,'渠道店铺') != -1 || _.indexOf(this.$currentStore().roles,'推广店铺') != -1)
             }
           ]
         },
         {
-          title: '常用工具',
+          title: '扩展功能',
           show: true,
           sub: [
             {
-              title: '我的收藏',
-              url: 'collection.collection',
-              img: '/images/store/shoucang.png',
-              show: true
-            },
-            {
-              title: '操作流程',
-              url: 'me.opp',
-              img: '/images/store/liucheng.png',
-              show: true
-            },
-            {
-              title: '我的消息',
-              url: '',
-              img: '/images/store/xiaoxi.png',
-              show: false
-            },
-            {
-              title: '意见反馈',
-              url: 'me.feedback',
-              img: '/images/store/fankui.png',
-              show: true
-            },
-            {
               title: '使用帮助',
               url: 'me.helps',
-              img: '/images/store/help.png',
+              img: '/images/me/help.png',
               show: true
             },
             {
-              title: '账号设置',
+              title: '更多',
               url: 'me.accountsetting',
-              img: '/images/store/seting.png',
+              img: '/images/me/seting.png',
               show: true
             }
           ]
@@ -151,10 +82,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentUser", "currentStore"]),
-    isAdmin () {
-      return this.$currentStore().user_id == this.$user().id
-    }
+    ...mapGetters(["currentUser"])
   },
   created () {
     document.title = '我的'
@@ -165,7 +93,7 @@ export default {
 <style lang="scss" scoped>
 .header {
   height: 9rem;
-  background-image: url("/images/shop/me-bg.jpg");
+  background-image: url("/images/me/me-bg.jpg");
   background-repeat: no-repeat;
   background-size: 100%;
   display: flex;

@@ -25,9 +25,6 @@ export default {
     let load = loading || false;
     return await http.post('api/v1/user/modify-password', { password: md5(old_pwd), new_pass: md5(pwd) }, { loading: load })
   },
-  async getAuthStatus() {
-    return await http.get('api/v1/user/store/auth/status', { loading: true })
-  },
   async login(mobile, password) {
     let params = {
       username: mobile,
