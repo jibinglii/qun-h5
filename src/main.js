@@ -32,6 +32,7 @@ Vue.use(VueFab, {
 Vue.config.productionTip = false
 Vue.mixin(mixins)
 sync(store, router)
+debugger
 Vue.prototype.$toast = Toast
 Vue.prototype.$notify = Notify
 Vue.prototype.$http = http
@@ -46,7 +47,7 @@ Object.keys(filters).forEach(key => {
 })
 
 FastClick.attach(document.body)
-store.dispatch('storeInfo')
+// store.dispatch('storeInfo')
 setTimeout(() => {
   new Vue({
     store,
