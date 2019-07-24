@@ -6,6 +6,7 @@
           <p class="weui-uploader__title">{{ title }}</p>
           <div class="weui-uploader__info">{{ fileList.length }}/{{ limit }}</div>
         </div>
+        <p class="weui-uploader__desc">{{ desc }}</p>
         <div class="weui-uploader__bd">
           <div>
             <gallery
@@ -58,6 +59,7 @@ export default {
   },
   props: {
     title: String,
+    desc:String,
     limit: {
       type: Number,
       default: 15
@@ -193,10 +195,18 @@ $item-size: 64px;
   box-sizing: border-box;
   margin-left: 5px;
   margin-right: 0;
+  color: #b8b8b8;
 }
 .weui-uploader__title {
+  text-align: center;
+  padding: 5px 10px;
   font-size: 16px;
-  color: #888;
+  color: #656565;
+}
+.weui-uploader__desc {
+  padding: 5px 0 5px 10px;
+  font-size: 12px;
+  color: #5f5f5f;
 }
 .weui-uploader__title,.weui-uploader__info{
   font-size: 14px;

@@ -21,6 +21,11 @@
         is-link
         :to="{name: 'me.feedback'}"
       />
+      <van-cell
+        title="联系客服"
+        is-link
+        :to="{name: 'me.feedback'}"
+      />
     </van-cell-group>
     <div class="btn">
       <van-button

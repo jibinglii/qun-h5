@@ -38,11 +38,15 @@
       return {
         tabs: [
           {
-            text: "首页",
+            text: "推广大厅",
+            url: "home"
+          },
+           {
+            text: "任务大厅",
             url: "home"
           },
           {
-            text: "我的",
+            text: "个人中心",
             url: "me.me"
           }
         ],
