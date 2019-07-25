@@ -2,6 +2,7 @@ import { routes as home } from '$modules/home'
 import { routes as auth } from '$modules/auth'
 import { routes as me } from '$modules/me'
 import { routes as resource} from '$modules/resource'
+import { routes as task } from '$modules/task'
 import { routes as bank } from '$modules/bank'
 import { routes as withdraw } from '$modules/withdraw'
 import Vue from 'vue'
@@ -13,7 +14,7 @@ const AppRoute = {
     path: '/',
     component: () =>
         import ('../app'),
-        children: [...home, ...auth, ...me, ...resource, ...bank, ...withdraw, 
+        children: [...home, ...auth, ...me, ...resource, ...task, ...bank, ...withdraw, 
     ]
 }
 

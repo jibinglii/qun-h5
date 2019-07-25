@@ -28,30 +28,38 @@
 		<x-cell-group>
 			<x-checkbox
 				title="资源类型(多选)"
-        type="checkbox"
+				type="checkbox"
 				:data="resource"
 				v-model="params.relation_type"
 			></x-checkbox>
 		</x-cell-group>
 		<x-cell-group>
 			<x-uploader
-        title="群截图"
-        desc="点击以下图标上传附件，限传2张"
+				title="群截图"
+				desc="点击以下图标上传附件，限传2张"
 				v-model="params.attachment"
 				:limit="2"
 			></x-uploader>
 		</x-cell-group>
-    <div class="footer">
-      <input id="weuiAgree" type="checkbox" v-model="isagree" checked class="weui-agree__checkbox">
-      <span class="weui-agree__text">
-        <a @click="showAgree" href="javascript:void(0)">我以阅读并同意《群盟服务条款》</a>
-      </span>
-    </div>
-    <agree title="" ref="agree"/>
+		<div class="footer">
+			<input
+				id="weuiAgree"
+				type="checkbox"
+				v-model="isagree"
+				checked
+				class="weui-agree__checkbox"
+			/>
+			<span class="weui-agree__text">
+				<a @click="showAgree" href="javascript:void(0)"
+					>我以阅读并同意《群盟服务条款》</a
+				>
+			</span>
+		</div>
+		<agree title="" ref="agree" />
 
-    <div class="op" @click="next()">
-        <x-button type="primary" text="提交审核"></x-button>
-    </div>
+		<div class="op" @click="next()">
+			<x-button type="primary" text="提交审核"></x-button>
+		</div>
 	</div>
 </template>
 
@@ -65,8 +73,8 @@
 	import XButton from "$components/XButton";
 	import XCheckbox from "$components/XCheckbox"
 	import TextCell from "$components/TextCell";
-  import XUploader from "$components/XUploader";
-  import Agree from "$components/Agree";
+	import XUploader from "$components/XUploader";
+	import Agree from "$components/Agree";
 	import XPicker from "$components/XPicker";
 	import { fail } from 'assert';
 
@@ -74,7 +82,7 @@
 		//import引入的组件需要注入到对象中才能使用
 		components: {
 			XHeader, XGroup, XCellGroup, RadioCell, InfoCell, InputCell, XButton, XCheckbox,
-			"van-picker": XPicker, TextCell, XUploader,Agree
+			"van-picker": XPicker, TextCell, XUploader, Agree
 		},
 		data () {
 			//这里存放数据
@@ -109,10 +117,10 @@
 				this.$http.get('api/v2/alliance/qun/category').then(({ data }) => {
 					this.resource = data.category
 				});
-      },
-      next(){
+			},
+			next () {
 
-      },
+			},
 			showAgree () {
 				this.$refs.agree.show();
 			}
@@ -138,19 +146,21 @@
 			color: #000;
 			padding: 5px 5px;
 		}
-    .footer{
-      font-size: 12px;
-      text-align: center;
-      color: #676767;
-      padding: 50px 0px 10px 0px;
-    }
-    .op a{
-      width: 75%;
-      height: 50px;
-      line-height: 50px;
-      margin-left: 50px;
-      font-size: 14px;
-      border-radius: 60px;
-    }
+		.footer {
+			font-size: 12px;
+			text-align: center;
+			color: #676767;
+			padding: 50px 0px 10px 0px;
+		}
+		.op {
+			width: 90%;
+			margin: 0 auto;
+		}
+		.op a {
+			height: 50px;
+			line-height: 50px;
+			font-size: 14px;
+			border-radius: 60px;
+		}
 	}
 </style>

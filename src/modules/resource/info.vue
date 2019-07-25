@@ -38,11 +38,11 @@
 		watch: {},
 		//方法集合
 		methods: {
-      getInfo(){
-        this.$http.get('').then(({data})=>{
+			getInfo () {
+				this.$http.get('').then(({ data }) => {
 
-        });
-      }
+				});
+			}
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
@@ -58,12 +58,14 @@
 	//@import url(); 引入公共css类
 	.resource-info {
 		position: relative;
-		.op a { 
-			width: 75%;
+		.op {
+			width: 90%;
+			margin: 0 auto;
+		}
+		.op a {
 			height: 50px;
 			line-height: 50px;
-      margin-top: 40px;
-			margin-left: 50px;
+			margin-top: 40px;
 			font-size: 14px;
 			border-radius: 60px;
 		}

@@ -14,9 +14,9 @@
 			<div slot="no-more">没有更多数据啦...</div>
 			<div slot="no-results">没有数据</div>
 		</infinite-loading>
-    <div class="op" @click="$router.push({name: 'resource.create'})">
-        <x-button type="primary" text="添加资源"></x-button>
-    </div>
+		<div class="op" @click="$router.push({ name: 'resource.create' })">
+			<x-button type="primary" text="添加资源"></x-button>
+		</div>
 	</div>
 </template>
 
@@ -70,14 +70,16 @@
 </script>
 <style lang='scss' scoped>
 	//@import url(); 引入公共css类
-  .resources{
-    position: relative;
+	.resources {
+		position: relative;
 
-    .op a{
-      width: 90%;
-      height: 50px;
-      line-height: 50px;
-      margin-left: 20px;
-    }
-  }
+		.op {
+			width: 90%;
+			margin: 0 auto;
+		}
+		.op a {
+			height: 50px;
+			line-height: 50px;
+		}
+	}
 </style>
