@@ -8,8 +8,8 @@ export default [
     component: () => import('./resources')
   },
   {
-    path: 'resource/info',
-    name: 'resources.info',
+    path: 'resource/info/:id',
+    name: 'resource.info',
     meta: {
       requiresAuth: true
     },

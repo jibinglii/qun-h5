@@ -2,28 +2,47 @@
 	<div class="resource">
 		<x-header title="添加资源" url=""></x-header>
 		<x-cell-group>
-			<van-picker
-				show-toolbar
-				title="类型"
-				:columns="columns"
-				@change="onChange"
+			<van-field
+				readonly
+				clickable
+				label="类型"
+				:value="value"
+				placeholder="选择类型"
+				@click="showPicker = true"
 			/>
-			<input-cell
-				title="资源名称"
+			<van-popup v-model="showPicker" position="bottom">
+				<van-picker
+					show-toolbar
+					:columns="columns"
+					@cancel="showPicker = false"
+					@confirm="onConfirm"
+				/>
+			</van-popup>
+			<van-field
+				label="资源名称"
 				v-model="params.name"
 				placeholder="请输入资源名称"
-			></input-cell>
-			<input-cell
-				title="资源规格"
+			></van-field>
+			<van-field
+				label="资源规格"
 				v-model="params.size"
 				placeholder="请输入资源规格"
-			></input-cell>
-			<van-picker
-				show-toolbar
-				title="地区"
-				:columns="areaList"
-				@change="onChange"
+			></van-field>
+			<van-field
+				readonly
+				clickable
+				label="区域"
+        :value="areaValue"
+				placeholder="选择区域"
+				@click="showArea = true"
 			/>
+			<van-popup v-model="showArea" position="bottom">
+				<van-area
+					:area-list="areaList"
+          :columns-num="3"
+          @confirm="onConfirmArea"
+				/>
+			</van-popup>
 		</x-cell-group>
 		<x-cell-group>
 			<x-checkbox
@@ -65,31 +84,42 @@
 
 <script>
 	import XHeader from "$components/XHeader";
-	import XGroup from "$components/XGroup";
 	import XCellGroup from "$components/XCellGroup";
-	import RadioCell from "$components/RadioCell";
-	import InputCell from "$components/InputCell";
-	import InfoCell from "$components/InfoCell";
 	import XButton from "$components/XButton";
 	import XCheckbox from "$components/XCheckbox"
 	import TextCell from "$components/TextCell";
 	import XUploader from "$components/XUploader";
 	import Agree from "$components/Agree";
-	import XPicker from "$components/XPicker";
-	import { fail } from 'assert';
+  import { fail } from 'assert';
+  import Area from 'vant/lib/area';
+  import 'vant/lib/area/style';
+	import Field from 'vant/lib/field';
+	import 'vant/lib/field/style';
+	import Popup from 'vant/lib/popup';
+  import 'vant/lib/popup/style';
+  import Picker from 'vant/lib/picker';
+  import 'vant/lib/picker/style';
+  import AreaList from '../../api/area';
 
 	export default {
 		//import引入的组件需要注入到对象中才能使用
 		components: {
-			XHeader, XGroup, XCellGroup, RadioCell, InfoCell, InputCell, XButton, XCheckbox,
-			"van-picker": XPicker, TextCell, XUploader, Agree
+			XHeader, XCellGroup, XButton, XCheckbox,
+			'van-field': Field,
+			'van-popup': Popup,
+      "van-picker": Picker,
+      'van-area': Area, TextCell, XUploader, Agree
 		},
 		data () {
 			//这里存放数据
 			return {
 				isagree: false,
+				value: '',
+				showPicker: false,
 				columns: ['微信群', 'QQ群', '自媒体', '网站'],
-				areaList: [],
+				areaValue: '',
+				showArea: false,
+				areaList: AreaList,
 				params: {
 					name: '',
 					size: '',
@@ -110,8 +140,17 @@
 		watch: {},
 		//方法集合
 		methods: {
-			onChange (picker, value, index) {
-				Toast(`当前值：${value}, 当前索引：${index}`);
+			onConfirm (value) {
+				this.value = value;
+				this.showPicker = false;
+			},
+			onConfirmArea (value) {
+        let _value = '';
+        value.map(function(item,index){
+           _value += item.name+' '
+        });
+				this.areaValue = _value
+				this.showArea = false;
 			},
 			getCategory () {
 				this.$http.get('api/v2/alliance/qun/category').then(({ data }) => {
@@ -139,7 +178,6 @@
 	//@import url(); 引入公共css类
 	.resource {
 		position: relative;
-
 		.screenshot {
 			text-align: center;
 			font-size: 0.6rem;

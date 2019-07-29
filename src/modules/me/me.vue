@@ -90,7 +90,7 @@ export default {
           sub:[
             {
               title:'我的任务',
-              url:'',
+              url:'task.tasks',
               img:'/images/me/gtasks.png',
               show: true
             },
@@ -102,7 +102,7 @@ export default {
             },
             {
               title:'佣金管理',
-              url:'',
+              url:'brokerage',
               img:'/images/me/money.png',
               show: true
             },
@@ -140,6 +140,13 @@ export default {
   },
   created () {
     document.title = '我的'
+  },
+  mounted(){
+    if(this.$store.getters.currentUser.roles[0] == '流量主'){
+      this.list[0].show = false;
+    }else if(this.$store.getters.currentUser.roles[0] == '广告主'){
+      this.list[1].show = false;
+    }
   }
 };
 </script>

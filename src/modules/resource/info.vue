@@ -2,12 +2,12 @@
 	<div class="resource-info">
 		<x-header title="资源详情" url=""></x-header>
 		<x-cell-group>
-			<info-cell title="资源名称">在线发货</info-cell>
-			<info-cell title="规格">在线发货</info-cell>
-			<info-cell title="分类">在线发货</info-cell>
-			<info-cell title="资源类型">在线发货</info-cell>
-			<info-cell title="地区">在线发货</info-cell>
-			<info-cell title="所属用户">在线发货</info-cell>
+			<info-cell title="资源名称">{{ resourceInfo.name }}</info-cell>
+			<info-cell title="规格">{{ resourceInfo.size }}</info-cell>
+			<info-cell title="分类">{{ resourceInfo.type_label }}</info-cell>
+			<info-cell title="资源类型">{{ resourceInfo.category_label }}</info-cell>
+			<info-cell title="地区">{{ resourceInfo.area_id }}</info-cell>
+			<info-cell title="所属用户">{{ resourceInfo.user.nickname }}</info-cell>
 		</x-cell-group>
 		<div class="op" @click="$router.push({ name: 'resource.create' })">
 			<x-button type="primary" text="更新资源"></x-button>
@@ -29,7 +29,7 @@
 		data () {
 			//这里存放数据
 			return {
-
+        resourceInfo:{}
 			};
 		},
 		//监听属性 类似于data概念
@@ -39,8 +39,9 @@
 		//方法集合
 		methods: {
 			getInfo () {
-				this.$http.get('').then(({ data }) => {
-
+        let res_id = this.$route.params.id
+				this.$http.get('api/v2/alliance/resources/info',{params:{id: res_id,include:'user',append:'type_label,category_label'}}).then(({ data }) => {
+          this.resourceInfo = data.resource;
 				});
 			}
 		},
@@ -50,7 +51,7 @@
 		},
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
-
+      this.getInfo()
 		},
 	}
 </script>

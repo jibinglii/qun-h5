@@ -6,5 +6,13 @@ export default [
       requiresAuth: true
     },
     component: () => import('./tasks')
+  },
+  {
+    path: 'task/info/:id',
+    name: 'task.info',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('./info')
   }
 ]

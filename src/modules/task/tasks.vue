@@ -13,8 +13,9 @@
 						:key="index"
 						:is-link="true"
 						:title="item.title"
-						:inlineDesc="item.show_num + '/' + item.area_id"
-            :value="item.title"
+						:inlineDesc="item.show_type_label + '/' + item.show_area_id+'/'+item.show_category_label"
+						:value="item.title"
+						:link="'/task/info/' + item.id"
 					></x-cell>
 				</x-cell-group>
 			</van-tab>
@@ -68,7 +69,7 @@
 		//方法集合
 		methods: {
 			infiniteHandler ($state) {
-				this.$http.get("api/v2/alliance/flow/task/" + 10000055, { params: { page: this.page } }).then(({ data }) => {
+				this.$http.get("api/v2/alliance/flow/task/" + 10000055, { params: { page: this.page, append: 'show_type_label,show_category_label'} }).then(({ data }) => {
 					if (data.tasks.data.length > 0) {
 						this.page += 1;
 						this.myTasks.push(...data.tasks.data);
@@ -78,7 +79,7 @@
 						$state.complete();
 					}
 				});
-			}
+			},
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {

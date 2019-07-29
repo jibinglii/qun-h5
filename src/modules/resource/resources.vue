@@ -8,6 +8,7 @@
 				:is-link="true"
 				:title="item.name + '/' + item.type_label"
 				:inlineDesc="item.desc + '/' + item.area_id + '/' + item.size"
+				:link="'/resource/info/' + item.id"
 			></x-cell>
 		</x-cell-group>
 		<infinite-loading @infinite="infiniteHandler" spinner="spiral">
