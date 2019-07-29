@@ -1,30 +1,38 @@
 <template>
   <div class="my-task">
     <x-header title="推广计划管理"></x-header>
-    <cell-group :title="item.title" v-for="(item, index) in plans" :key="index" v-show="item.show">
-      <cell
+    <x-cell-group
+      :title="item.title"
+      v-for="(item, index) in plans"
+      :key="index"
+      v-show="item.show"
+    >
+      <x-cell
         :title="inner.title"
-        :date="inner.date"
-        :url="inner.url"
+        :inlineDesc="inner.date"
         v-for="(inner, index) in item.sub"
         :key="index"
+        :is-link="true"
+        :link="inner.url"
         v-show="inner.show"
       />
-    </cell-group>
+    </x-cell-group>
   </div>
 </template>
 
 <script>
 import XHeader from "$components/XHeader";
-import CellGroup from "./components/CellGroup";
-import Cell from "./components/Cell";
+import XCell from "$components/XCell";
+import XGroup from "$components/XGroup";
+import XCellGroup from "$components/XCellGroup";
 
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
     XHeader,
-    [CellGroup.name]: CellGroup,
-    [Cell.name]: Cell
+    XCell,
+    XCellGroup,
+    XGroup
   },
   data() {
     //这里存放数据
@@ -49,7 +57,7 @@ export default {
             {
               title: "2019-7-05兴趣定向",
               date: "2019-7-05至2019-7-05",
-              url: "plan.plandetails",
+              url: "../plan/plandetails",
               show: true
             }
           ]
@@ -71,4 +79,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+/deep/.vux-label-desc {
+  font-size: 12px;
+}
 </style>
