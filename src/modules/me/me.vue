@@ -49,9 +49,33 @@ export default {
     return {
       list: [
         {
-          title: '基础功能',
+          title: '广告主',
           show: true,
           sub: [
+            {
+              title:'推广计划管理',
+              url:'',
+              img:'/images/me/task.png',
+              show: true
+            },
+            {
+              title:'推广内容管理',
+              url:'',
+              img:'/images/me/task-list.png',
+              show: true
+            },
+            {
+              title:'历史任务查看',
+              url:'',
+              img:'/images/me/history.png',
+              show: true
+            },
+            {
+              title:'财务管理',
+              url:'',
+              img:'/images/me/finance.png',
+              show: true
+            },
             {
               title: '结算管理',
               url: 'me.settlemanage',
@@ -61,9 +85,39 @@ export default {
           ]
         },
         {
+          title:'流量主',
+          show:true,
+          sub:[
+            {
+              title:'我的任务',
+              url:'task.tasks',
+              img:'/images/me/gtasks.png',
+              show: true
+            },
+            {
+              title:'资源管理',
+              url:'resources',
+              img:'/images/me/resource.png',
+              show: true
+            },
+            {
+              title:'佣金管理',
+              url:'brokerage',
+              img:'/images/me/money.png',
+              show: true
+            },
+          ]
+        },
+        {
           title: '扩展功能',
           show: true,
           sub: [
+             {
+              title:'数据统计',
+              url:'',
+              img:'/images/me/statistics.png',
+              show: true
+            },
             {
               title: '使用帮助',
               url: 'me.helps',
@@ -86,6 +140,13 @@ export default {
   },
   created () {
     document.title = '我的'
+  },
+  mounted(){
+    if(this.$store.getters.currentUser.roles[0] == '流量主'){
+      this.list[0].show = false;
+    }else if(this.$store.getters.currentUser.roles[0] == '广告主'){
+      this.list[1].show = false;
+    }
   }
 };
 </script>
