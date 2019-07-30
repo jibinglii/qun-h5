@@ -1,7 +1,7 @@
 <template>
 	<div class="my-task">
 		<x-header title="我的计划"></x-header>
-		<van-tabs v-model="active" color="#191717">
+		<van-tabs @click="tabClick" v-model="active" color="#191717">
 			<van-tab
 				v-for="(item, index) in statusTypes"
 				:key="index"
@@ -13,14 +13,24 @@
 						:key="index"
 						:is-link="true"
 						:title="item.title"
-						:inlineDesc="item.show_type_label + '/' + item.show_area_id+'/'+item.show_category_label"
-						:value="item.title"
+						:inlineDesc="
+							item.show_type_label +
+								'/' +
+								item.show_area_id +
+								'/' +
+								item.show_category_label
+						"
+						:value="item.approval.str_status"
 						:link="'/task/info/' + item.id"
 					></x-cell>
 				</x-cell-group>
 			</van-tab>
 		</van-tabs>
-		<infinite-loading @infinite="infiniteHandler" spinner="spiral">
+		<infinite-loading
+			:identifier="infiniteId"
+			@infinite="infiniteHandler"
+			spinner="spiral"
+		>
 			<div slot="no-more">没有更多数据啦...</div>
 			<div slot="no-results">没有数据</div>
 		</infinite-loading>
@@ -38,6 +48,7 @@
 	import 'vant/lib/tab/style';
 	import 'vant/lib/tabs/style'
 	import InfiniteLoading from "vue-infinite-loading";
+	import { mapGetters } from "vuex";
 
 
 	export default {
@@ -51,34 +62,52 @@
 		data () {
 			//这里存放数据
 			return {
-				active: 0,
+				active: -1,
 				statusTypes: [
-					{ id: "-1", title: '全部' },
-					{ id: "0", title: "未开始" },
-					{ id: "1", title: "进行中" },
-					{ id: "3", title: "已完成" },
+					{ title: '全部' },
+					{ title: "审核中" },
+					{ title: "投放中" },
+					{ title: "已结束" },
 				],
 				myTasks: [],
 				page: 1,
+				status: -1,
+				infiniteId: +new Date(),
 			};
 		},
 		//监听属性 类似于data概念
-		computed: {},
+		computed: {
+			...mapGetters(['currentUser'])
+		},
 		//监控data中的数据变化
 		watch: {},
 		//方法集合
 		methods: {
+			tabClick (name, title) {
+				if (name == 1) {
+					this.status = 0
+				} else {
+					this.status = name;
+				}
+				this.active = name;
+				this.page = 1;
+				this.myTasks = [];
+				this.infiniteId += 1;
+			},
 			infiniteHandler ($state) {
-				this.$http.get("api/v2/alliance/flow/task/" + 10000055, { params: { page: this.page, append: 'show_type_label,show_category_label'} }).then(({ data }) => {
-					if (data.tasks.data.length > 0) {
-						this.page += 1;
-						this.myTasks.push(...data.tasks.data);
-						$state.loaded();
-					}
-					if (data.tasks.per_page > data.tasks.data.length) {
-						$state.complete();
-					}
-				});
+				let user_id = this.$store.getters.currentUser.id
+				this.$http.get("api/v2/alliance/flow/task/" + user_id,
+					{ params: { page: this.page, status: this.status, append: 'show_type_label,show_category_label' } })
+					.then(({ data }) => {
+						if (data.tasks.data.length > 0) {
+							this.page += 1;
+							this.myTasks.push(...data.tasks.data);
+							$state.loaded();
+						}
+						if (data.tasks.per_page > data.tasks.data.length) {
+							$state.complete();
+						}
+					});
 			},
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
