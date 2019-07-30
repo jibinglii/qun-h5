@@ -2,8 +2,8 @@
   <div class="my-task">
     <x-header title="计划详情"></x-header>
     <van-cell-group>
-      <van-cell title="总投放数" value="6000" is-link :to="{name: 'plan.serving'}"/>
-      <van-cell title="总浏览数" value="6000" is-link :to="{name: 'plan.totalview'}"/>
+      <van-cell title="总投放数" value="" v-model="serving" is-link :to="{name: 'plan.serving'}"/>
+      <van-cell title="总浏览数" value="" v-model="views" is-link :to="{name: 'plan.totalview'}"/>
       <van-cell title="对应推广内容" is-link>
         <van-dropdown-menu>
           <van-dropdown-item v-model="value" :options="contents"/>
@@ -31,8 +31,8 @@
       ></x-cell>
     </x-cell-group>
     <div class="btn">
-      <van-button type="primary" hairline size="small" @click="servingClick">再次投放</van-button>
-      <van-button type="primary" hairline size="small" @click="editClick">编辑广告</van-button>
+      <van-button type="primary" hairline size="normal" @click="servingClick">再次投放</van-button>
+      <van-button type="primary" hairline size="normal" @click="editClick">编辑广告</van-button>
     </div>
   </div>
 </template>
@@ -67,6 +67,8 @@ export default {
     //这里存放数据
     return {
       value: "0",
+      serving: "6000",
+      views: "1250",
       servings: [
         {
           title: "七夕活动推广",
@@ -106,14 +108,10 @@ export default {
       ]
     };
   },
-  computed: {},
-  watch: {},
   methods: {
     servingClick () {},
     editClick () {},
   },
-  created() {},
-  mounted() {}
 };
 </script>
 <style lang='scss' scoped>
@@ -153,8 +151,12 @@ export default {
 }
 .btn{
   text-align: center;
-  button{
-    margin: 20px 20px 0 0;
+  /deep/button{
+    margin: 45px 20px 0 0;
+    padding: 0 30px;
+    height: 38px;
+    line-height: 38px;
+    font-size: 12px;
   }
 }
 </style>
