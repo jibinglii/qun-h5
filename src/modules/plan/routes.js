@@ -33,5 +33,23 @@ export default [{
         // },
         component: () =>
             import ('./totals')
+    },
+    {
+        path: 'plan/planingdetails',
+        name: 'plan.planingdetails',
+        // meta: {
+        //     requiresAuth: true
+        // },
+        component: () =>
+            import ('./planingDetails')
+    },
+    {
+        path: 'plan/romotion',
+        name: 'plan.romotion',
+        // meta: {
+        //     requiresAuth: true
+        // },
+        component: () =>
+            import ('./romotion')
     }
 ]

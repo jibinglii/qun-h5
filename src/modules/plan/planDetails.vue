@@ -26,7 +26,7 @@
         :key="index"
         :is-link="true"
         :title="item.date"
-        :inlineDesc="'投放：'+item.serving +'     点击：' + item.click + '       总消费：' + item.total"
+        :inlineDesc="'投放：'+item.serving + '\xa0\xa0\xa0' +'点击：' + item.click + '\xa0\xa0\xa0' + '       总消费：' + item.total"
         :link="item.name"
       ></x-cell>
     </x-cell-group>

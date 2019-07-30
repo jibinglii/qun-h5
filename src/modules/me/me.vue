@@ -60,13 +60,13 @@ export default {
             },
             {
               title:'推广内容管理',
-              url:'',
+              url:'promotion.promotion-content',
               img:'/images/me/task-list.png',
               show: true
             },
             {
               title:'历史任务查看',
-              url:'',
+              url:'history.history',
               img:'/images/me/history.png',
               show: true
             },
