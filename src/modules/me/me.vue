@@ -146,9 +146,9 @@ export default {
     document.title = '我的'
   },
   mounted(){
-    if(this.$store.getters.currentUser.roles[0] == '流量主'){
+    if(this.inArray('流量主',this.$store.getters.currentUser.roles)){
       this.list[0].show = false;
-    }else if(this.$store.getters.currentUser.roles[0] == '广告主'){
+    }else if(this.inArray('广告主',this.$store.getters.currentUser.roles)){
       this.list[1].show = false;
     }
   }

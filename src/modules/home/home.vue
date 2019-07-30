@@ -123,7 +123,7 @@
 		created () { },
 		methods: {},
 		mounted () {
-			if (this.$store.getters.currentUser.roles[0] == '广告主') {
+			if (this.inArray('广告主',this.$store.getters.currentUser.roles)) {
 				this.$router.push({ name: 'home.ad' })
 			}
 		}

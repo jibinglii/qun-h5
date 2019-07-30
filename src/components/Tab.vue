@@ -47,12 +47,12 @@
 			};
 		},
 		mounted () {
-			if (this.$store.getters.currentUser.roles[0] == '流量主') {
+			if (this.inArray('流量主',this.$store.getters.currentUser.roles)) {
 				this.tabs.unshift({
 					text: "任务大厅",
 					url: "home"
 				})
-			} else if (this.$store.getters.currentUser.roles[0] == '广告主') {
+			} else if (this.inArray('广告主',this.$store.getters.currentUser.roles)) {
 				this.tabs.unshift({
 					text: "推广大厅",
 					url: "home.ad"
