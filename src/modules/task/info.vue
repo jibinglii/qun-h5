@@ -5,32 +5,32 @@
 			<div class="info">
 				<div class="info-type">
 					<label for="">投放行业</label>
-					<span>QQ群</span>
+					<span>{{ taskInfo.show_category_label}}</span>
 				</div>
 				<div class="info-type">
 					<label for="">投放类型</label>
-					<span>QQ群</span>
+					<span>{{ taskInfo.show_type_label}}</span>
 				</div>
 				<div class="info-type">
 					<label for="">投放区域</label>
-					<span>QQ群</span>
+					<span>{{ taskInfo.show_area_id }}</span>
 				</div>
 				<div class="info-type">
 					<label for="">投放价格</label>
-					<span>QQ群</span>
+					<span>￥{{ taskInfo.max_show_price }}</span>
 				</div>
 				<div class="info-type">
 					<label for="">点击价格</label>
-					<span>QQ群</span>
+					<span>￥{{ taskInfo.max_click_pric }}</span>
 				</div>
 				<div class="info-type"></div>
 			</div>
 		</van-cell-group>
 		<x-group>
 			<info-cell title="推广链接">
-				http://baidu.com
-				<button class="btns">复制推广链接</button>
-				<button class="btns">广告图</button>
+				<span>http://baidu.com</span>
+				<button class="btns">复制链接</button>
+				<button class="btns">广告链接</button>
 			</info-cell>
 		</x-group>
 		<van-cell-group title="推广进度">
@@ -87,7 +87,8 @@
 			return {
 				currentRate: 50,
 				text: '',
-				rate: 50,
+        rate: 50,
+        taskInfo:{},
 			};
 		},
 		//监听属性 类似于data概念
@@ -96,7 +97,14 @@
 		watch: {},
 		//方法集合
 		methods: {
-
+      getTaskInfo(){
+        let res_id = this.$route.params.id
+        this.$http.get('api/v2/alliance/flow/task/info',
+        {params:{task_id:res_id,include:'target,assign',append:'show_type_label,show_category_label'}})
+        .then(({ data }) => {
+          this.taskInfo = data.task_info
+        })
+      }
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
@@ -104,7 +112,8 @@
 		},
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
-			this.text = this.currentRate.toFixed(0) + '%'
+      this.text = this.currentRate.toFixed(0) + '%'
+      this.getTaskInfo();
 		},
 	}
 </script>
@@ -114,13 +123,12 @@
 		position: relative;
 		.info {
 			height: 180px;
-			padding: 20px;
-			margin: 0 auto;
+			padding: 10px;
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
 			.info-type {
-				flex: 1;
+				flex: 3;
 				label,
 				span {
 					display: block;

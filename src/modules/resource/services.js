@@ -3,3 +3,6 @@
 import http from '$utils/http'
 
 // send login data and retrive a new token
+export const getProtocol = (name) => {
+  return http.get('/api/v1/games/protocol/' + name)
+}

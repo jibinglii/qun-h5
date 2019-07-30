@@ -32,15 +32,15 @@
 				readonly
 				clickable
 				label="区域"
-        :value="areaValue"
+				:value="areaValue"
 				placeholder="选择区域"
 				@click="showArea = true"
 			/>
 			<van-popup v-model="showArea" position="bottom">
 				<van-area
 					:area-list="areaList"
-          :columns-num="3"
-          @confirm="onConfirmArea"
+					:columns-num="3"
+					@confirm="onConfirmArea"
 				/>
 			</van-popup>
 		</x-cell-group>
@@ -49,8 +49,18 @@
 				title="资源类型(多选)"
 				type="checkbox"
 				:data="resource"
-				v-model="params.relation_type"
+				v-model="params.category"
 			></x-checkbox>
+		</x-cell-group>
+		<x-cell-group>
+			<van-field
+				v-model="params.desc"
+				label="资源描述"
+				type="textarea"
+				placeholder="请简单描述资源"
+				rows="3"
+				autosize
+			/>
 		</x-cell-group>
 		<x-cell-group>
 			<x-uploader
@@ -74,7 +84,7 @@
 				>
 			</span>
 		</div>
-		<agree title="" ref="agree" />
+		<agree title="" ref="agree" :content="saleProtocol" />
 
 		<div class="op" @click="next()">
 			<x-button type="primary" text="提交审核"></x-button>
@@ -90,16 +100,18 @@
 	import TextCell from "$components/TextCell";
 	import XUploader from "$components/XUploader";
 	import Agree from "$components/Agree";
-  import { fail } from 'assert';
-  import Area from 'vant/lib/area';
-  import 'vant/lib/area/style';
+	import { fail } from 'assert';
+	import Area from 'vant/lib/area';
+	import 'vant/lib/area/style';
 	import Field from 'vant/lib/field';
 	import 'vant/lib/field/style';
 	import Popup from 'vant/lib/popup';
-  import 'vant/lib/popup/style';
-  import Picker from 'vant/lib/picker';
-  import 'vant/lib/picker/style';
-  import AreaList from '../../api/area';
+	import 'vant/lib/popup/style';
+	import Picker from 'vant/lib/picker';
+	import 'vant/lib/picker/style';
+	import AreaList from '../../api/area';
+
+	import * as services from '$modules/resource/services';
 
 	export default {
 		//import引入的组件需要注入到对象中才能使用
@@ -107,13 +119,13 @@
 			XHeader, XCellGroup, XButton, XCheckbox,
 			'van-field': Field,
 			'van-popup': Popup,
-      "van-picker": Picker,
-      'van-area': Area, TextCell, XUploader, Agree
+			"van-picker": Picker,
+			'van-area': Area, TextCell, XUploader, Agree
 		},
 		data () {
 			//这里存放数据
 			return {
-				isagree: false,
+				isagree: true,
 				value: '',
 				showPicker: false,
 				columns: ['微信群', 'QQ群', '自媒体', '网站'],
@@ -123,13 +135,14 @@
 				params: {
 					name: '',
 					size: '',
-					area: '',
+					area_id: '',
 					type: '',
-					relation_type: '',
+					category: {},
 					attachment: [],
 					desc: ''
 				},
 				resource: {},
+				saleProtocol: ''
 			};
 		},
 		//监听属性 类似于data概念
@@ -140,16 +153,18 @@
 		watch: {},
 		//方法集合
 		methods: {
-			onConfirm (value) {
+			onConfirm (value, index) {
 				this.value = value;
+				this.params.type = index;
 				this.showPicker = false;
 			},
 			onConfirmArea (value) {
-        let _value = '';
-        value.map(function(item,index){
-           _value += item.name+' '
-        });
+				let _value = '';
+				value.map(function (item, index) {
+					_value += item.name + ' '
+				});
 				this.areaValue = _value
+				this.params.area_id = _value
 				this.showArea = false;
 			},
 			getCategory () {
@@ -158,10 +173,26 @@
 				});
 			},
 			next () {
-
+				if (!this.isagree) {
+					this.$alert("请同意《群盟服务条款》")
+				} else {
+					this.$http.post('api/v2/alliance/resources/add', this.params).then(data => {
+						this.$toast.loading('资源信息保存中');
+						if (data.code == 200) {
+							this.$router.push({ name: 'resources' })
+						}
+					}).catch(fail => {
+							this.$toast.loading(fail.response.data.message)
+					})
+				}
 			},
 			showAgree () {
 				this.$refs.agree.show();
+			},
+			getProtocol () {
+				services.getProtocol('transaction').then(({ data }) => {
+					this.saleProtocol = data.content
+				})
 			}
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
@@ -171,6 +202,7 @@
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
 			this.getCategory();
+			this.getProtocol();
 		},
 	}
 </script>
