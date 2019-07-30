@@ -1,6 +1,6 @@
 <template>
 	<div class="resources">
-		<x-header title="资源管理" url=""></x-header>
+		<x-header title="资源管理" rightText="添加" @click-right="$router.push({ name: 'resource.create' })"></x-header>
 		<x-cell-group>
 			<x-cell
 				v-for="(item, index) in resources"
