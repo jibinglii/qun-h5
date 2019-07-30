@@ -54,7 +54,7 @@ export default {
           sub: [
             {
               title:'推广计划管理',
-              url:'',
+              url:'plan.plan',
               img:'/images/me/task.png',
               show: true
             },
