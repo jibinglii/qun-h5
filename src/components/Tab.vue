@@ -55,7 +55,7 @@
 			} else if (this.$store.getters.currentUser.roles[0] == '广告主') {
 				this.tabs.unshift({
 					text: "推广大厅",
-					url: "home"
+					url: "home.ad"
 				})
 			}
 		}
