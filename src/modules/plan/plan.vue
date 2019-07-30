@@ -45,7 +45,7 @@ export default {
             {
               title: "2019-7-05兴趣定向",
               date: "2019-7-05至2019-7-05",
-              url: "plan.plan",
+              url: "../plan/planingdetails",
               show: true
             }
           ]
