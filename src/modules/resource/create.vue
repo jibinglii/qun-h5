@@ -64,8 +64,8 @@
 		</x-cell-group>
 		<x-cell-group>
 			<x-uploader
-				title="群截图"
-				desc="点击以下图标上传附件，限传2张"
+				title="资源截图"
+				desc="上传资源图片，限传2张"
 				v-model="params.attachment"
 				:limit="2"
 			></x-uploader>

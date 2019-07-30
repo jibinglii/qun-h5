@@ -1,5 +1,9 @@
 <template>
   <div class="personCenter">
+    <x-header
+      title="我的"
+      :allowBack="false"
+    ></x-header>
     <div class="header">
       <div class="user-icon">
         <img :src="currentUser.avatar" alt>
