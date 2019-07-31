@@ -15,6 +15,8 @@
         :is-link="true"
         :link="inner.url"
         v-show="inner.show"
+        router="plan.planingdetails" 
+        :routerParams="{'id': inner.id}"
       />
     </x-cell-group>
   </div>
@@ -43,9 +45,9 @@ export default {
           show: true,
           sub: [
             {
+              id:1,
               title: "2019-7-05兴趣定向",
               date: "2019-7-05至2019-7-05",
-              url: "../plan/planingdetails",
               show: true
             }
           ]
@@ -55,9 +57,9 @@ export default {
           show: true,
           sub: [
             {
+              id: 2,
               title: "2019-7-05兴趣定向",
               date: "2019-7-05至2019-7-05",
-              url: "../plan/plandetails",
               show: true
             }
           ]
