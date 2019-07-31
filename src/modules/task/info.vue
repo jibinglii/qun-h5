@@ -28,7 +28,7 @@
 		</van-cell-group>
 		<x-group>
 			<info-cell title="推广链接">
-				<span>http://baidu.com</span>
+				<span></span>
 				<button class="btns">复制链接</button>
 				<button class="btns">广告链接</button>
 			</info-cell>
@@ -45,7 +45,7 @@
 					:rate="rate"
 					:speed="100"
 					:clockwise="false"
-					:stroke-width="70"
+					:stroke-width="60"
 				/>
 			</div>
 		</van-cell-group>
