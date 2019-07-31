@@ -9,6 +9,7 @@ import { routes as withdraw } from '$modules/withdraw'
 import { routes as plan } from '$modules/plan'
 import { routes as history } from '$modules/history'
 import { routes as promotion } from '$modules/promotion'
+import { routes as wallet } from '$modules/wallet'
 import Vue from 'vue'
 import Router from 'vue-router'
 import beforeEach from './beforeEach'
@@ -29,7 +30,8 @@ const AppRoute = {
         ...withdraw,
         ...plan,
         ...history,
-        ...promotion
+        ...promotion,
+        ...wallet
     ]
 }
 
