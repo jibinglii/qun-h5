@@ -142,6 +142,7 @@
 					desc: ''
 				},
 				resource: {},
+				upResource: {},
 				saleProtocol: ''
 			};
 		},
@@ -172,17 +173,32 @@
 					this.resource = data.category
 				});
 			},
+			getResource () {
+				if (this.$route.params.id != '') {
+					this.$http.get('api/v2/alliance/resources/add/' + this.$route.params.id).then(({ data }) => {
+						this.upResource = data.resource
+						this.value = this.columns[this.upResource.type]
+						this.areaValue = this.upResource.area_id
+						this.params = this.upResource
+
+					})
+				}
+			},
 			next () {
 				if (!this.isagree) {
 					this.$alert("请同意《群盟服务条款》")
 				} else {
-					this.$http.post('api/v2/alliance/resources/add', this.params).then(data => {
+					let url = 'api/v2/alliance/resources/add'
+					if (this.$route.params.id != '') {
+						url = 'api/v2/alliance/resources/add/' + this.$route.params.id
+					}
+					this.$http.post(url, this.params).then(data => {
 						this.$toast.loading('资源信息保存中');
 						if (data.code == 200) {
 							this.$router.push({ name: 'resources' })
 						}
 					}).catch(fail => {
-							this.$toast.loading(fail.response.data.message)
+						this.$toast.loading(fail.response.data.message)
 					})
 				}
 			},
@@ -201,8 +217,11 @@
 		},
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
-			this.getCategory();
-			this.getProtocol();
+			this.getCategory()
+			this.getProtocol()
+			if (this.$route.params.id != undefined) {
+				this.getResource()
+			}
 		},
 	}
 </script>
