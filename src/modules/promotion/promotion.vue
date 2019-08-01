@@ -6,12 +6,16 @@
         v-for="(item, index) in promotions"
         :key="index"
         :is-link="true"
-        :title="item.title"
-        :inlineDesc="item.date"
+        :title="item.title+'/'+item.created_at"
+        :inlineDesc="item.content"
         router="promotion.details" 
         :routerParams="{'id': item.id}"
       ></x-cell>
     </x-cell-group>
+    <infinite-loading @infinite="infiniteHandler" spinner="spiral">
+				<div slot="no-more">没有更多数据啦...</div>
+				<div slot="no-results">没有数据</div>
+			</infinite-loading>
     <div class="btn">
       <van-button type="primary" hairline size="large" @click="$router.push({ name: 'promotion.edit'})">添加文案</van-button>
     </div>
@@ -24,6 +28,8 @@ import XCell from "$components/XCell";
 import XCellGroup from "$components/XCellGroup";
 import Button from "vant/lib/button";
 import "vant/lib/button/style";
+import InfiniteLoading from "vue-infinite-loading";
+import { mapGetters } from "vuex";
 
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -31,30 +37,37 @@ export default {
     XHeader,
     XCell,
     XCellGroup,
-    "van-button": Button
+    "van-button": Button,
+    InfiniteLoading
   },
   data() {
     //这里存放数据
     return {
-      promotions: [
-        {
-          id: "1",
-          title: "2019-07-07兴趣定向",
-          date:
-            "SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替"
-        },
-        {
-          id: "2",
-          title: "2019-07-07兴趣定向",
-          date:
-            "SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替"
-        }
-      ]
+      promotions: [],
+      page:1,
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['currentUser'])
+  },
   watch: {},
   methods: {
+    infiniteHandler ($state) {
+				this.$http.get("api/v2/alliance/advertiser/adstarget",
+					{ params: { page: this.page } })
+					.then(({ data }) => {
+						if (data.ads_targets.data.length > 0) {
+							this.page += 1
+							this.promotions.push(...data.ads_targets.data);
+							$state.loaded();
+						}else{
+              //this.isShow = false
+            }
+						if (data.ads_targets.per_page > data.ads_targets.data.length) {
+							$state.complete();
+						}
+					});
+			},
   },
   created() {},
   mounted() {}
