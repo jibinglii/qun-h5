@@ -76,7 +76,7 @@ export default {
             },
             {
               title:'财务管理',
-              url:'',
+              url:'wallet.wallet',
               img:'/images/me/finance.png',
               show: true
             },
