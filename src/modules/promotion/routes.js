@@ -33,5 +33,14 @@ export default [{
         },
         component: () =>
             import ('./add')
+    },
+    {
+        path: 'promotion/addevent',
+        name: 'promotion.addevent',
+        meta: {
+            requiresAuth: true
+        },
+        component: () =>
+            import ('./addEvent')
     }
 ]
