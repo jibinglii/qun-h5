@@ -118,7 +118,7 @@ export default {
           sub: [
              {
               title:'数据统计',
-              url:'',
+              url:'me.datastatis',
               img:'/images/me/statistics.png',
               show: true
             },

@@ -1,6 +1,6 @@
 <template>
   <div class="resource">
-    <x-header title="添加资源" url></x-header>
+    <x-header title="添加推广" url></x-header>
     <x-cell-group>
       <van-field
         readonly
