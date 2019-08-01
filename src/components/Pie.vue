@@ -1,5 +1,5 @@
 <template>
-  <div id="main" style="width: 100%;height: 300px;"></div>
+  <div :id="params.id" :style="{height:params.height,width:params.width}"></div>
 </template>
 
 <script>
@@ -13,54 +13,69 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legend");
 
 export default {
-  components: {},
+  props: {
+    params:{
+      type: [Object,Array],
+      default:{
+        id: 'my_pie',
+        name: '',
+        width: '100%',
+        height: '300px',
+        showLegend: true,
+        legend: [],
+        data: [],
+        color: []
+      }
+    }
+  },
   data() {
     return {
-      charts: "",
-      opinion: ["", ""],
-      opinionData: [{ value: 100, name: "" }, { value: 310, name: "" }]
+      charts: null
     };
   },
   computed: {},
   created() {},
   methods: {
-    drawPie(id) {
-      this.charts = echarts.init(document.getElementById(id));
+    drawPie() {
+      this.charts = echarts.init(document.getElementById(this.params.id));
       this.charts.setOption({
         tooltip: {
-          trigger: "item"
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
         legend: {
+          show: this.showlegend,
           orient: "vertical",
           x: "left",
-          data: this.opinion
+          data: this.params.legend
         },
         series: [
           {
-            name: "",
+            name: this.params.name,
             type: "pie",
             radius: ["50%", "70%"],
             avoidLabelOverlap: false,
-            color: ["#ccc", "#999"],
+            color: this.params.color,
             label: {
               normal: {
-                show: false,
-                position: "center"
+                show: true,
+                position: "line",
+                formatter: "{b}\r\n{d}%"
               },
               emphasis: {
                 show: true,
                 textStyle: {
-                  fontSize: "30",
-                  fontWeight: "blod"
+                    fontSize: '30',
+                    fontWeight: 'bold'
                 }
               }
             },
             labelLine: {
               normal: {
-                show: false
+                show: true
               }
             },
-            data: this.opinionData
+            data: this.params.data
           }
         ]
       });
@@ -68,7 +83,7 @@ export default {
   },
   mounted() {
     this.$nextTick(function() {
-      this.drawPie("main");
+      this.drawPie();
     });
   }
 };

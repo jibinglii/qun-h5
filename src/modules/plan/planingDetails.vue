@@ -10,19 +10,33 @@
           </div>
         </div>
       </van-cell>
-      <van-cell is-link title="推广内容" value="推广内容的标题" :to="{name: 'plan.romotion'}"  />
-      <van-cell is-link title="投放广告" value="投放广告的标题"/>
+      <van-cell is-link title="推广内容" value="推广内容的标题" :to="{name: 'plan.romotion'}" />
+      <van-cell is-link title="投放广告" value="投放广告的标题" />
     </van-cell-group>
     <van-cell-group title="任务进度">
       <van-cell>
-        <pie/>
+        <pie :params="pieProgress" />
       </van-cell>
     </van-cell-group>
     <van-cell-group title="投放情况">
       <van-cell>
-        <bar :xname="xname" :yname="yname" :bardata="bardata"></bar>
+        <bar :params="barShow" />
       </van-cell>
     </van-cell-group>
+    <van-cell-group title="浏览情况">
+      <van-cell>
+        <bar :params="barClick" />
+      </van-cell>
+    </van-cell-group>
+    <van-cell-group title="消费情况">
+      <van-cell>
+        <bar :params="barCast" />
+      </van-cell>
+    </van-cell-group>
+
+    <div class="btn">
+      <van-button type="primary" hairline size="normal" @click="stopTask()">结束投放</van-button>
+    </div>
   </div>
 </template>
 
@@ -39,9 +53,12 @@ import { mapGetters } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 import Loading from "vant/lib/loading";
 import "vant/lib/loading/style";
+import Button from "vant/lib/button";
+import "vant/lib/button/style";
 
 export default {
   components: {
+    "van-button": Button,
     "van-cell": Cell,
     "van-cell-group": CellGroup,
     XHeader,
@@ -50,10 +67,63 @@ export default {
   },
   data() {
     return {
-      xname: "",
-      yname: "",
-      bardata: {
-
+      pieProgress: {
+        id: "pie_progress",
+        name: "执行进度",
+        width: "100%",
+        height: "300px",
+        showLegend: true,
+        legend: ["未执行", "已完成"],
+        data: [
+          {
+            name: "未执行",
+            value: "80"
+          },
+          {
+            name: "已完成",
+            value: "180"
+          }
+        ],
+        color:['#d3d3d3', '#228B22']
+      },
+      barShow: {
+        id: "bar_show",
+        type: "bar",
+        showName: false,
+        name: '',
+        width: '100%',
+        height: '300px',
+        showLegend: true,
+        xAxis: ['一', '二', '三', '四', '五', '六', '七'],
+        data: [
+          [120, 200, 150, 80, 70, 110, 130]
+        ]
+      },
+      barClick: {
+        id: "bar_click",
+        type: "line",
+        showName: false,
+        name: '',
+        width: '100%',
+        height: '300px',
+        showLegend: true,
+        xAxis: ['一', '二', '三', '四', '五', '六', '七'],
+        data: [
+          [120, 200, 150, 80, 70, 110, 130]
+        ]
+      },
+      barCast: {
+        id: "bar_cast",
+        type: "bar",
+        showName: false,
+        name: '',
+        width: '100%',
+        height: '300px',
+        showLegend: true,
+        xAxis: ['一', '二', '三', '四', '五', '六', '七'],
+        data: [
+          [120, 200, 150, 80, 70, 110, 130]
+        ]
       },
       tops: [
         {
@@ -73,7 +143,9 @@ export default {
   },
   computed: {},
   created() {},
-  methods: {}
+  methods: {
+    stopTask() {}
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -97,28 +169,11 @@ export default {
       }
     }
   }
-  .fast {
-    display: flex;
-    height: 100px;
-    justify-content: center;
-    flex-flow: wrap;
-    .fast-con {
-      flex: 1;
-      text-align: center;
-      padding-top: 20px;
-      img {
-        width: 40px;
-        height: 40px;
-        border: 1px solid #000;
-        border-radius: 5px;
-        margin: 0 auto;
-      }
-      label {
-        display: block;
-        width: 70px;
-        height: 30px;
-        margin: 0 auto;
-      }
+  .btn {
+    text-align: center;
+    padding: 20px 30px;
+    /deep/button {
+      width: 100%;
     }
   }
 }
