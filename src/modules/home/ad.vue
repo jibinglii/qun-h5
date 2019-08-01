@@ -29,16 +29,22 @@
             </router-link>
           </div>
           <div class="fast-con">
-            <img src="/images/me/goods.png" alt>
-            <label for>内容管理</label>
+            <router-link :to="{name: 'promotion.promotion-content'}">
+              <img src="/images/me/goods.png" alt>
+              <label for>内容管理</label>
+            </router-link>
           </div>
           <div class="fast-con">
-            <img src="/images/me/order.png" alt>
-            <label for>订单管理</label>
+            <router-link :to="{name: 'wallet.wallet'}">
+              <img src="/images/me/order.png" alt>
+              <label for>订单管理</label>
+            </router-link>
           </div>
           <div class="fast-con">
-            <img src="/images/me/help.png" alt>
-            <label for>使用帮助</label>
+            <router-link :to="{name: 'me.helps'}">
+              <img src="/images/me/help.png" alt>
+              <label for>使用帮助</label>
+            </router-link>
           </div>
         </div>
       </van-cell>
