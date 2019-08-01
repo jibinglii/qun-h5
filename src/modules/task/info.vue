@@ -5,11 +5,11 @@
 			<div class="info">
 				<div class="info-type">
 					<label for="">投放行业</label>
-					<span>{{ taskInfo.show_category_label}}</span>
+					<span>{{ taskInfo.show_category_label }}</span>
 				</div>
 				<div class="info-type">
 					<label for="">投放类型</label>
-					<span>{{ taskInfo.show_type_label}}</span>
+					<span>{{ taskInfo.show_type_label }}</span>
 				</div>
 				<div class="info-type">
 					<label for="">投放区域</label>
@@ -28,7 +28,7 @@
 		</van-cell-group>
 		<x-group>
 			<info-cell title="推广链接">
-				<span></span>
+				<span class="tg">{{ tg_url }}</span>
 				<button class="btns">复制链接</button>
 				<button class="btns">广告链接</button>
 			</info-cell>
@@ -49,15 +49,23 @@
 				/>
 			</div>
 		</van-cell-group>
-		<div class="op">
-			<x-button type="primary" text="上传投放凭证"></x-button>
+		<van-cell-group title="投放凭证">
+			<x-uploader
+				title="上传投放凭证"
+				desc="请上传你完成任务的投放凭证"
+				v-model="fileList"
+				:limit="1"
+			></x-uploader>
+		</van-cell-group>
+		<div class="op" @click="upProof()">
+			<x-button type="primary" text="提交投放凭证"></x-button>
 		</div>
 		<van-cell-group title="投放记录">
 			<van-cell
-				:is-link="true"
-				:title="text"
-				:inlineDesc="rate"
-				:link="'/task/info/' + 1"
+				v-for="(item, index) in taskInfo.result"
+				:key="index"
+				:title="taskInfo.title"
+				:label="item.created_at"
 			></van-cell>
 		</van-cell-group>
 	</div>
@@ -67,28 +75,32 @@
 	import XHeader from '$components/XHeader';
 	import Cell from "vant/lib/cell";
 	import XGroup from "$components/XGroup";
-  import CellGroup from "vant/lib/cell-group";
-  import 'vant/lib/cell/style';
-  import 'vant/lib/cell-group/style';
+	import CellGroup from "vant/lib/cell-group";
+	import 'vant/lib/cell/style';
+	import 'vant/lib/cell-group/style';
 	import XButton from "$components/XButton";
 	import InfoCell from "$components/InfoCell";
 	import Circel from "vant/lib/circle";
 	import "vant/lib/circle/style";
+	import XUploader from "$components/XUploader";
 	export default {
 		//import引入的组件需要注入到对象中才能使用
 		components: {
-      XHeader, XGroup, XButton, InfoCell,
-      'van-cell':Cell, 
-      'van-cell-group':CellGroup, 
-			'van-circle': Circel
+			XHeader, XGroup, XButton, InfoCell,
+			'van-cell': Cell,
+			'van-cell-group': CellGroup,
+			'van-circle': Circel,
+			XUploader
 		},
 		data () {
 			//这里存放数据
 			return {
 				currentRate: 50,
 				text: '',
-        rate: 50,
-        taskInfo:{},
+				rate: 50,
+				taskInfo: {},
+        fileList: [],
+        tg_url:'',
 			};
 		},
 		//监听属性 类似于data概念
@@ -97,14 +109,28 @@
 		watch: {},
 		//方法集合
 		methods: {
-      getTaskInfo(){
-        let res_id = this.$route.params.id
-        this.$http.get('api/v2/alliance/flow/task/info',
-        {params:{task_id:res_id,include:'target,assign',append:'show_type_label,show_category_label'}})
-        .then(({ data }) => {
-          this.taskInfo = data.task_info
-        })
-      }
+			getTaskInfo () {
+				let res_id = this.$route.params.id
+				this.$http.get('api/v2/alliance/flow/task/info',
+					{ params: { task_id: res_id, include: 'target,assign,result,assign.task', append: 'show_type_label,show_category_label' } })
+					.then(({ data }) => {
+            this.taskInfo = data.task_info
+            this.tg_url = data.task_info.target.link
+					})
+			},
+			upProof () {
+				let params = { task_id: this.taskInfo.id, attachment: this.fileList };
+				this.$http.post('api/v2/alliance/flow/accept', params).then(data => {
+					if (data.code == 201) {
+						this.$toast.loading(data.message)
+						this.$router.push({ name: 'task.tasks' })
+					} else {
+						this.$toast.loading(data.message)
+					}
+				}).catch(faill => {
+					this.$toast.loading(fail.response.data.message)
+				})
+			},
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
@@ -112,8 +138,8 @@
 		},
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
-      this.text = this.currentRate.toFixed(0) + '%'
-      this.getTaskInfo();
+			this.text = this.currentRate.toFixed(0) + '%'
+			this.getTaskInfo();
 		},
 	}
 </script>
@@ -121,6 +147,7 @@
 	//@import url(); 引入公共css类
 	.task-info {
 		position: relative;
+		height: auto;
 		.info {
 			height: 180px;
 			padding: 10px;
@@ -140,7 +167,7 @@
 			}
 		}
 		.btns {
-			width: 100px;
+			width: 80px;
 			height: 30px;
 			margin-left: 5px;
 			line-height: 30px;
@@ -156,13 +183,13 @@
 			align-items: center;
 		}
 		.op {
-			width: 90%;
-			margin: 0 auto;
-			padding: 20px 0 20px 0;
+			width: 80%;
+			margin: 10px auto;
 		}
 		.op a {
-			height: 50px;
-			line-height: 50px;
+			height: 46px;
+			line-height: 46px;
+			font-size: 14px;
 		}
 	}
 </style>

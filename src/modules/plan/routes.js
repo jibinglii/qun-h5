@@ -8,7 +8,7 @@ export default [{
             import ('./plan')
     },
     {
-        path: 'plan/plandetails',
+        path: 'plan/plandetails/:id',
         name: 'plan.plandetails',
         // meta: {
         //     requiresAuth: true

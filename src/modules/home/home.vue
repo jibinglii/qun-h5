@@ -23,73 +23,57 @@
 			<van-cell>
 				<div class="fast">
 					<div class="fast-con">
-						<img src="/images/me/dianpu.png" alt />
-						<label for>添加资源</label>
+						<router-link :to="{ name: 'resource.create' }">
+							<img src="/images/me/dianpu.png" alt />
+							<label for>添加资源</label>
+						</router-link>
 					</div>
+
 					<div class="fast-con">
-						<img src="/images/me/account.png" alt />
-						<label for>佣金管理</label>
+						<router-link :to="{ name: 'brokerage' }">
+							<img src="/images/me/account.png" alt />
+							<label for>佣金管理</label>
+						</router-link>
 					</div>
+
 					<div class="fast-con">
-						<img src="/images/me/order.png" alt />
-						<label for>我的订单</label>
+						<router-link :to="{ name: 'me.helps' }">
+							<img src="/images/me/order.png" alt />
+							<label for>我的订单</label>
+						</router-link>
 					</div>
+
 					<div class="fast-con">
-						<img src="/images/me/help.png" alt />
-						<label for>帮助中心</label>
+						<router-link :to="{ name: 'me.helps' }">
+							<img src="/images/me/help.png" alt />
+							<label for>帮助中心</label>
+						</router-link>
 					</div>
 				</div>
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="最新任务">
 			<van-cell
-				title="【任务】群推广-QQ-西安"
+				v-for="(item, index) in maxNewTask"
+				:key="index"
+				:title="item.title"
 				value="去处理"
-				label="2019-07-01至2019-07-03"
-			/>
-			<van-cell
-				title="【任务】群推广-QQ-西安"
-				value="去处理"
-				label="2019-07-01至2019-07-03"
-			/>
-			<van-cell
-				title="【任务】群推广-QQ-西安"
-				value="去处理"
-				label="2019-07-01至2019-07-03"
-			/>
-			<van-cell
-				title="【任务】群推广-QQ-西安"
-				value="去处理"
-				label="2019-07-01至2019-07-03"
+				:label="item.created_at"
 			/>
 		</van-cell-group>
 		<van-cell-group title="公共任务">
 			<van-cell
+				v-for="(item, index) in commonTask"
+				:key="index"
 				is-link
-				title="【任务】群推广-QQ-西安"
-				label="2019-07-01至2019-07-03"
-			/>
-			<van-cell
-				is-link
-				title="【任务】群推广-QQ-西安"
-				label="2019-07-01至2019-07-03"
-			/>
-			<van-cell
-				is-link
-				title="【任务】群推广-QQ-西安"
-				label="2019-07-01至2019-07-03"
-			/>
-			<van-cell
-				is-link
-				title="【任务】群推广-QQ-西安"
-				label="2019-07-01至2019-07-03"
-			/>
-			<van-cell
-				is-link
-				title="【任务】群推广-QQ-西安"
-				label="2019-07-01至2019-07-03"
+				:title="item.title"
+				:label="item.created_at"
 			/>
 		</van-cell-group>
+		<infinite-loading @infinite="getTask" spinner="spiral">
+			<div slot="no-more">没有更多数据啦...</div>
+			<div slot="no-results">没有数据</div>
+		</infinite-loading>
 		<nav-block />
 		<tab></tab>
 	</div>
@@ -114,16 +98,41 @@
 			"nav-block": Nav,
 			"van-cell": Cell,
 			"van-cell-group": CellGroup,
-			XHeader
+			XHeader, InfiniteLoading
 		},
 		data () {
-			return {};
+			return {
+				commonTask: {},
+				maxNewTask: [],
+			};
 		},
 		computed: {},
-		created () { },
-		methods: {},
+		created () {
+			this.getCommonTask()
+		},
+		methods: {
+			getCommonTask ($state) {
+				this.$http.get('api/v2/alliance/flow/common/task').then(({ data }) => {
+					this.commonTask = data.tasks.data
+				})
+			},
+			getTask ($state) {
+				let user_id = this.$store.getters.currentUser.id
+				this.$http.get("api/v2/alliance/flow/task/" + user_id,
+					{ params: { page: this.page, status: -1, append: 'show_type_label,show_category_label' } })
+					.then(({ data }) => {
+						if (data.tasks.data.length > 0) {
+							this.maxNewTask.push(...data.tasks.data);
+							$state.loaded();
+						}
+						if (data.tasks.per_page > data.tasks.data.length) {
+							$state.complete();
+						}
+					});
+			}
+		},
 		mounted () {
-			if (this.inArray('广告主',this.$store.getters.currentUser.roles)) {
+			if (this.inArray('广告主', this.$store.getters.currentUser.roles)) {
 				this.$router.push({ name: 'home.ad' })
 			}
 		}
