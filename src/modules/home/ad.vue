@@ -23,38 +23,40 @@
       <van-cell>
         <div class="fast">
           <div class="fast-con">
-            <img src="/images/me/dianpu.png" alt />
-            <label for>发起新推广</label>
+            <router-link :to="{name: 'promotion.add'}">
+              <img src="/images/me/dianpu.png" alt>
+              <label for>发起新推广</label>
+            </router-link>
           </div>
           <div class="fast-con">
-            <img src="/images/me/goods.png" alt />
+            <img src="/images/me/goods.png" alt>
             <label for>内容管理</label>
           </div>
           <div class="fast-con">
-            <img src="/images/me/order.png" alt />
+            <img src="/images/me/order.png" alt>
             <label for>订单管理</label>
           </div>
           <div class="fast-con">
-            <img src="/images/me/help.png" alt />
+            <img src="/images/me/help.png" alt>
             <label for>使用帮助</label>
           </div>
         </div>
       </van-cell>
     </van-cell-group>
     <van-cell-group title="进行中推广">
-      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03" />
-      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03" />
-      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03" />
-      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03" />
-      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03" />
-      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03" />
+      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03"/>
+      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03"/>
+      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03"/>
+      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03"/>
+      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03"/>
+      <van-cell title="【任务】群推广-QQ-西安" value="去处理" label="2019-07-01至2019-07-03"/>
     </van-cell-group>
 
     <infinite-loading @infinite="infiniteHandler" spinner="spiral">
       <div slot="no-more">没有更多数据啦...</div>
       <div slot="no-results">没有数据</div>
     </infinite-loading>
-    <nav-block />
+    <nav-block/>
     <tab></tab>
   </div>
 </template>
@@ -78,8 +80,8 @@ export default {
     "nav-block": Nav,
     "van-cell": Cell,
     "van-cell-group": CellGroup,
-	XHeader,
-	InfiniteLoading
+    XHeader,
+    InfiniteLoading
   },
   data() {
     return {};
@@ -89,9 +91,9 @@ export default {
   },
   created() {},
   methods: {
-	infiniteHandler($state) {
-		$state.complete();
-	}
+    infiniteHandler($state) {
+      $state.complete();
+    }
   },
   mounted() {
     console.log(this.$store.getters.currentUser.roles);
@@ -100,57 +102,57 @@ export default {
 </script>
 <style lang="scss" scoped>
 .page-home {
-	position: relative;
-	.top_info {
-		padding: 0px 0 20px 0;
-		background: #3399ff;
-		color: #ffffff;
-		font-size: 0.7rem;
-		.title {
-			font-size: 0.8rem;
-			line-height: 50px;
-			text-align: center;
-			border-bottom: solid 1px #4169e1;
-		}
-		.top-con {
-			display: inline-block;
-			width: 50%;
-			height: 60px;
-			padding-top: 20px;
-			text-align: center;
-			span {
-				display: block;
-				font-size: 1rem;
-			}
-			label {
-				display: block;
-				color: #e0ffff;
-			}
-		}
-	}
-	.fast {
-		display: flex;
-		height: 100px;
-		justify-content: center;
-		flex-flow: wrap;
-		.fast-con {
-			flex: 1;
-			text-align: center;
-			padding-top: 10px;
-			img {
-				width: 50px;
-				height: 50px;
-				border: 1px solid #d3d3d3;
-				border-radius: 5px;
-				margin: 0 auto;
-			}
-			label {
-				display: block;
-				width: 70px;
-				height: 30px;
-				margin: 0 auto;
-			}
-		}
-	}
+  position: relative;
+  .top_info {
+    padding: 0px 0 20px 0;
+    background: #3399ff;
+    color: #ffffff;
+    font-size: 0.7rem;
+    .title {
+      font-size: 0.8rem;
+      line-height: 50px;
+      text-align: center;
+      border-bottom: solid 1px #4169e1;
+    }
+    .top-con {
+      display: inline-block;
+      width: 50%;
+      height: 60px;
+      padding-top: 20px;
+      text-align: center;
+      span {
+        display: block;
+        font-size: 1rem;
+      }
+      label {
+        display: block;
+        color: #e0ffff;
+      }
+    }
+  }
+  .fast {
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    flex-flow: wrap;
+    .fast-con {
+      flex: 1;
+      text-align: center;
+      padding-top: 10px;
+      img {
+        width: 50px;
+        height: 50px;
+        border: 1px solid #d3d3d3;
+        border-radius: 5px;
+        margin: 0 auto;
+      }
+      label {
+        display: block;
+        width: 70px;
+        height: 30px;
+        margin: 0 auto;
+      }
+    }
+  }
 }
 </style>
