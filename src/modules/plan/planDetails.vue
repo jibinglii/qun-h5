@@ -4,7 +4,7 @@
     <van-cell-group>
       <van-cell title="总投放数" value="" v-model="serving" is-link :to="{name: 'plan.serving'}"/>
       <van-cell title="总浏览数" value="" v-model="views" is-link :to="{name: 'plan.totalview'}"/>
-      <van-cell title="对应推广内容" is-link>
+      <van-cell title="对应推广内容">
         <van-dropdown-menu>
           <van-dropdown-item v-model="value" :options="contents"/>
         </van-dropdown-menu>
@@ -14,7 +14,6 @@
       <x-cell
         v-for="(item, index) in servings"
         :key="index"
-        :is-link="true"
         :title="item.title"
         :inlineDesc="item.date"
         :link="item.name"
@@ -24,7 +23,6 @@
       <x-cell
         v-for="(item, index) in circulas"
         :key="index"
-        :is-link="true"
         :title="item.date"
         :inlineDesc="'投放：'+item.serving + '\xa0\xa0\xa0' +'点击：' + item.click + '\xa0\xa0\xa0' + '       总消费：' + item.total"
         :link="item.name"
@@ -50,6 +48,8 @@ import DropdownMenu from "vant/lib/dropdown-menu";
 import "vant/lib/dropdown-menu/style";
 import DropdownItem from "vant/lib/dropdown-item";
 import "vant/lib/dropdown-item/style";
+import { mapGetters } from "vuex";
+
 
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -66,8 +66,9 @@ export default {
   data() {
     //这里存放数据
     return {
+      taskInfo:{},
       value: "0",
-      serving: "6000",
+      serving: "",
       views: "1250",
       servings: [
         {
@@ -108,9 +109,18 @@ export default {
       ]
     };
   },
+  computed:{
+    ...mapGetters(['currentUser'])
+  },
   methods: {
     servingClick () {},
     editClick () {},
+    getTaskInfo(){
+      let user_id = this.$store.getters.currentUser.id
+      this.$http.get('api/v2/alliance/advertiser/info/'+user_id,{params:{include:'target,approval,ads'}}).then(({data}) =>{
+          this.taskInfo = data.task.data
+      })
+    }
   },
 };
 </script>

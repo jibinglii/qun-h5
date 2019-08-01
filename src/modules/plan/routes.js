@@ -8,7 +8,7 @@ export default [{
             import ('./plan')
     },
     {
-        path: 'plan/plandetails',
+        path: 'plan/plandetails/:id',
         name: 'plan.plandetails',
         // meta: {
         //     requiresAuth: true
@@ -35,7 +35,7 @@ export default [{
             import ('./totals')
     },
     {
-        path: 'plan/planingdetails',
+        path: 'plan/planingdetails/:id.html',
         name: 'plan.planingdetails',
         // meta: {
         //     requiresAuth: true

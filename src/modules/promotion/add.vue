@@ -5,7 +5,7 @@
 			<van-field
 				readonly
 				clickable
-				label="类型"
+				label="投放种类"
 				:value="value"
 				placeholder="选择类型"
 				@click="showPicker = true"
@@ -31,7 +31,7 @@
 			<van-field
 				readonly
 				clickable
-				label="区域"
+				label="投放区域"
 				:value="areaValue"
 				placeholder="选择区域"
 				@click="showArea = true"
@@ -46,7 +46,7 @@
 		</x-cell-group>
 		<x-cell-group>
 			<x-checkbox
-				title="资源类型(多选)"
+				title="投放行业(多选)"
 				type="checkbox"
 				:data="resource"
 				v-model="params.category"
@@ -141,7 +141,6 @@
 					desc: ''
 				},
 				resource: {},
-				upResource: {},
 				saleProtocol: ''
 			};
 		},
@@ -172,32 +171,17 @@
 					this.resource = data.category
 				});
 			},
-			getResource () {
-				if (this.$route.params.id != '') {
-					this.$http.get('api/v2/alliance/resources/add/' + this.$route.params.id).then(({ data }) => {
-						this.upResource = data.resource
-						this.value = this.columns[this.upResource.type]
-						this.areaValue = this.upResource.area_id
-						this.params = this.upResource
-
-					})
-				}
-			},
 			next () {
 				if (!this.isagree) {
 					this.$alert("请同意《群盟服务条款》")
 				} else {
-					let url = 'api/v2/alliance/resources/add'
-					if (this.$route.params.id != '') {
-						url = 'api/v2/alliance/resources/add/' + this.$route.params.id
-					}
-					this.$http.post(url, this.params).then(data => {
+					this.$http.post('api/v2/alliance/resources/add', this.params).then(data => {
 						this.$toast.loading('资源信息保存中');
 						if (data.code == 200) {
 							this.$router.push({ name: 'resources' })
 						}
 					}).catch(fail => {
-						this.$toast.loading(fail.response.data.message)
+							this.$toast.loading(fail.response.data.message)
 					})
 				}
 			},
@@ -216,11 +200,8 @@
 		},
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
-			this.getCategory()
-			this.getProtocol()
-			if (this.$route.params.id != undefined) {
-				this.getResource()
-			}
+			this.getCategory();
+			this.getProtocol();
 		},
 	}
 </script>

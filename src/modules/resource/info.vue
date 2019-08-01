@@ -7,9 +7,9 @@
 			<info-cell title="分类">{{ resourceInfo.type_label }}</info-cell>
 			<info-cell title="资源类型">{{ resourceInfo.category_label }}</info-cell>
 			<info-cell title="地区">{{ resourceInfo.area_id }}</info-cell>
-			<info-cell title="所属用户">{{ resourceInfo.user.nickname }}</info-cell>
+			<info-cell title="所属用户">{{ userName }}</info-cell>
 		</x-cell-group>
-		<div class="op" @click="$router.push({ name: 'resource.create' })">
+		<div class="op" @click="$router.push({ name: 'resource.create',params:{id:resourceInfo.id} })">
 			<x-button type="primary" text="更新资源"></x-button>
 		</div>
 	</div>
@@ -29,7 +29,8 @@
 		data () {
 			//这里存放数据
 			return {
-        resourceInfo:{}
+        resourceInfo:{},
+        userName:'',
 			};
 		},
 		//监听属性 类似于data概念
@@ -41,7 +42,8 @@
 			getInfo () {
         let res_id = this.$route.params.id
 				this.$http.get('api/v2/alliance/resources/info',{params:{id: res_id,include:'user',append:'type_label,category_label'}}).then(({ data }) => {
-          this.resourceInfo = data.resource;
+          this.resourceInfo = data.resource
+          this.userName = data.resource.user.nickname
 				});
 			}
 		},
