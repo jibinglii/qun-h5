@@ -1,4 +1,5 @@
-export default [{
+export default [
+    {
         path: 'promotion/promotion',
         name: 'promotion.promotion-content',
         // meta: {
@@ -8,13 +9,13 @@ export default [{
             import ('./promotion')
     },
     {
-        path: 'promotion/details',
+        path: 'promotion/details/:id.html',
         name: 'promotion.details',
         // meta: {
-        //     requiresAuth: true
+        //   requiresAuth: true
         // },
         component: () =>
-            import ('./details')
+          import('./details')
     },
     {
         path: 'promotion/edit',

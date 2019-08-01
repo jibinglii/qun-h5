@@ -10,8 +10,8 @@
           </div>
         </div>
       </van-cell>
-      <van-cell is-link title="推广内容" :to="{name: 'plan.romotion'}"/>
-      <van-cell is-link title="投放广告"/>
+      <van-cell is-link title="推广内容" value="推广内容的标题" :to="{name: 'plan.romotion'}"  />
+      <van-cell is-link title="投放广告" value="投放广告的标题"/>
     </van-cell-group>
     <van-cell-group title="任务进度">
       <van-cell>

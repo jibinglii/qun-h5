@@ -5,14 +5,15 @@
       <x-cell
         v-for="(item, index) in promotions"
         :key="index"
-        :is-link="false"
+        :is-link="true"
         :title="item.title"
         :inlineDesc="item.date"
-        :link="item.url"
+        router="promotion.details" 
+        :routerParams="{'id': item.id}"
       ></x-cell>
     </x-cell-group>
     <div class="btn">
-      <van-button type="primary" hairline size="large" @click="add()">添加文案</van-button>
+      <van-button type="primary" hairline size="large" @click="$router.push({ name: 'promotion.edit'})">添加文案</van-button>
     </div>
   </div>
 </template>
@@ -39,14 +40,12 @@ export default {
         {
           id: "1",
           title: "2019-07-07兴趣定向",
-          url: "../../promotion/details",
           date:
             "SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替"
         },
         {
           id: "2",
           title: "2019-07-07兴趣定向",
-          url: "../../promotion/details",
           date:
             "SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替SwitchCell 组件将在 3.0 版本中废弃，请直接使用 Cell 和 Switch 组件代替"
         }
@@ -56,7 +55,6 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    add() {}
   },
   created() {},
   mounted() {}
