@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div ref="barchart" class="echartbox"></div>
-  </div>
+  <div :id="params.id" :style="{height:params.height,width:params.width}"></div>
 </template>
 
 <script>
@@ -17,70 +15,46 @@ require("echarts/lib/component/title");
 export default {
   name: "Bar",
   props: {
-    textlink: {
-      type: String,
-      required: false,
-      default: ""
-    },
-    xname: {
-      type: String,
-      required: false,
-      default: ""
-    },
-    yname: {
-      type: String,
-      required: false,
-      default: ""
-    },
-    bardata: Object
+    params:{
+      type: [Object,Array],
+      default:{
+        id: 'my_bar',
+        type: 'bar', //bar\line
+        showName: false,
+        name: 'my_bar',
+        width: '100%',
+        height: '300px',
+        showLegend: true,
+        xAxis: [],
+        data: []
+      }
+    }
   },
   data() {
     return {
-      link: this.textlink,
-      title: "",
-      legend_data: [],
-      axis_data: [],
-      series_data: [],
-      x_name: this.xname,
-      y_name: this.yname
+      charts: null,
+      series:[]
     };
   },
-  watch: {
-    bardata(val) {
-      this.title = val.title;
-      this.legend_data = val.legend_data;
-      this.axis_data = val.Axis_data;
-      this.series_data = val.series;
-      this.drawBar();
-    }
-  },
   mounted() {
-    // this.drawBar()
+    Object.keys(this.params.data).forEach((item, index) => {
+        this.series.push({
+            type: this.params.type,
+            data: this.params.data[item]
+        })
+    });
+    this.$nextTick(function() {
+      this.drawBar();
+    });
   },
   methods: {
     drawBar() {
-      let myCharts = echarts.init(this.$refs.barchart);
-      myCharts.setOption({
-        color: [
-          "#83d0d5",
-          "#f1cb48",
-          "#188ae2",
-          "#E8830B",
-          "#7460ae",
-          "#fc4b6c",
-          "#31ce77",
-          "#eae0bc",
-          "#e732cb",
-          "#9dce8a"
-        ],
+      this.charts = echarts.init(document.getElementById(this.params.id));
+      this.charts.setOption({
         title: {
-          text: this.title,
-          left: "35",
-          top: "20",
-          link: this.link,
-          textStyle: {
-            color: "#B6B6B6"
-          }
+          show: this.params.showName,
+          text: this.params.name,
+          left: "center"
         },
         tooltip: {
           trigger: "axis",
@@ -88,93 +62,29 @@ export default {
             type: "shadow"
           }
         },
-        grid: {
-          left: "15%",
-          bottom: "30%"
-        },
         legend: {
-          data: this.legend_data,
           left: "center",
-          bottom: "0",
-          textStyle: {
-            color: "#B6B6B6"
-          }
+          top: "0",
         },
         xAxis: [
           {
             type: "category",
-            position: "bottom",
-            name: this.x_name,
-            nameLocation: "center",
-            nameGap: "50",
-            data: this.axis_data,
-            axisTick: {
-              show: false
-            },
-            axisLabel: {
-              textStyle: {
-                color: "#BFC2C8"
-              },
-              rotate: 30,
-              interval: 0
-            },
-            axisLine: {
-              lineStyle: {
-                color: "#BFC2C8"
-              }
-            }
+            data: this.params.xAxis
           }
         ],
         yAxis: [
           {
-            type: "value",
-            left: "10",
-            name: this.y_name,
-            nameLocation: "center",
-            nameGap: "45",
-            axisLine: {
-              lineStyle: {
-                color: "#BFC2C8"
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            splitLine: {
-              lineStyle: {
-                color: "#898D95"
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: "#BFC2C8"
-              },
-              interval: 0,
-              formatter: function(value, index) {
-                if (value >= 1000 && value < 10000000) {
-                  value = value / 1000 + "K";
-                } else if (value >= 1000000 && value < 1000000000) {
-                  value = value / 1000000 + "M";
-                } else if (value >= 1000000000) {
-                  value = value / 1000000000 + "B";
-                }
-                return value;
-              }
-            }
+            type: "value"
           }
         ],
-        series: this.series_data
+        series: this.series
       });
       window.addEventListener("resize", function() {
-        myCharts.resize();
+        this.charts.resize();
       });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.echartbox{
-  width: 100%;
-  height: 300px;
-}
 </style>

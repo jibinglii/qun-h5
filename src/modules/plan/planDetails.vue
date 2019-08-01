@@ -30,7 +30,6 @@
     </x-cell-group>
     <div class="btn">
       <van-button type="primary" hairline size="normal" @click="servingClick">再次投放</van-button>
-      <van-button type="primary" hairline size="normal" @click="editClick">编辑广告</van-button>
     </div>
   </div>
 </template>
@@ -161,12 +160,9 @@ export default {
 }
 .btn{
   text-align: center;
+  padding:20px 30px;
   /deep/button{
-    margin: 45px 20px 0 0;
-    padding: 0 30px;
-    height: 38px;
-    line-height: 38px;
-    font-size: 12px;
+    width: 100%;
   }
 }
 </style>
