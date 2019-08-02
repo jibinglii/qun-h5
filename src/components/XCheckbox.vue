@@ -17,12 +17,19 @@
 
 <script>
 export default {
+    model: {
+        prop: 'values',
+        event: 'input'
+    },
     props:{
         data: Object,
         title: String,
         type: {
             type: String,
             default: 'radio'
+        },
+        values:{
+            type: [String, Number]
         }
     },
     data () {
@@ -62,6 +69,26 @@ export default {
     watch: {
         data () {
             this.initItems()
+        },
+        values(v) {
+            if(this.content.length == 0){
+                if (this.type == 'checkbox') {
+                    let checked = v.toString().split(',');
+                    this.content.push(...checked);
+                    Object.keys(this.items).forEach((item) => {
+                        if(checked.indexOf(this.items[item].value)>-1){
+                            this.items[item].checked = true;
+                        }
+                    })
+                }else{
+                    this.content.push(v);
+                    Object.keys(this.items).forEach((item) => {
+                        if(this.items[item].value == v){
+                            this.items[item].checked = true;
+                        }
+                    })
+                }
+            }
         }
     }
 }

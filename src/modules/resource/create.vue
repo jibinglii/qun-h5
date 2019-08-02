@@ -7,7 +7,7 @@
 				clickable
 				label="类型"
 				:value="value"
-				placeholder="选择类型"
+				placeholder="请选择..."
 				@click="showPicker = true"
 			/>
 			<van-popup v-model="showPicker" position="bottom">
@@ -19,14 +19,14 @@
 				/>
 			</van-popup>
 			<van-field
-				label="资源名称"
+				label="名称"
 				v-model="params.name"
 				placeholder="请输入资源名称"
 			></van-field>
 			<van-field
-				label="资源规格"
+				label="规格"
 				v-model="params.size"
-				placeholder="请输入资源规格"
+				placeholder="如群人数/粉丝数/日访问量"
 			></van-field>
 			<van-field
 				readonly
@@ -46,10 +46,10 @@
 		</x-cell-group>
 		<x-cell-group>
 			<x-checkbox
-				title="资源类型(多选)"
-				type="checkbox"
+				title="资源类型"
+				type="radio"
 				:data="resource"
-				v-model="params.category"
+				v-model = "params.category"
 			></x-checkbox>
 		</x-cell-group>
 		<x-cell-group>
@@ -136,12 +136,12 @@
 					size: '',
 					area_id: '',
 					type: '',
-					category: {},
+					category: 0,
 					attachment: [],
 					desc: ''
 				},
 				resource: {},
-				upResource: {},
+				upResource: 102,
 				saleProtocol: ''
 			};
 		},
@@ -173,13 +173,14 @@
 				});
 			},
 			getResource () {
-				if (this.$route.params.id != '') {
+				if (this.$route.params.id != 0) {
+					this.$toast.loading();
 					this.$http.get('api/v2/alliance/resources/add/' + this.$route.params.id).then(({ data }) => {
 						this.upResource = data.resource
 						this.value = this.columns[this.upResource.type]
 						this.areaValue = this.upResource.area_id
 						this.params = this.upResource
-
+						this.$toast.clear();
 					})
 				}
 			},
@@ -188,11 +189,12 @@
 					this.$alert("请同意《群盟服务条款》")
 				} else {
 					let url = 'api/v2/alliance/resources/add'
-					if (this.$route.params.id != '') {
+					if (this.$route.params.id != 0) {
 						url = 'api/v2/alliance/resources/add/' + this.$route.params.id
 					}
+					this.$toast.loading('资源保存中');
 					this.$http.post(url, this.params).then(data => {
-						this.$toast.loading('资源信息保存中');
+						this.$toast.clear();
 						if (data.code == 200) {
 							this.$router.push({ name: 'resources' })
 						}
@@ -218,7 +220,7 @@
 		mounted () {
 			this.getCategory()
 			this.getProtocol()
-			if (this.$route.params.id != undefined) {
+			if (this.$route.params.id != 0) {
 				this.getResource()
 			}
 		},

@@ -16,7 +16,7 @@ export default [
     component: () => import('./info')
   },
   {
-    path: 'resource/create',
+    path: 'resource/create/:id',
     name: 'resource.create',
     meta: {
       requiresAuth: true
