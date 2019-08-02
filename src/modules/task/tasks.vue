@@ -20,15 +20,9 @@
 								'/' +
 								item.show_category
 						"
-<<<<<<< HEAD
-						:value="item.status"
-						router="task.info"
-						:routerParams="{ id: item.task_id }"
-=======
 						:value="item.approval.str_status"
-						router="task.info" 
-        				:routerParams="{'id': item.id}"
->>>>>>> master
+						router="task.info"
+						:routerParams="{ id: item.id }"
 					></x-cell>
 				</x-cell-group>
 			</van-tab>
