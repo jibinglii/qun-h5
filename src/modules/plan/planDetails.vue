@@ -6,15 +6,15 @@
 				title="总投放数"
 				:value="taskInfo.result_num"
 				is-link
-				:to="{ name: 'plan.serving' }"
+				:to="{ name: 'plan.serving',params:{taskId:taskInfo.id} }"
 			/>
 			<van-cell
 				title="总浏览数"
 				:value="taskInfo.click_num"
 				is-link
-				:to="{ name: 'plan.totalview' }"
+				:to="{ name: 'plan.totalview',params:{taskId:taskInfo.id} }"
 			/>
-			<van-cell title="对应推广内容" :value="title" is-link />
+			<van-cell title="对应推广内容" :value="title" is-link :to="{name:'promotion.details',params:{id:taskInfo.target.id}}" />
 		</van-cell-group>
 		<x-cell-group title="历史投放广告">
 			<x-cell is-link :title="ads.title" :inlineDesc="ads.created_at"></x-cell>
@@ -31,7 +31,7 @@
 			></x-cell>
 		</x-cell-group>
 		<div class="btn">
-			<van-button type="primary" hairline size="normal" @click="servingClick"
+			<van-button type="primary" hairline size="normal" @click="again"
 				>再次投放</van-button
 			>
 		</div>
@@ -80,8 +80,17 @@
 			...mapGetters(['currentUser'])
 		},
 		methods: {
-			servingClick () { },
-			editClick () { },
+			again () {
+				this.$http.post('api/v2/alliance/advertiser/approval', { task_id: this.taskInfo.id })
+					.then(data => {
+						if (data.code = 201) {
+              this.$alert(data.message)
+              this.$router.push({name:'plan.plan'})
+						}
+					}).catch(fail => {
+						this.$alert(fial.response.data.message)
+					})
+			},
 			getTaskInfo () {
 				let id = this.$route.params.id
 				this.$http.get('api/v2/alliance/advertiser/info/' + id, { params: { include: 'target,approval,ads' } }).then(({ data }) => {
@@ -136,12 +145,12 @@
 	.btn {
 		text-align: center;
 		/deep/button {
-      width: 90%;
+			width: 90%;
 			margin: 45px 20px 0 20px;
 			padding: 0 30px;
 			height: 50px;
 			line-height: 38px;
-			font-size: .8rem;
+			font-size: 0.8rem;
 		}
 	}
 </style>
