@@ -56,7 +56,7 @@
 				:title="item.task.title"
 				is-link
 				:label="item.start_at + '至' + item.close_at"
-        :to="{name:'plan.planingdetails',params:{id:item.task.id}}"
+				:to="{ name: 'plan.planingdetails', params: { id: item.task.id } }"
 			/>
 		</van-cell-group>
 
@@ -104,9 +104,9 @@
 		methods: {
 			adInfo ($state) {
 				this.$http.get('api/v2/alliance/advertiser/show', { params: { include: 'task' } }).then(({ data }) => {
+					this.adsCount = data.count_data
 					if (data.task.data.length > 0) {
 						this.ads = data.task.data
-						this.adsCount = data.count_data
 						$state.loaded()
 					}
 					if (data.task.per_page > data.task.data.length) {

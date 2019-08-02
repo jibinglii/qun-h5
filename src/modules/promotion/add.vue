@@ -2,6 +2,11 @@
 	<div class="resource">
 		<x-header title="添加推广计划" url></x-header>
 		<x-cell-group>
+			<router-link :to="{ name: 'promotion.addevent' }">
+				<x-cell title="选择推广内容" is-link v-model="targetId" />
+			</router-link>
+		</x-cell-group>
+		<x-cell-group>
 			<van-field label="标题" v-model="params.title" placeholder="请输入标题" />
 			<van-field
 				readonly
@@ -83,11 +88,6 @@
 				v-model="params.duration"
 			></x-checkbox>
 		</x-cell-group>
-		<x-cell-group>
-			<router-link :to="{ name: 'promotion.addevent' }">
-				<x-cell title="选择推广内容" is-link />
-			</router-link>
-		</x-cell-group>
 		<div class="op" @click="next()">
 			<x-button type="primary" text="提交审核"></x-button>
 		</div>
@@ -117,7 +117,7 @@
 	import AreaList from "../../api/area";
 
 	import * as services from "$modules/resource/services";
-import { constants } from 'crypto';
+	import { constants } from 'crypto';
 
 	export default {
 		//import引入的组件需要注入到对象中才能使用
@@ -159,7 +159,8 @@ import { constants } from 'crypto';
 					budget: '',
 				},
 				resource: {},
-				limits: { 0: '3天', 1: '1周', 2: '1月', 3: '长期' },
+        limits: { 0: '3天', 1: '1周', 2: '1月', 3: '长期' },
+        targetId:this.$route.params.id,
 			};
 		},
 		//监听属性 类似于data概念
@@ -194,6 +195,12 @@ import { constants } from 'crypto';
 				});
 			},
 			next () {
+        if(this.targetId == ''){
+            this.$alert('请选择文案');
+            return false;
+        }else{
+          this.params.ads_target_id = this.targetId
+        }
 				this.$http.post('api/v2/alliance/advertiser/add/task', this.params).then(data => {
 					if (data.code == 200) {
 						this.$alert(data.message);
@@ -207,7 +214,7 @@ import { constants } from 'crypto';
 		created () { },
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
-			this.getCategory();
+      this.getCategory();
 		}
 	};
 </script>
