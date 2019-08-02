@@ -12,17 +12,17 @@
 						v-for="(item, index) in myTasks"
 						:key="index"
 						:is-link="true"
-						:title="item.title"
+						:title="item.task.title"
 						:inlineDesc="
-							item.show_type_label +
+							item.show_type +
 								'/' +
-								item.show_area_id +
+								item.task.show_area_id +
 								'/' +
-								item.show_category_label
+								item.show_category
 						"
 						:value="item.approval.str_status"
-						router="task.info" 
-        				:routerParams="{'id': item.id}"
+						router="task.info"
+						:routerParams="{ id: item.id }"
 					></x-cell>
 				</x-cell-group>
 			</van-tab>
@@ -96,9 +96,8 @@
 				this.infiniteId += 1;
 			},
 			infiniteHandler ($state) {
-				let user_id = this.$store.getters.currentUser.id
-				this.$http.get("api/v2/alliance/flow/task/" + user_id,
-					{ params: { page: this.page, status: this.status, append: 'show_type_label,show_category_label' } })
+				this.$http.get("api/v2/alliance/flow/task",
+					{ params: { page: this.page, status: this.status, include: 'task,approval' } })
 					.then(({ data }) => {
 						if (data.tasks.data.length > 0) {
 							this.page += 1;

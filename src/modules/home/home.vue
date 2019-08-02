@@ -3,19 +3,19 @@
 		<x-header title="搜瓜群盟" :allowBack="false"></x-header>
 		<div class="top_info">
 			<div class="top-con">
-				<span>10</span>
+				<span>{{ flow.resource_count }}</span>
 				<label for>资源数</label>
 			</div>
 			<div class="top-con">
-				<span>10</span>
+				<span>{{ flow.task }}</span>
 				<label for>完成任务量</label>
 			</div>
 			<div class="top-con">
-				<span>10</span>
+				<span>{{ flow.money }}</span>
 				<label for>佣金金额</label>
 			</div>
 			<div class="top-con">
-				<span>10</span>
+				<span>{{ flow.hot }}</span>
 				<label for>热度</label>
 			</div>
 		</div>
@@ -56,9 +56,9 @@
 			<van-cell
 				v-for="(item, index) in maxNewTask"
 				:key="index"
-				:title="item.title"
+				:title="item.task.title"
 				value="去处理"
-				:label="item.created_at"
+				:label="item.approval.start_at+'至'+item.approval.close_at"
 			/>
 		</van-cell-group>
 		<van-cell-group title="公共任务">
@@ -67,7 +67,7 @@
 				:key="index"
 				is-link
 				:title="item.title"
-				:label="item.created_at"
+				:label="item.approval.start_at+'至'+item.approval.close_at"
 			/>
 		</van-cell-group>
 		<infinite-loading @infinite="getTask" spinner="spiral">
@@ -102,8 +102,9 @@
 		},
 		data () {
 			return {
-				commonTask: {},
-				maxNewTask: [],
+				commonTask: [],
+        maxNewTask: [],
+        flow:{},
 			};
 		},
 		computed: {},
@@ -111,15 +112,19 @@
 			this.getCommonTask()
 		},
 		methods: {
+      flowInfo(){
+          this.$http.get('api/v2/alliance/flow/show').then( data =>{
+            this.flow = data.data.data_count
+          })
+      },
 			getCommonTask ($state) {
 				this.$http.get('api/v2/alliance/flow/common/task').then(({ data }) => {
 					this.commonTask = data.tasks.data
 				})
 			},
 			getTask ($state) {
-				let user_id = this.$store.getters.currentUser.id
-				this.$http.get("api/v2/alliance/flow/task/" + user_id,
-					{ params: { page: this.page, status: -1, append: 'show_type_label,show_category_label' } })
+				this.$http.get("api/v2/alliance/flow/task",
+					{ params: { page: this.page, status: -1, include: 'task,approval' } })
 					.then(({ data }) => {
 						if (data.tasks.data.length > 0) {
 							this.maxNewTask.push(...data.tasks.data);
@@ -134,7 +139,8 @@
 		mounted () {
 			if (this.inArray('广告主', this.$store.getters.currentUser.roles)) {
 				this.$router.push({ name: 'home.ad' })
-			}
+      }
+      this.flowInfo()
 		}
 	};
 </script>

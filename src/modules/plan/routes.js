@@ -35,7 +35,7 @@ export default [{
             import ('./totals')
     },
     {
-        path: 'plan/planingdetails/:id.html',
+        path: 'plan/planingdetails/:id',
         name: 'plan.planingdetails',
         meta: {
             requiresAuth: true
