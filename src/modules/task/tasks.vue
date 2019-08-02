@@ -1,6 +1,6 @@
 <template>
 	<div class="my-task">
-		<x-header title="我的计划"></x-header>
+		<x-header title="我的任务"></x-header>
 		<van-tabs @click="tabClick" v-model="active" color="#191717">
 			<van-tab
 				v-for="(item, index) in statusTypes"
@@ -21,7 +21,8 @@
 								item.show_category_label
 						"
 						:value="item.approval.str_status"
-						:link="'/task/info/' + item.id"
+						router="task.info" 
+        				:routerParams="{'id': item.id}"
 					></x-cell>
 				</x-cell-group>
 			</van-tab>
