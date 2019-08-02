@@ -107,10 +107,10 @@ export default {
   methods: {
     ...mapActions(["attemptLogin", "attemptLoginByCode"]),
     wechat () {
-      location.href = window.API_ROOT + '/api/v2/oauth/wechat/' + window.STORE_ID
+      location.href = window.API_ROOT + '/api/v2/oauth/wechat'
     },
     qq(){
-      location.href = window.API_ROOT + '/api/v2/oauth/qq/' + window.STORE_ID
+      location.href = window.API_ROOT + '/api/v2/oauth/qq'
     },
     getCode() {
       if (this.param.username == "") {
