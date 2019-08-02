@@ -102,7 +102,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$store.getters.currentUser.roles);
+    
   }
 };
 </script>
