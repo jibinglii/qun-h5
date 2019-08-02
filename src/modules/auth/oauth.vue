@@ -103,7 +103,7 @@ export default {
         redirect = decodeURIComponent(redirect)
         location.replace(redirect);
       } else {
-        this.$router.push({ name: 'home', params: {store: window.STORE_ID} })
+        this.$router.push({ name: 'home' })
       }
       this.$toast.success('欢迎回来~')
     },

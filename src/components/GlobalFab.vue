@@ -58,7 +58,7 @@ export default {
         if (this.isSoogua()){
           switch (idx) {
             case 2:
-              this.$router.push({name: 'home', params: {'store_id': window.STORE_ID}})
+              this.$router.push({name: 'home'})
               break;
             case 1:
               this.hidden();
@@ -69,7 +69,7 @@ export default {
         } else {
           switch (idx) {
             case 0:
-              this.$router.push({name: 'home', params: {'store_id': window.STORE_ID}})
+              this.$router.push({name: 'home'})
               break;
           }
         }
