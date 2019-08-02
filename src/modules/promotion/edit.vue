@@ -83,7 +83,7 @@
               this.$router.push({name:'promotion.promotion-content'})
             }
 				}).catch(fail => {
-            this.$alert(ffail.response.data.message)
+            this.$alert(fail.response.data.message)
 				})
       },
       getAdsTarget () {
