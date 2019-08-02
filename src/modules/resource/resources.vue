@@ -1,11 +1,8 @@
 <template>
   <div class="resources">
-    <x-header title="资源管理" @click-right="$router.push({ name: 'resource.create' })">
-		<i
-        class="iconfont icon-add"
-        slot="right"
-      ></i>
-	</x-header>
+    <x-header title="资源管理" @click-right="$router.push({ name: 'resource.create', params:{ id:0 } })">
+      <i class="iconfont icon-add" slot="right"></i>
+    </x-header>
     <x-cell-group>
       <x-cell
         v-for="(item, index) in resources"
@@ -13,15 +10,16 @@
         :is-link="true"
         :title="item.name"
         :inlineDesc="item.area_id + '/' + item.size + '人'"
-        :link="'/resource/info/' + item.id"
         :value="item.type_label"
+        router="resource.info"
+        :routerParams="{'id': item.id}"
       ></x-cell>
     </x-cell-group>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral">
       <div slot="no-more">没有更多数据啦...</div>
       <div slot="no-results">没有数据</div>
     </infinite-loading>
-    <div class="op" @click="$router.push({ name: 'resource.create' })">
+    <div class="op" @click="$router.push({ name: 'resource.create' , params: {id:0}})">
       <x-button type="primary" text="添加资源"></x-button>
     </div>
   </div>
