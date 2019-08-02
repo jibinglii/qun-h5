@@ -95,9 +95,8 @@
 				this.infiniteId += 1;
 			},
 			infiniteHandler ($state) {
-				let user_id = this.$store.getters.currentUser.id
-				this.$http.get("api/v2/alliance/flow/task/" + user_id,
-					{ params: { page: this.page, status: this.status, append: 'show_type_label,show_category_label' } })
+				this.$http.get("api/v2/alliance/flow/task",
+					{ params: { page: this.page, status: this.status, include:'approval',append: 'show_type_label,show_category_label' } })
 					.then(({ data }) => {
 						if (data.tasks.data.length > 0) {
 							this.page += 1;

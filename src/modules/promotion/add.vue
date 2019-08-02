@@ -37,7 +37,7 @@
 		</x-cell-group>
 		<x-cell-group title="投放行业(多选)">
 			<x-checkbox
-				type="checkbox"
+				type="radio"
 				:data="resource"
 				v-model="params.show_category"
 			></x-checkbox>
@@ -87,9 +87,6 @@
 			<router-link :to="{ name: 'promotion.addevent' }">
 				<x-cell title="选择推广内容" is-link />
 			</router-link>
-			<x-cell title="是否立即执行">
-				<van-switch v-model="checked" @input="onInput" />
-			</x-cell>
 		</x-cell-group>
 		<div class="op" @click="next()">
 			<x-button type="primary" text="提交审核"></x-button>
@@ -198,15 +195,7 @@ import { constants } from 'crypto';
 			},
 			next () {
 				this.$http.post('api/v2/alliance/advertiser/add/task', this.params).then(data => {
-          console.log(data)
 					if (data.code == 200) {
-						if (this.checked) {
-							this.$http.post('api/v2/alliance/advertiser/approval',{task_id:data.data.task.id}).then(res => {
-								if (res.code == 201) {
-									this.$alert(res.message);
-								}
-							})
-						}
 						this.$alert(data.message);
 					}
 				}).catch(fial => {
