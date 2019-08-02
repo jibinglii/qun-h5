@@ -9,8 +9,9 @@
 					v-for="(inner, index) in plans"
 					:key="index"
 					:is-link="true"
-					:link="'/plan/plandetails/' + inner.id"
 					v-show="true"
+					router="plan.planingdetails"
+					:routerParams="{ id: inner.id }"
 				/>
 			</x-cell-group>
 			<infinite-loading @infinite="infiniteHandler" spinner="spiral">
@@ -26,8 +27,9 @@
 					v-for="(inner, index) in plans2"
 					:key="index"
 					:is-link="true"
-					:link="'/plan/plandetails/' + inner.task.id"
 					v-show="true"
+					router="plan.plandetails"
+					:routerParams="{ id: inner.task.id }"
 				/>
 			</x-cell-group>
 			<infinite-loading @infinite="infiniteHandler2" spinner="spiral">
@@ -82,9 +84,9 @@
 							this.page += 1
 							this.plans.push(...data.tasks.data);
 							$state.loaded();
-						}else{
-              //this.isShow = false
-            }
+						} else {
+							//this.isShow = false
+						}
 						if (data.tasks.per_page > data.tasks.data.length) {
 							$state.complete();
 						}
@@ -98,9 +100,9 @@
 							this.page += 1
 							this.plans2.push(...data.tasks.data);
 							$state.loaded();
-						}else{
-              //this.isShow2 = false
-            }
+						} else {
+							//this.isShow2 = false
+						}
 						if (data.tasks.per_page > data.tasks.data.length) {
 							$state.complete();
 						}
