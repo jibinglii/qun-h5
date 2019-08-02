@@ -1,9 +1,9 @@
 export default [{
         path: 'me/me',
         name: 'me.me',
-        // meta: {
-        //     requiresAuth: true
-        // },
+        meta: {
+            requiresAuth: true
+        },
         component: () =>
             import ('./me')
     },
@@ -87,5 +87,14 @@ export default [{
         },
         component: () =>
             import ('./settleManage')
+    },
+    {
+        path: 'me/datastatis',
+        name: 'me.datastatis',
+        meta: {
+            requiresAuth: true
+        },
+        component: () =>
+            import ('./dataStatis')
     },
 ]

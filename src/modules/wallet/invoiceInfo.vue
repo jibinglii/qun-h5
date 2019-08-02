@@ -20,8 +20,8 @@
       <van-field label="税号：" v-model="invoice.tax" placeholder="请输入税号" label-width="110px"/>
     </van-cell-group>
     <van-cell-group>
-      <van-field label="收票人姓名：" v-model="ticket.name" placeholder="请输入票人姓名" label-width="110px"/>
-      <van-field label="收票人手机号：" v-model="ticket.tel" placeholder="收票人手机号" label-width="110px"/>
+      <van-field label="收票人姓名：" v-model="ticket.name" placeholder="请输入收票人姓名" label-width="110px"/>
+      <van-field label="收票人手机号：" v-model="ticket.tel" placeholder="请输入收票人手机号" label-width="110px"/>
       <van-field
         readonly
         clickable

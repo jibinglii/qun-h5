@@ -1,26 +1,40 @@
 <template>
 	<div class="my-task">
 		<x-header title="推广计划管理"></x-header>
-		<x-cell-group
-			v-for="(item, index) in plans"
-			:key="index"
-			:title="item.approval.str_status"
-			v-show="true"
-		>
-			<x-cell
-				:title="inner.title"
-				:inlineDesc="inner.approval.start_at + '至' + inner.approval.close_at"
-				v-for="(inner, index) in plans"
-				:key="index"
-				:is-link="true"
-				:link="'/plan/plandetails/' + inner.id"
-				v-show="true"
-			/>
-		</x-cell-group>
-		<infinite-loading @infinite="infiniteHandler" spinner="spiral">
-			<div slot="no-more">没有更多数据啦...</div>
-			<div slot="no-results">没有数据</div>
-		</infinite-loading>
+		<div v-if="isShow">
+			<x-cell-group title="进行中">
+				<x-cell
+					:title="inner.task.title"
+					:inlineDesc="inner.start_at + '至' + inner.close_at"
+					v-for="(inner, index) in plans"
+					:key="index"
+					:is-link="true"
+					:link="'/plan/plandetails/' + inner.id"
+					v-show="true"
+				/>
+			</x-cell-group>
+			<infinite-loading @infinite="infiniteHandler" spinner="spiral">
+				<div slot="no-more">没有更多数据啦...</div>
+				<div slot="no-results">没有数据</div>
+			</infinite-loading>
+		</div>
+		<div v-if="isShow2">
+			<x-cell-group title="未开始">
+				<x-cell
+					:title="inner.task.title"
+					:inlineDesc="inner.start_at + '至' + inner.close_at"
+					v-for="(inner, index) in plans2"
+					:key="index"
+					:is-link="true"
+					:link="'/plan/plandetails/' + inner.task.id"
+					v-show="true"
+				/>
+			</x-cell-group>
+			<infinite-loading @infinite="infiniteHandler2" spinner="spiral">
+				<div slot="no-more">没有更多数据啦...</div>
+				<div slot="no-results">没有数据</div>
+			</infinite-loading>
+		</div>
 	</div>
 </template>
 
@@ -45,6 +59,9 @@
 			//这里存放数据
 			return {
 				plans: [],
+				plans2: [],
+				isShow: true,
+				isShow2: true,
 			}
 		},
 		//监听属性 类似于data概念
@@ -52,19 +69,38 @@
 			...mapGetters(['currentUser'])
 		},
 		//监控data中的数据变化
-		watch: {},
+		watch: {
+
+		},
 		//方法集合
 		methods: {
 			infiniteHandler ($state) {
-				let user_id = this.$store.getters.currentUser.id
-				this.$http.get("api/v2/alliance/advertiser/task/" + user_id,
-					{ params: { page: this.page, include: 'approval' } })
+				this.$http.get("api/v2/alliance/advertiser/task",
+					{ params: { page: this.page, include: 'task' } })
 					.then(({ data }) => {
 						if (data.tasks.data.length > 0) {
-							this.page += 1;
+							this.page += 1
 							this.plans.push(...data.tasks.data);
 							$state.loaded();
+						}else{
+              //this.isShow = false
+            }
+						if (data.tasks.per_page > data.tasks.data.length) {
+							$state.complete();
 						}
+					});
+			},
+			infiniteHandler2 ($state) {
+				this.$http.get("api/v2/alliance/advertiser/task",
+					{ params: { page: this.page, status: '1', include: 'task' } })
+					.then(({ data }) => {
+						if (data.tasks.data.length > 0) {
+							this.page += 1
+							this.plans2.push(...data.tasks.data);
+							$state.loaded();
+						}else{
+              //this.isShow2 = false
+            }
 						if (data.tasks.per_page > data.tasks.data.length) {
 							$state.complete();
 						}
@@ -73,12 +109,14 @@
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
+
 		},
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
 
 		}
-	};
+	}
+
 </script>
 <style lang='scss' scoped>
 	//@import url(); 引入公共css类
