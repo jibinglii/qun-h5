@@ -23,7 +23,7 @@
 			<van-cell>
 				<div class="fast">
 					<div class="fast-con">
-						<router-link :to="{ name: 'resource.create' }">
+						<router-link :to="{ name: 'resource.create',params:{id:0} }">
 							<img src="/images/me/dianpu.png" alt />
 							<label for>添加资源</label>
 						</router-link>
