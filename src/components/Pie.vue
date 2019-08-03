@@ -30,8 +30,10 @@ export default {
   },
   data() {
     return {
-      charts: null
+      charts: null,
     };
+  },
+  watch:{
   },
   computed: {},
   created() {},
