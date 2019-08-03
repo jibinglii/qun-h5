@@ -69,21 +69,6 @@
 				:limit="2"
 			></x-uploader>
 		</x-cell-group>
-		<div class="footer">
-			<input
-				id="weuiAgree"
-				type="checkbox"
-				v-model="isagree"
-				checked
-				class="weui-agree__checkbox"
-			/>
-			<span class="weui-agree__text">
-				<a @click="showAgree" href="javascript:void(0)"
-					>我以阅读并同意《群盟服务条款》</a
-				>
-			</span>
-		</div>
-		<agree title="" ref="agree" :content="saleProtocol" />
 
 		<div class="op" @click="next()">
 			<x-button type="primary" text="提交审核"></x-button>
@@ -98,7 +83,6 @@
 	import XCheckbox from "$components/XCheckbox"
 	import TextCell from "$components/TextCell";
 	import XUploader from "$components/XUploader";
-	import Agree from "$components/Agree";
 	import { fail } from 'assert';
 	import Area from 'vant/lib/area';
 	import 'vant/lib/area/style';
@@ -119,12 +103,11 @@
 			'van-field': Field,
 			'van-popup': Popup,
 			"van-picker": Picker,
-			'van-area': Area, TextCell, XUploader, Agree
+			'van-area': Area, TextCell, XUploader
 		},
 		data () {
 			//这里存放数据
 			return {
-				isagree: true,
 				value: '',
 				showPicker: false,
 				columns: ['微信群', 'QQ群', '自媒体', '网站'],
@@ -142,7 +125,6 @@
 				},
 				resource: {},
 				upResource: 102,
-				saleProtocol: ''
 			};
 		},
 		//监听属性 类似于data概念
@@ -185,32 +167,20 @@
 				}
 			},
 			next () {
-				if (!this.isagree) {
-					this.$alert("请同意《群盟服务条款》")
-				} else {
-					let url = 'api/v2/alliance/resources/add'
-					if (this.$route.params.id != 0) {
-						url = 'api/v2/alliance/resources/add/' + this.$route.params.id
-					}
-					this.$toast.loading('资源保存中');
-					this.$http.post(url, this.params).then(data => {
-						this.$toast.clear();
-						if (data.code == 200) {
-							this.$router.push({ name: 'resources' })
-						}
-					}).catch(fail => {
-						this.$toast.loading(fail.response.data.message)
-					})
+				let url = 'api/v2/alliance/resources/add'
+				if (this.$route.params.id != 0) {
+					url = 'api/v2/alliance/resources/add/' + this.$route.params.id
 				}
-			},
-			showAgree () {
-				this.$refs.agree.show();
-			},
-			getProtocol () {
-				services.getProtocol('transaction').then(({ data }) => {
-					this.saleProtocol = data.content
+				this.$toast.loading('资源保存中');
+				this.$http.post(url, this.params).then(data => {
+					this.$toast.clear();
+					if (data.code == 200) {
+						this.$router.push({ name: 'resources' })
+					}
+				}).catch(fail => {
+					this.$toast.loading(fail.response.data.message)
 				})
-			}
+			},
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
@@ -219,7 +189,6 @@
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
 			this.getCategory()
-			this.getProtocol()
 			if (this.$route.params.id != 0) {
 				this.getResource()
 			}
