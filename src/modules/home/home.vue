@@ -137,11 +137,6 @@ export default {
     }
   },
   created() {
-    // if (this.inArray("广告主", this.$store.getters.currentUser.roles)) {
-    //   this.$router.push({ path: "/advertisers" });
-    // }else if (!this.inArray("流量主", this.$store.getters.currentUser.roles)) {
-    //   this.$router.push({ path: "/apply" });
-    // }
     this.getCommonTask();
     this.flowInfo();
   }
