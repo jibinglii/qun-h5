@@ -298,7 +298,4 @@
 	/deep/.vux-label {
 		font-weight: 500;
 	}
-	/deep/.x-spec-input-item {
-		width: 20%;
-	}
 </style>
