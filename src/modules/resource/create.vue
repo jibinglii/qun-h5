@@ -252,8 +252,5 @@
 			font-size: 14px;
 			border-radius: 60px;
 		}
-		/deep/.x-spec-input-item {
-			width: 20%;
-		}
 	}
 </style>

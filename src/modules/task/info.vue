@@ -21,7 +21,7 @@
 				</div>
 				<div class="info-type">
 					<label for="">点击价格</label>
-					<span>￥{{ taskInfo.max_click_pric }}</span>
+					<span>￥{{ taskInfo.max_click_price }}</span>
 				</div>
 				<div class="info-type"></div>
 			</div>
@@ -33,23 +33,28 @@
 				<button class="btns">广告链接</button>
 			</info-cell>
 		</x-group>
-		<van-cell-group title="推广进度">
-			<div class="progress">
-				<van-circle
-					v-model="currentRate"
-					color="#07c160"
-					fill="#fff"
-					size="120px"
-					layer-color="#ebedf0"
-					:text="text"
-					:rate="rate"
-					:speed="100"
-					:clockwise="false"
-					:stroke-width="60"
-				/>
-			</div>
+		<van-cell-group title="任务进度">
+			<van-cell>
+				<pie :params="pieProgress" />
+			</van-cell>
 		</van-cell-group>
-		<van-cell-group title="投放凭证">
+		<van-cell-group title="任务完成">
+			<van-field
+				readonly
+				clickable
+				label="相关资源"
+				:value="value"
+				placeholder="请选择..."
+				@click="showPicker = true"
+			/>
+			<van-popup v-model="showPicker" position="bottom">
+				<van-picker
+					show-toolbar
+					:columns="columns"
+					@cancel="showPicker = false"
+					@confirm="onConfirm"
+				/>
+			</van-popup>
 			<x-uploader
 				title="上传投放凭证"
 				desc="请上传你完成任务的投放凭证"
@@ -83,6 +88,13 @@
 	import Circel from "vant/lib/circle";
 	import "vant/lib/circle/style";
 	import XUploader from "$components/XUploader";
+	import Field from 'vant/lib/field';
+	import 'vant/lib/field/style';
+	import Popup from 'vant/lib/popup';
+	import 'vant/lib/popup/style';
+	import Picker from 'vant/lib/picker';
+	import 'vant/lib/picker/style';
+	import Pie from "$components/Pie";
 	export default {
 		//import引入的组件需要注入到对象中才能使用
 		components: {
@@ -90,7 +102,11 @@
 			'van-cell': Cell,
 			'van-cell-group': CellGroup,
 			'van-circle': Circel,
-			XUploader
+			XUploader,
+			'van-field': Field,
+			'van-popup': Popup,
+			"van-picker": Picker,
+			Pie,
 		},
 		data () {
 			//这里存放数据
@@ -99,8 +115,21 @@
 				text: '',
 				rate: 50,
 				taskInfo: {},
-        fileList: [],
-        tg_url:'',
+				fileList: [],
+				tg_url: '',
+				showPicker: false,
+				columns: [],
+				value: '',
+				pieProgress: {
+					id: "pie_progress",
+					name: "执行进度",
+					width: "100%",
+					height: "300px",
+					showLegend: true,
+					legend: ["未执行", "已完成"],
+					data: [],
+					color: ['#d3d3d3', '#228B22']
+				},
 			};
 		},
 		//监听属性 类似于data概念
@@ -109,13 +138,18 @@
 		watch: {},
 		//方法集合
 		methods: {
+			onConfirm (value, index) {
+				this.value = value;
+				this.showPicker = false;
+			},
 			getTaskInfo () {
 				let res_id = this.$route.params.id
 				this.$http.get('api/v2/alliance/flow/task/info',
-					{ params: { task_id: res_id, include: 'target,assign,result,assign.task', append: 'show_type_label,show_category_label' } })
+					{ params: { task_id: res_id, include: 'target', append: 'show_type_label,show_category_label' } })
 					.then(({ data }) => {
-            this.taskInfo = data.task_info
+						this.taskInfo = data.task_info
             this.tg_url = data.task_info.target.link
+            this.pieProgress.data = [{name:'未执行',value:data.task_info.speed},{name:'已完成',value:data.task_info.speed}]
 					})
 			},
 			upProof () {
@@ -175,13 +209,7 @@
 			border: 1px solid #000;
 			border-radius: 10px;
 		}
-		.progress {
-			width: 100%;
-			height: 200px;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-		}
+
 		.op {
 			width: 80%;
 			margin: 10px auto;
