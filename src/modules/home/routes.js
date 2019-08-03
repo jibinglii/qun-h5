@@ -19,7 +19,7 @@ export default [
     path: 'apply',
     name: 'home.apply',
     meta: {
-        //requiresAuth: true
+        requiresAuth: true
     },
     component: () => import('./apply')
   },

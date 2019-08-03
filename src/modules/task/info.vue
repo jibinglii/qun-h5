@@ -35,7 +35,7 @@
 		</x-group>
 		<van-cell-group title="任务进度">
 			<van-cell>
-				<pie :params="pieProgress" />
+				<pie :params="pieProgress" ref="pie"/>
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="任务完成">
@@ -115,7 +115,8 @@
 				text: '',
 				rate: 50,
 				taskInfo: {},
-				fileList: [],
+        fileList: [],
+        resourceId:'',
 				tg_url: '',
 				showPicker: false,
 				columns: [],
@@ -139,7 +140,8 @@
 		//方法集合
 		methods: {
 			onConfirm (value, index) {
-				this.value = value;
+        this.value = value;
+        this.resourceId = index
 				this.showPicker = false;
 			},
 			getTaskInfo () {
@@ -149,11 +151,12 @@
 					.then(({ data }) => {
 						this.taskInfo = data.task_info
             this.tg_url = data.task_info.target.link
-            this.pieProgress.data = [{name:'未执行',value:data.task_info.speed},{name:'已完成',value:data.task_info.speed}]
+            this.pieProgress.data = [{name:'未执行',value:(100-data.task_info.speed)},{name:'已完成',value:data.task_info.speed}]
+            this.$refs['pie'].drawPie()
 					})
 			},
 			upProof () {
-				let params = { task_id: this.taskInfo.id, attachment: this.fileList };
+				let params = { task_id: this.taskInfo.id,resource_id:this.resourceId, attachment: this.fileList };
 				this.$http.post('api/v2/alliance/flow/accept', params).then(data => {
 					if (data.code == 201) {
 						this.$toast.loading(data.message)
@@ -164,7 +167,12 @@
 				}).catch(faill => {
 					this.$toast.loading(fail.response.data.message)
 				})
-			},
+      },
+      getResource(){
+        this.$http.get('api/v2/alliance/resources').then(({data}) => {
+          this.columns = data.resources.data
+        })
+      }
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
@@ -173,7 +181,8 @@
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
 			this.text = this.currentRate.toFixed(0) + '%'
-			this.getTaskInfo();
+      this.getTaskInfo()
+      this.getResource()
 		},
 	}
 </script>

@@ -66,6 +66,7 @@ export default {
           .then(data => {
             this.$toast.clear();
             if (data.code == 200) {
+              this.$alert('申请提交成功')
               this.$router.push({ path: "/apply" });
             }
           })
