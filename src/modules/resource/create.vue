@@ -49,7 +49,7 @@
 				title="资源类型"
 				type="radio"
 				:data="resource"
-				v-model = "params.category"
+				v-model="params.category"
 			></x-checkbox>
 		</x-cell-group>
 		<x-cell-group>
@@ -251,6 +251,9 @@
 			line-height: 50px;
 			font-size: 14px;
 			border-radius: 60px;
+		}
+		/deep/.x-spec-input-item {
+			width: 20%;
 		}
 	}
 </style>
