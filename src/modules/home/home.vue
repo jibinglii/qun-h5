@@ -109,9 +109,6 @@ export default {
     };
   },
   computed: {},
-  created() {
-    this.getCommonTask();
-  },
   methods: {
     flowInfo() {
       this.$http.get("api/v2/alliance/flow/show").then(data => {
@@ -139,10 +136,13 @@ export default {
         });
     }
   },
-  mounted() {
-    if (this.inArray("广告主", this.$store.getters.currentUser.roles)) {
-      this.$router.push({ path: "/advertisers" });
-    }
+  created() {
+    // if (this.inArray("广告主", this.$store.getters.currentUser.roles)) {
+    //   this.$router.push({ path: "/advertisers" });
+    // }else if (!this.inArray("流量主", this.$store.getters.currentUser.roles)) {
+    //   this.$router.push({ path: "/apply" });
+    // }
+    this.getCommonTask();
     this.flowInfo();
   }
 };
