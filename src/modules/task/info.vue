@@ -35,7 +35,7 @@
 		</x-group>
 		<van-cell-group title="任务进度">
 			<van-cell>
-				<pie :params="pieProgress" ref="pie"/>
+				<pie :params="pieProgress" ref="pie" />
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="任务完成">
@@ -114,9 +114,10 @@
 				currentRate: 50,
 				text: '',
 				rate: 50,
+				resource: {},
 				taskInfo: {},
-        fileList: [],
-        resourceId:'',
+				fileList: [],
+				resourceId: '',
 				tg_url: '',
 				showPicker: false,
 				columns: [],
@@ -136,12 +137,14 @@
 		//监听属性 类似于data概念
 		computed: {},
 		//监控data中的数据变化
-		watch: {},
+		watch: {
+
+		},
 		//方法集合
 		methods: {
 			onConfirm (value, index) {
-        this.value = value;
-        this.resourceId = index
+				this.value = value;
+				this.resourceId = this.findKey(this.resource, value)
 				this.showPicker = false;
 			},
 			getTaskInfo () {
@@ -150,13 +153,13 @@
 					{ params: { task_id: res_id, include: 'target', append: 'show_type_label,show_category_label' } })
 					.then(({ data }) => {
 						this.taskInfo = data.task_info
-            this.tg_url = data.task_info.target.link
-            this.pieProgress.data = [{name:'未执行',value:(100-data.task_info.speed)},{name:'已完成',value:data.task_info.speed}]
-            this.$refs['pie'].drawPie()
+						this.tg_url = data.task_info.target.link
+						this.pieProgress.data = [{ name: '未执行', value: (100 - data.task_info.speed) }, { name: '已完成', value: data.task_info.speed }]
+						this.$refs['pie'].drawPie()
 					})
 			},
 			upProof () {
-				let params = { task_id: this.taskInfo.id,resource_id:this.resourceId, attachment: this.fileList };
+				let params = { task_id: this.taskInfo.id, resource_id: this.resourceId, attachment: this.fileList };
 				this.$http.post('api/v2/alliance/flow/accept', params).then(data => {
 					if (data.code == 201) {
 						this.$toast.loading(data.message)
@@ -167,12 +170,18 @@
 				}).catch(faill => {
 					this.$toast.loading(fail.response.data.message)
 				})
-      },
-      getResource(){
-        this.$http.get('api/v2/alliance/resources').then(({data}) => {
-          this.columns = data.resources.data
-        })
-      }
+			},
+			getResource () {
+				this.$http.get('api/v2/alliance/resources').then(({ data }) => {
+					data.resources.data.map((item, index) => {
+						this.resource[item.id] = item.name
+						this.columns.push(item.name)
+					})
+				})
+			},
+			findKey (obj, value, compare = (a, b) => a === b) {
+				return Object.keys(obj).find(k => compare(obj[k], value))
+			}
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
@@ -181,8 +190,8 @@
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
 			this.text = this.currentRate.toFixed(0) + '%'
-      this.getTaskInfo()
-      this.getResource()
+			this.getTaskInfo()
+			this.getResource()
 		},
 	}
 </script>

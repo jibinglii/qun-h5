@@ -9,14 +9,12 @@ const beforeEach = (to, from, next) => {
   vuex
     .dispatch('checkUserToken')
     .then(() => {
-      console.log("LOGGED:"+vuex.getters.isLogged);
-      console.log(""+to.path);
-      if (vuex.getters.isLogged && to.path=='/') {
-        if (vuex.getters.currentUser.roles.indexOf("广告主")>=0) {
+      if (vuex.getters.isLogged && to.path == '/') {
+        if (vuex.getters.currentUser.roles.indexOf('广告主') >= 0) {
           return next({ path: '/advertisers' })
-        }else if (vuex.getters.currentUser.roles.indexOf("流量主")<0) {
+        } else if (vuex.getters.currentUser.roles.indexOf('流量主') < 0) {
           return next({ path: '/apply' })
-        } 
+        }
       }
       return next()
     })
