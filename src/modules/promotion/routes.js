@@ -26,7 +26,7 @@ export default [{
             import ('./edit')
     },
     {
-        path: 'promotion/add',
+        path: 'promotion/add/:id?',
         name: 'promotion.add',
         meta: {
             requiresAuth: true

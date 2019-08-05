@@ -23,7 +23,7 @@
       <van-cell>
         <div class="fast">
           <div class="fast-con">
-            <router-link :to="{ name: 'promotion.add' }">
+            <router-link :to="{ name: 'promotion.addevent' }">
               <img src="/images/me/dianpu.png" alt />
               <label for>发起新推广</label>
             </router-link>

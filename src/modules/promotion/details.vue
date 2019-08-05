@@ -19,7 +19,7 @@
         <div class="panel-footer">Link: {{details.link}}</div>
       </div>
     </van-panel>
-	<div class="btn">
+    <div class="btn">
       <van-button type="primary" hairline size="large" @click="edit()">编辑</van-button>
     </div>
   </div>
@@ -29,8 +29,8 @@
 import XHeader from "$components/XHeader";
 import { Skeleton, Icon, Panel } from "vant";
 import "vant/lib/panel/style";
-import ImagePreview from 'vant/lib/image-preview'
-import 'vant/lib/image-preview/style'
+import ImagePreview from "vant/lib/image-preview";
+import "vant/lib/image-preview/style";
 import Button from "vant/lib/button";
 import "vant/lib/button/style";
 
@@ -40,9 +40,9 @@ export default {
     XHeader,
     "van-icon": Icon,
     "van-panel": Panel,
-	"van-skeleton": Skeleton,
-	"van-button": Button,
-	ImagePreview
+    "van-skeleton": Skeleton,
+    "van-button": Button,
+    ImagePreview
   },
   data() {
     //这里存放数据
@@ -60,23 +60,21 @@ export default {
         name: "promotion.edit",
         params: { id: this.details.id }
       });
-	},
-	del() {
-
-	},
+    },
+    del() {},
     getAdsTarget() {
       let adsId = this.$route.params.id;
       this.$http
         .get("api/v2/alliance/advertiser/adstarget/info/" + adsId)
         .then(data => {
-		  this.details = data.data.target;
-		  if(this.details.attachment.length>0) this.showPreview = true;
+          this.details = data.data.target;
+          if (this.details.attachment.length > 0) this.showPreview = true;
           this.showSkeleton = false;
         });
     },
-	preview(){
-		ImagePreview(this.details.attachment)
-	}
+    preview() {
+      ImagePreview(this.details.attachment);
+    }
   },
   created() {},
   mounted() {
