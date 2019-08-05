@@ -8,7 +8,9 @@
       <info-cell title="资源类型">{{ resourceInfo.category_label }}</info-cell>
       <info-cell title="地区">{{ resourceInfo.area_id }}</info-cell>
       <info-cell title="描述">{{ resourceInfo.desc }}</info-cell>
-      <info-cell title="附件"><div @click="preview()">点击查看</div></info-cell>
+      <info-cell title="附件">
+        <div @click="preview()">点击查看</div>
+      </info-cell>
     </x-cell-group>
     <div class="op" @click="$router.push({ name: 'resource.create',params:{id:resourceInfo.id} })">
       <x-button type="primary" text="更新资源"></x-button>
@@ -22,8 +24,8 @@ import InfoCell from "$components/InfoCell";
 import XGroup from "$components/XGroup";
 import XCellGroup from "$components/XCellGroup";
 import XButton from "$components/XButton";
-import ImagePreview from 'vant/lib/image-preview'
-import 'vant/lib/image-preview/style'
+import ImagePreview from "vant/lib/image-preview";
+import "vant/lib/image-preview/style";
 
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -32,8 +34,8 @@ export default {
     InfoCell,
     XCellGroup,
     XGroup,
-	XButton,
-	ImagePreview
+    XButton,
+    ImagePreview
   },
   data() {
     //这里存放数据
@@ -49,7 +51,7 @@ export default {
   //方法集合
   methods: {
     getInfo() {
-	  this.$toast.loading()
+      this.$toast.loading();
       let res_id = this.$route.params.id;
       this.$http
         .get("api/v2/alliance/resources/info", {
@@ -60,15 +62,15 @@ export default {
           }
         })
         .then(({ data }) => {
-		  this.resourceInfo = data.resource;
-		  console.log(this.resourceInfo.id);
-		  this.userName = data.resource.user.nickname;
-		  this.$toast.clear();
+          this.resourceInfo = data.resource;
+          console.log(this.resourceInfo.id);
+          this.userName = data.resource.user.nickname;
+          this.$toast.clear();
         });
-	},
-	preview(){
-		ImagePreview(this.resourceInfo.attachment)
-	}
+    },
+    preview() {
+      ImagePreview(this.resourceInfo.attachment);
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
