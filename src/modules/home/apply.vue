@@ -43,7 +43,7 @@ export default {
     text-align: center;
     padding:50px 20px;
     .con{
-      font-size: 1rem;
+      font-size: .8rem;
       padding:20px 0;
     }
   }

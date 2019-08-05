@@ -7,7 +7,6 @@ import router from './router'
 import store from './vuex'
 import Toast from 'vant/lib/toast'
 import Notify from 'vant/lib/notify'
-import 'vant/lib/toast/style'
 import mixins from './mixins/index'
 import '$utils/rem'
 import * as filters from './filters'
@@ -16,6 +15,10 @@ import VueCookies from 'vue-cookies'
 import Lazyload from 'vant/lib/lazyload'
 import { Alert, Confirm } from 'wc-messagebox'
 import 'wc-messagebox/style.css'
+
+import 'vant/lib/toast/style'
+import 'vant/lib/skeleton/style';
+import 'vant/lib/button/style';
 
 import VueFab from 'vue-float-action-button'
 

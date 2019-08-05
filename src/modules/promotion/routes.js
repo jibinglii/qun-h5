@@ -8,7 +8,7 @@ export default [{
             import ('./promotion')
     },
     {
-        path: 'promotion/details/:id.html',
+        path: 'promotion/details/:id',
         name: 'promotion.details',
         meta: {
             requiresAuth: true
@@ -17,7 +17,7 @@ export default [{
             import ('./details')
     },
     {
-        path: 'promotion/edit',
+        path: 'promotion/edit/:id?',
         name: 'promotion.edit',
         meta: {
             requiresAuth: true

@@ -7,7 +7,7 @@
           alt
         >
       </div>
-      <p>专业虚拟资产交易平台</p>
+      <p>社群营销新势力</p>
     </div>
   </div>
 </template>

@@ -16,7 +16,7 @@
 			</x-cell-group>
 			<infinite-loading @infinite="infiniteHandler" spinner="spiral">
 				<div slot="no-more">没有更多数据啦...</div>
-				<div slot="no-results">没有数据</div>
+				<div class="no-results" slot="no-results">没有数据</div>
 			</infinite-loading>
 		</div>
 		<div v-if="isShow2">
@@ -34,7 +34,7 @@
 			</x-cell-group>
 			<infinite-loading @infinite="infiniteHandler2" spinner="spiral">
 				<div slot="no-more">没有更多数据啦...</div>
-				<div slot="no-results">没有数据</div>
+				<div class="no-results" slot="no-results">没有数据</div>
 			</infinite-loading>
 		</div>
 	</div>
