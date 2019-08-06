@@ -216,7 +216,7 @@ export default {
         this.$alert("请选择推广文案");
         return false;
       }
-      this.$toast("保存中");
+      this.$toast.loading('保存中');
       this.$http
         .post("api/v2/alliance/advertiser/add/task", this.params)
         .then(data => {
