@@ -2,43 +2,19 @@
   <div class>
     <x-header :title="title"></x-header>
     <van-cell-group>
-      <van-field
-        label="标题"
-        v-model="params.title"
-        placeholder="请输入文案标题"
-      />
+      <van-field label="标题" v-model="params.title" placeholder="请输入文案标题" />
     </van-cell-group>
     <van-cell-group>
-      <van-field
-        v-model="params.content"
-        type="textarea"
-        placeholder="请输入文案内容"
-        rows="8"
-        autosize
-      />
+      <van-field v-model="params.content" type="textarea" placeholder="请输入文案内容" rows="8" autosize />
     </van-cell-group>
     <van-cell-group>
-      <x-uploader
-        title="相关图片"
-        v-model="params.attachment"
-        :limit="2"
-      ></x-uploader>
+      <x-uploader title="相关图片" v-model="params.attachment" :limit="2"></x-uploader>
     </van-cell-group>
-    <van-cell-group>
-      <van-field
-        label="推广链接"
-        v-model="params.link"
-        placeholder="请输入推广链接"
-      />
+    <van-cell-group>ß
+      <van-field label="推广链接" v-model="params.link" placeholder="请输入推广链接" />
     </van-cell-group>
     <div class="btn">
-      <van-button
-        type="primary"
-        :disabled="saving"
-        hairline
-        size="large"
-        @click="save()"
-      >保存</van-button>
+      <van-button type="primary" :disabled="saving" hairline size="large" @click="save()">保存</van-button>
     </div>
   </div>
 </template>
@@ -86,7 +62,7 @@ export default {
       this.saving = true;
       let url = "api/v2/alliance/advertiser/add/adstarget";
       if (this.$route.params.id != 0 && this.$route.params.id != undefined) {
-        url = url + '/' + this.$route.params.id;
+        url = url + "/" + this.$route.params.id;
       }
       this.$http
         .post(url, this.params)
@@ -112,7 +88,7 @@ export default {
         });
     }
   },
-  created() { },
+  created() {},
   mounted() {
     if (this.$route.params.id) {
       this.getAdsTarget();

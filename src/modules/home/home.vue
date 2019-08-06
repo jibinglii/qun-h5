@@ -17,7 +17,7 @@
       <div class="top-con">
         <span>{{ flow.hot }}</span>
         <label for>热度</label>
-      </div>
+      </div>ß
     </div>
     <van-cell-group title="快捷入口">
       <van-cell>
@@ -30,7 +30,7 @@
           </div>
 
           <div class="fast-con">
-            <router-link :to="{ name: 'brokerage' }">
+            <router-link :to="{ name: 'me.settlemanage' }">
               <img src="/images/me/account.png" alt />
               <label for>佣金管理</label>
             </router-link>
@@ -70,7 +70,7 @@
         :label="item.approval.start_at+'至'+item.approval.close_at"
       />
     </van-cell-group>
-    <infinite-loading @infinite="getTask"  spinner="waveDots">
+    <infinite-loading @infinite="getTask" spinner="waveDots">
       <div slot="no-more">没有更多数据啦...</div>
       <div slot="no-results">没有数据</div>
     </infinite-loading>

@@ -1,62 +1,71 @@
 <template>
   <div class="storeManage">
     <x-header
-      title="结算管理"
+      title="佣金管理"
       url="me.me"
       right-text="提现记录"
-      @click-right="$router.push({name: 'withdraw.history'})"
+      @click-right="$router.push({ name: 'withdraw.history' })"
     ></x-header>
     <div class="store_banner">
       <div class="store_banner_t">
         <span>可提现金额</span>
         <p>
           <sup>￥</sup>
-          {{ currentUser.wallet.amount|formatMoney }}
+          {{ currentUser.wallet.amount | formatMoney }}
         </p>
-        <van-button plain hairline type="primary" class="withdraw" @click="withdraw">申请提现</van-button>
+        <van-button
+          plain
+          hairline
+          type="primary"
+          class="withdraw"
+          @click="withdraw"
+          >申请提现</van-button
+        >
       </div>
     </div>
     <div class="settle">
-      <div class="total">
-        <h6>总金额</h6>
-        <span>￥{{ info.settled|formatMoney }}</span>
-      </div>
-      <!-- <div class="title">
-        {{ currentDate }}
-        <div class="select">
-          <select v-model="month" @change="changeMonth">
-            <option value="201906">201906</option>
-            <option value="201905">201905</option>
-            <option value="201904">201904</option>
-          </select>
-        </div>
-      </div> -->
       <settle-filter @confirm="confirm"></settle-filter>
-      <div class="list">
-        <distributor-status-item :item="item" v-for="item in items" :key="item.id"></distributor-status-item>
-        <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"  spinner="waveDots">
+      <van-cell-group title="佣金结算明细">
+        <van-cell
+          v-for="item in items"
+          :key="item.id"
+          :title="item.order_id"
+          :value="item.settle_amount | formatMoney"
+          :label="item.created_at"
+        />
+        <infinite-loading
+          :identifier="infiniteId"
+          @infinite="infiniteHandler"
+          spinner="waveDots"
+        >
           <div slot="no-more">没有更多数据啦...</div>
           <div slot="no-results">没有数据</div>
         </infinite-loading>
-      </div>
+      </van-cell-group>
     </div>
   </div>
 </template>
 
 <script>
-import distributorStatusItem from "./components/distributorStatusItem";
 import XHeader from "$components/XHeader";
+import InfiniteLoading from "vue-infinite-loading";
+import SettleFilter from "./components/SettleFilter";
 import Button from "vant/lib/button";
 import "vant/lib/button/style";
+import CellGroup from "vant/lib/cell-group";
+import "vant/lib/cell-group/style";
+import Cell from "vant/lib/cell";
+import "vant/lib/cell/style";
+
 import { mapGetters } from "vuex";
-import InfiniteLoading from "vue-infinite-loading";
-import SettleFilter from './components/SettleFilter'
+
 export default {
   name: "settleManage",
   components: {
     XHeader,
     "van-button": Button,
-    "distributor-status-item": distributorStatusItem,
+    "van-cell": Cell,
+    "van-cell-group": CellGroup,
     InfiniteLoading,
     SettleFilter
   },
@@ -68,19 +77,22 @@ export default {
       info: {},
       items: [],
       page: 1,
-      currentDate: "",
       month: "",
       infiniteId: +new Date()
     };
   },
   created() {
+    let currentData = new Date();
+    let month = currentData.getMonth() + 1;
+    if (month < 10) month = "0" + month;
+    this.month = currentData.getFullYear() + month;
     this.getInfo();
     this.$store.dispatch("loadUser");
   },
   methods: {
-    confirm (date) {
-      this.month = date
-      this.changeMonth()
+    confirm(date) {
+      this.month = date;
+      this.changeMonth();
     },
     changeMonth() {
       this.items = [];
@@ -103,9 +115,6 @@ export default {
           month: this.month,
           page: this.page,
           include: "order"
-        },
-        headers: {
-          "X-Store-Id": ""
         }
       };
       this.$http.get("api/v2/user/settles", param).then(({ data }) => {
@@ -130,17 +139,14 @@ export default {
   }
   .store_banner {
     width: 100%;
-    background-image: url(../../assets/images/bg.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background: #fff;
     text-align: center;
-    color: #ffffff;
     .store_banner_t {
       line-height: 1.4;
       padding: 0.826667rem 0;
       span {
         font-size: 0.7rem;
-        color: #b7b7b7;
+        color: #333;
       }
       p {
         font-size: 1.408rem;
@@ -152,7 +158,7 @@ export default {
       .withdraw {
         height: 1.493333rem;
         line-height: 1.493333rem;
-        border: solid 1px #b7b7b7;
+        border: solid 1px #000;
         background-color: transparent;
         font-size: 0.512rem;
         margin: 0.426667rem 0 0.853333rem;
@@ -160,20 +166,8 @@ export default {
       }
     }
   }
-}
-.settle {
-  .total {
-    background-color: white;
-    margin: 0 0 5px 0;
-    padding: 10px 15px;
-    h6 {
-      font-size: 12px;
-      font-weight: 200;
-      padding-left: 4px;
-    }
-    span {
-      color: #ff0000;
-    }
+  .settle {
+    margin-top: 10px;
   }
 }
 .title {

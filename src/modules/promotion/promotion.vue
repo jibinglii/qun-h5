@@ -12,19 +12,19 @@
         :title="item.title"
         :inlineDesc="item.created_at"
         router="promotion.details"
-        :routerParams="{'id': item.id}"
+        :routerParams="{ id: item.id }"
       ></x-cell>
     </x-cell-group>
     <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
       <div slot="no-more">没有更多数据啦...</div>
       <div slot="no-results">没有数据</div>
-    </infinite-loading>
+    </infinite-loading>ß
     <div class="btn">
       <van-button
         type="primary"
         hairline
         size="large"
-        @click="$router.push({ name: 'promotion.edit'})"
+        @click="$router.push({ name: 'promotion.edit' })"
       >添加新文案</van-button>
     </div>
   </div>

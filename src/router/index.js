@@ -3,7 +3,6 @@ import { routes as auth } from '$modules/auth'
 import { routes as me } from '$modules/me'
 import { routes as resource } from '$modules/resource'
 import { routes as task } from '$modules/task'
-import { routes as brokerage } from '$modules/brokerage'
 import { routes as bank } from '$modules/bank'
 import { routes as withdraw } from '$modules/withdraw'
 import { routes as plan } from '$modules/plan'
@@ -25,7 +24,6 @@ const AppRoute = {
         ...me,
         ...resource,
         ...task,
-        ...brokerage,
         ...bank,
         ...withdraw,
         ...plan,
