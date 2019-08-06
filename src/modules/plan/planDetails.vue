@@ -1,6 +1,6 @@
 <template>
   <div class="my-task">
-	<x-header
+    <x-header
       title="推广计划详情"
       @click-right="del"
     >
@@ -53,20 +53,20 @@
         :to="{ name: 'plan.totalview', params:{taskId:taskInfo.id} }"
       />
     </van-cell-group>
-	<van-cell-group title="历史投放广告">
+    <van-cell-group title="历史投放广告">
       <van-cell
-	  	is-link
+        is-link
         title="广告名称"
         label="时间"
       />
-	</van-cell-group>  
-	<van-cell-group title="历史流转情况">
+    </van-cell-group>
+    <van-cell-group title="历史流转情况">
       <van-cell
-	  	is-link
+        is-link
         title="流转时间"
         label='投放1000次  点击100次  总消费1000元'
       />
-	</van-cell-group>  
+    </van-cell-group>
     <div class="btn">
       <van-button
         type="default"
@@ -88,11 +88,13 @@ import CellGroup from "vant/lib/cell-group";
 import Icon from "vant/lib/icon";
 import Cell from "vant/lib/cell";
 import Button from "vant/lib/button";
+import Field from "vant/lib/field";
 import "vant/lib/cell/style";
 import DropdownMenu from "vant/lib/dropdown-menu";
 import "vant/lib/dropdown-menu/style";
 import DropdownItem from "vant/lib/dropdown-item";
 import "vant/lib/dropdown-item/style";
+import "vant/lib/button/style";
 import { mapGetters } from "vuex";
 
 
@@ -111,8 +113,8 @@ export default {
     //这里存放数据
     return {
       taskInfo: {
-		  title:''
-	  },
+        title: ''
+      },
     };
   },
   computed: {
@@ -131,12 +133,14 @@ export default {
         })
     },
     getTaskInfo() {
+      this.$toast.loading();
       let id = this.$route.params.id
       this.$http.get('api/v2/alliance/advertiser/info/' + id, { params: { include: 'target,approval,ads' } }).then(({ data }) => {
-        this.taskInfo = data.task
+        this.taskInfo = data.task;
+        this.$toast.clear();
       })
-	},
-	del() {
+    },
+    del() {
       this.$confirm({
         title: "温馨提示",
         content: '您确定要删除该计划吗？',
@@ -148,14 +152,34 @@ export default {
       }).catch(() => {
         this.$toast.loading();
         let adsId = this.$route.params.id;
-        this.$http
-          .get("api/v2/alliance/advertiser/del/task/" + adsId)
-          .then(data => {
-            this.$router.push({ name: "plan.plan", params:{active: 1} });
-            this.$toast.clear();
-          });
+        // this.$http
+        //   .get("api/v2/alliance/advertiser/del/task/" + adsId)
+        //   .then(data => {
+        //     this.$router.push({ name: "plan.plan", params:{active: 1} });
+        //     this.$toast.clear();
+        //   });
       });
     },
+    stop() {
+      this.$confirm({
+        title: "温馨提示",
+        content: '您确定要停用该计划吗？',
+        yesText: "取消", // 左边按钮文本,
+        yesStyle: { overflow: "inherit" },
+        noText: "确定", // 设置右边按钮文本,
+        noStyle: { overflow: "inherit" } // 设置右边按钮样式,
+      }).then(function () {
+      }).catch(() => {
+        this.$toast.loading();
+        let adsId = this.$route.params.id;
+        // this.$http
+        //   .get("api/v2/alliance/advertiser/del/task/" + adsId)
+        //   .then(data => {
+        //     this.$router.push({ name: "plan.plan", params:{active: 1} });
+        //     this.$toast.clear();
+        //   });
+      });
+    }
   },
   mounted() {
     this.getTaskInfo();
@@ -198,15 +222,16 @@ export default {
   border-width: 0px;
 }
 .btn {
-	display:flex;
+  display: flex;
   text-align: center;
   padding: 10px;
-  .van-button{
-	  flex: 1;
-	  border:solid 1px #000;
-	  &:first-child{
-		  border-right: none;
-	  }
+  .van-button {
+    flex: 3;
+    border: solid 1px #000;
+    &:first-child {
+      flex: 1;
+      margin-right: 10px;
+    }
   }
 }
 </style>

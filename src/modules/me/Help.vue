@@ -1,8 +1,6 @@
 <template>
   <div>
-    <x-header
-      title="帮助中心"
-    ></x-header>
+    <x-header title="帮助中心"></x-header>
     <div class="header">
       <h1>您好</h1>
       <h1>我们为您提供更多帮助</h1>
@@ -76,37 +74,25 @@ export default {
       ],
       faqGroups: [
         {
-          id: 19,
-          icon: '/images/help/help-f-1.png',
-          title: '支付',
-          desc: '如何支付，支付安全保证'
-        },
-        {
           id: 20,
           icon: '/images/help/help-f-2.png',
-          title: '退换货',
-          desc: '如何申请退款，修改订单'
+          title: '推广',
+          desc: '如何发起推广、查看推广效果'
         },
         {
-          id: 21,
-          icon: '/images/help/help-f-3.png',
-          title: '账户设置',
-          desc: '修改密码，修改账户信息'
-        },
-        {
-          id: 22,
-          icon: '/images/help/help-f-4.png',
-          title: '优惠 & 积分',
-          desc: '积分如何使用，优惠券，邀请好友'
+          id: 19,
+          icon: '/images/help/help-f-1.png',
+          title: '财务',
+          desc: '如何充值、查看消费情况'
         }
       ]
     }
   },
-thods: {
+  methods: {
     getHot() {
-      article.hot().then(({ data }) => {
+      article.list(19, 1).then(({ data }) => {
         this.loading = false
-        this.faqs = data.contents
+        this.faqs = data.contents.data
       })
     }
   },

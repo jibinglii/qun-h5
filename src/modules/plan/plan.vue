@@ -106,8 +106,14 @@ export default {
       this.$http.get("api/v2/alliance/advertiser/task", { params: params })
         .then(({ data }) => {
           if (data.tasks.data.length > 0) {
+            let info = data.tasks.data;
+            if(this.active == 1){
+              Object.keys(info).forEach(el => {
+                info[el].id = info[el].task_id
+              });
+            }
             this.page += 1
-            this.plans.push(...data.tasks.data);
+            this.plans.push(...info);
             $state.loaded();
           }
           if (data.tasks.per_page > data.tasks.data.length) {
