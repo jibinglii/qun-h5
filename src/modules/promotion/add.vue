@@ -3,15 +3,10 @@
     <x-header title="添加推广计划"></x-header>
     <van-cell-group>
       <router-link :to="{ name: 'promotion.addevent' }">
-        <van-cell
-          title="选择推广内容"
-          :value="targetName"
-          is-link
-        />
+        <van-cell title="选择推广内容" :value="targetName" is-link />
       </router-link>
     </van-cell-group>
     <van-cell-group title="计划概况">
-
       <van-field
         is-link
         readonly
@@ -21,10 +16,7 @@
         placeholder="选择类型"
         @click="showTypePicker = true"
       />
-      <van-popup
-        v-model="showTypePicker"
-        position="bottom"
-      >
+      <van-popup v-model="showTypePicker" position="bottom">
         <van-picker
           show-toolbar
           :columns="typeColumns"
@@ -42,10 +34,7 @@
         placeholder="选择区域"
         @click="showAreaPicker = true"
       />
-      <van-popup
-        v-model="showAreaPicker"
-        position="bottom"
-      >
+      <van-popup v-model="showAreaPicker" position="bottom">
         <van-area
           title="投放区域"
           :area-list="areaList"
@@ -56,64 +45,39 @@
       </van-popup>
     </van-cell-group>
     <van-cell-group title="投放行业">
-      <x-checkbox
-        type="radio"
-        :data="resource"
-        v-model="params.show_category"
-      ></x-checkbox>
+      <x-checkbox type="radio" :data="resource" v-model="params.show_category"></x-checkbox>
     </van-cell-group>
-    <van-cell-group
-      title="投放数量"
-      class="groups"
-    >
+    <van-cell-group title="投放数量" class="groups">
       <van-field v-model="params.show_num" />
       <p>群数量</p>
     </van-cell-group>
     <van-cell-group title="价格设置">
       <div class="price">
         <div class="interval">
-          <van-field
-            label="投放价格"
-            v-model="params.min_show_price"
-          />至
+          <van-field label="投放价格" v-model="params.min_show_price" />至
           <van-field v-model="params.max_show_price" />元/次
         </div>
         <p>建议价格：0.5~1元</p>
       </div>
       <div class="price">
         <div class="interval">
-          <van-field
-            label="点击价格"
-            v-model="params.min_click_price"
-          />至
+          <van-field label="点击价格" v-model="params.min_click_price" />至
           <van-field v-model="params.max_click_price" />元/次
         </div>
         <p>建议价格：0.1~1元</p>
       </div>
       <div class="price">
         <div class="interval">
-          <van-field
-            label="推广预算"
-            v-model="params.budget"
-          />元
+          <van-field label="推广预算" v-model="params.budget" />元
         </div>
         <p>预算不能低于500元</p>
       </div>
     </van-cell-group>
     <van-cell-group title="投放期限">
-      <x-checkbox
-        type="radio"
-        :data="limits"
-        v-model="params.duration"
-      ></x-checkbox>
+      <x-checkbox type="radio" :data="limits" v-model="params.duration"></x-checkbox>
     </van-cell-group>
     <div class="btn">
-      <van-button
-        type="primary"
-        hairline
-        size="large"
-        @click="next()"
-      >保存并提交审核</van-button>
+      <van-button type="primary" hairline size="large" @click="next()">保存并提交审核</van-button>
     </div>
   </div>
 </template>
@@ -186,7 +150,7 @@ export default {
     },
     onAreaConfirm(value) {
       let _value = "";
-      value.map(function (item, index) {
+      value.map(function(item, index) {
         _value += item.name + " ";
       });
       this.areaValue = _value;
@@ -212,16 +176,25 @@ export default {
         return false;
       }
       //构造TITLE
-      this.params.title = "[任务]" + this.typeColumns[this.params.show_type] + "/" + this.resource[this.params.show_category];
-      this.params.title += "/" + this.areaValue.replace(/\s*/g,"") + "/" + this.params.show_num + '次';
+      this.params.title =
+        "[任务]" +
+        this.typeColumns[this.params.show_type] +
+        "/" +
+        this.resource[this.params.show_category];
+      this.params.title +=
+        "/" +
+        this.areaValue.replace(/\s*/g, "") +
+        "/" +
+        this.params.show_num +
+        "次";
 
-      this.$toast.loading('保存中');
+      this.$toast.loading("保存中");
       this.$http
         .post("api/v2/alliance/advertiser/add/task", this.params)
         .then(data => {
           if (data.code == 200) {
             this.$alert(data.message);
-            this.$router.push({ path: '/plan/plan' })
+            this.$router.push({ path: "/plan/plan" });
           }
         })
         .catch(fial => {
@@ -230,7 +203,7 @@ export default {
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() { },
+  created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.params.targetId = this.$route.params.id;

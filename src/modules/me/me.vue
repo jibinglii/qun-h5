@@ -79,12 +79,6 @@ export default {
               url:'wallet.wallet',
               img:'/images/me/finance.png',
               show: true
-            },
-            {
-              title: '结算管理',
-              url: 'me.settlemanage',
-              img: '/images/me/jiesuan.png',
-              show: true
             }
           ]
         },
@@ -106,8 +100,8 @@ export default {
             },
             {
               title:'佣金管理',
-              url:'brokerage',
-              img:'/images/me/money.png',
+              url: 'me.settlemanage',
+              img: '/images/me/jiesuan.png',
               show: true
             },
           ]

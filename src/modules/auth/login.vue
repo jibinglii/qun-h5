@@ -40,14 +40,10 @@
     <div class="socail">
       <div class="socail-channel">
         <div class="item wechat" v-show="isWechat()">
-          <a href="javascript:void()" @click="wechat">
-            微信快捷登录
-          </a>
+          <a href="javascript:void()" @click="wechat">微信快捷登录</a>
         </div>
         <div class="item qq" v-show="false">
-          <a href="javascript:void()" @click="qq">
-            QQ快捷登录
-          </a>
+          <a href="javascript:void()" @click="qq">QQ快捷登录</a>
         </div>
       </div>
     </div>
@@ -106,11 +102,11 @@ export default {
   },
   methods: {
     ...mapActions(["attemptLogin", "attemptLoginByCode"]),
-    wechat () {
-      location.href = window.API_ROOT + '/api/v2/oauth/wechat'
+    wechat() {
+      location.href = window.API_ROOT + "/api/v2/oauth/wechat";
     },
-    qq(){
-      location.href = window.API_ROOT + '/api/v2/oauth/qq'
+    qq() {
+      location.href = window.API_ROOT + "/api/v2/oauth/qq";
     },
     getCode() {
       if (this.param.username == "") {
@@ -165,8 +161,8 @@ export default {
       if (!this.isagree) {
         this.$alert("您必须同意服务协议才能继续登录");
       } else {
-        this.$toast.loading({mask: true})
-        if (this.type == 'code') {
+        this.$toast.loading({ mask: true });
+        if (this.type == "code") {
           this.loginByCode();
         } else {
           this.loginByPassword();
@@ -184,9 +180,9 @@ export default {
       }
       const { username, password } = this.param;
       try {
-        this.$toast.loading('登录中...');
-        await this.attemptLogin({ username, password })
-        this.loginSuccess()
+        this.$toast.loading("登录中...");
+        await this.attemptLogin({ username, password });
+        this.loginSuccess();
       } catch (e) {
         if (e.status !== 422) {
           this.$toast.fail("账号密码错误！");
@@ -204,23 +200,23 @@ export default {
       }
       const { username, code } = this.param;
       try {
-        this.$toast.loading('登录中...');
-        await this.attemptLoginByCode({ username, code })
-        this.loginSuccess()
+        this.$toast.loading("登录中...");
+        await this.attemptLoginByCode({ username, code });
+        this.loginSuccess();
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     },
-    loginSuccess () {
-      let redirect = this.$route.query['redirect']
-      if(redirect != '' && redirect != undefined) {
-        redirect = decodeURIComponent(redirect)
+    loginSuccess() {
+      let redirect = this.$route.query["redirect"];
+      if (redirect != "" && redirect != undefined) {
+        redirect = decodeURIComponent(redirect);
         location.replace(redirect);
       } else {
-        this.$router.push({ name: 'home', params: {} })
+        this.$router.push({ name: "home", params: {} });
       }
-      this.$toast.success('欢迎回来~')
-    },
+      this.$toast.success("欢迎回来~");
+    }
   },
   created() {
     protocol.getProtocol("register").then(({ data }) => {
@@ -312,35 +308,35 @@ export default {
   text-align: center;
   margin-top: 30px;
 }
-.socail{
+.socail {
   width: 100%;
-  .title{
+  .title {
     text-align: center;
     color: #999;
     font-size: 12px;
   }
-  .socail-channel{
+  .socail-channel {
     display: block;
     justify-content: center;
     margin: 15px 0;
-    .item{
+    .item {
       text-align: center;
       margin: 6px 0;
-      padding:0px 30px;
-      a{
+      padding: 0px 30px;
+      a {
         display: block;
         width: 100%;
-        line-height:50px;
+        line-height: 50px;
         background: #000;
-        color:#fff;
-        font-size:.9rem;
+        color: #fff;
+        font-size: 0.9rem;
       }
     }
 
-    .wechat a{
+    .wechat a {
       background: #6ac57a;
     }
-    .qq a{
+    .qq a {
       background: #3399ff;
     }
   }
