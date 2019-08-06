@@ -137,7 +137,7 @@ export default {
     color: #ffffff;
     .store_banner_t {
       line-height: 1.4;
-      padding: 0.426667rem 0;
+      padding: 0.826667rem 0;
       span {
         font-size: 0.7rem;
         color: #b7b7b7;

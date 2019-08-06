@@ -1,65 +1,22 @@
 <template>
   <div class>
-    <x-header title="完善发票信息"></x-header>
+    <x-header title="申请开票"></x-header>
     <van-cell-group title="发票信息">
       <van-cell
-        title="发票类型："
-        is-link
-      >
-        <van-dropdown-menu>
-          <van-dropdown-item
-            v-model="invoice.type"
-            :options="invoiceType"
-          />
-        </van-dropdown-menu>
-      </van-cell>
-
-      <van-field
-        label="单位名称："
-        v-model="invoice.company"
-        placeholder="请输入单位名称"
+        title="单位名称"
+        value="单位名称"
       />
-      <van-field
-        label="税号："
-        v-model="invoice.no"
-        placeholder="请输入税号"
+      <van-cell
+        title="可申请金额"
+        value="0"
       />
+      </van-cell-group>
+      <van-cell-group title="申请信息">
       <van-field
-        label="单位地址："
-        v-model="invoice.address"
-        placeholder="请输入单位地址"
-      />
-      <van-field
-        label="单位电话："
-        v-model="invoice.telephone"
-        placeholder="请输入电话"
-      />
-      <van-field
-        label="开户行："
-        v-model="invoice.bank"
-        placeholder="请输入开户行"
-      />
-      <van-field
-        label="开户账号"
-        v-model="invoice.bank_account"
-        placeholder="请输入开户银行账号"
-      />
-    </van-cell-group>
-    <van-cell-group title="收票人信息">
-      <van-field
-        label="姓名："
-        v-model="invoice.name"
-        placeholder="请输入收件人姓名"
-      />
-      <van-field
-        label="联系电话："
-        v-model="invoice.mobile"
-        placeholder="请输入收件人手机号"
-      />
-      <van-field
-        label="地址："
-        v-model="invoice.postal_address"
-        placeholder="请输入详细地址"
+        label="开票金额"
+        input-align = "right"
+        v-model="invoice.amount"
+        placeholder="请输入开票金额"
       />
     </van-cell-group>
     <div class="btn">
@@ -68,7 +25,7 @@
         hairline
         size="large"
         @click="next()"
-      >保存</van-button>
+      >提交申请</van-button>
     </div>
   </div>
 </template>
@@ -81,10 +38,6 @@ import CellGroup from "vant/lib/cell-group";
 import "vant/lib/cell-group/style";
 import Button from "vant/lib/button";
 import "vant/lib/button/style";
-import DropdownMenu from "vant/lib/dropdown-menu";
-import "vant/lib/dropdown-menu/style";
-import DropdownItem from "vant/lib/dropdown-item";
-import "vant/lib/dropdown-item/style";
 import Field from "vant/lib/field";
 import "vant/lib/field/style";
 
@@ -95,37 +48,21 @@ export default {
     "van-cell-group": CellGroup,
     "van-cell": Cell,
     "van-button": Button,
-    "van-dropdown-menu": DropdownMenu,
-    "van-dropdown-item": DropdownItem,
     "van-field": Field
   },
   data() {
     //这里存放数据
     return {
       invoice: {
-        type: "0",
-        company: "",
-        no: "",
-        address: "",
-        telephone: "",
-        bank: "",
-        bank_account: "",
-        name: '',
-        mobile: '',
-        postal_address: '',
-      },
-      invoiceType: [
-        {
-          value: "0",
-          text: "普通发票"
-        }
-      ]
+        amount: "",
+        bill_id: "0"
+      }
     };
   },
   computed: {},
   watch: {},
   methods: {
-    next() {//保存发票信息
+    next() {//提交开票信息
       this.$toast.loading();
       this.$http.post('api/v2/alliance/bill/apply', this.invoice).then(data => {
         if (data.code == 200) {
