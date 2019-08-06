@@ -78,11 +78,13 @@ export default {
         });
     },
     getAdsTarget() {
+      this.$toast.loading();
       let adsId = this.$route.params.id;
       this.$http
         .get("api/v2/alliance/advertiser/add/adstarget/" + adsId)
         .then(data => {
           this.params = data.data.target;
+          this.$toast.clear();
         });
     }
   },

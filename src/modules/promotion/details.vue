@@ -1,18 +1,40 @@
 <template>
   <div class>
-    <x-header title="内容详情" @click-right="del">
-      <div slot="right" class="right">
+    <x-header
+      title="内容详情"
+      @click-right="del"
+    >
+      <div
+        slot="right"
+        class="right"
+      >
         <van-icon name="delete" />
       </div>
     </x-header>
-    <div class="skeleton" v-show="showSkeleton">
-      <van-skeleton title :row="3"></van-skeleton>
+    <div
+      class="skeleton"
+      v-show="showSkeleton"
+    >
+      <van-skeleton
+        title
+        :row="3"
+      ></van-skeleton>
     </div>
-    <van-panel :title="details.title" :desc="details.updated_at">
+    <van-panel
+      :title="details.title"
+      :desc="details.updated_at"
+    >
       <div class="panel-content">
         {{details.content}}
-        <ul @click="preview()" class="panel-imgs" v-show="showPreview">
-          <li v-for="(item, index) in details.attachment" :key="index">
+        <ul
+          @click="preview()"
+          class="panel-imgs"
+          v-show="showPreview"
+        >
+          <li
+            v-for="(item, index) in details.attachment"
+            :key="index"
+          >
             <img :src="item" />
           </li>
         </ul>
@@ -20,7 +42,12 @@
       </div>
     </van-panel>
     <div class="btn">
-      <van-button type="primary" hairline size="large" @click="edit()">编辑</van-button>
+      <van-button
+        type="primary"
+        hairline
+        size="large"
+        @click="edit()"
+      >编辑</van-button>
     </div>
   </div>
 </template>
@@ -61,7 +88,26 @@ export default {
         params: { id: this.details.id }
       });
     },
-    del() {},
+    del() {
+      this.$confirm({
+        title: "温馨提示",
+        content: '您确定要删除吗？',
+        yesText: "取消", // 左边按钮文本,
+        yesStyle: { overflow: "inherit" },
+        noText: "确定", // 设置右边按钮文本,
+        noStyle: { overflow: "inherit" } // 设置右边按钮样式,
+      }).then(function () {
+      }).catch(() => {
+        this.$toast.loading();
+        let adsId = this.$route.params.id;
+        this.$http
+          .get("api/v2/alliance/ads/target/del/" + adsId)
+          .then(data => {
+            this.$router.push({ name: "promotion.promotion-content" });
+          });
+      });
+
+    },
     getAdsTarget() {
       let adsId = this.$route.params.id;
       this.$http
@@ -76,7 +122,7 @@ export default {
       ImagePreview(this.details.attachment);
     }
   },
-  created() {},
+  created() { },
   mounted() {
     this.getAdsTarget();
   }
