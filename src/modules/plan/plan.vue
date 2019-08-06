@@ -14,7 +14,7 @@
 					:routerParams="{ id: inner.id }"
 				/>
 			</x-cell-group>
-			<infinite-loading @infinite="infiniteHandler" spinner="spiral">
+			<infinite-loading @infinite="infiniteHandler"  spinner="waveDots">
 				<div slot="no-more">没有更多数据啦...</div>
 				<div class="no-results" slot="no-results">没有数据</div>
 			</infinite-loading>
@@ -32,7 +32,7 @@
 					:routerParams="{ id: inner.task.id }"
 				/>
 			</x-cell-group>
-			<infinite-loading @infinite="infiniteHandler2" spinner="spiral">
+			<infinite-loading @infinite="infiniteHandler2"  spinner="waveDots">
 				<div slot="no-more">没有更多数据啦...</div>
 				<div class="no-results" slot="no-results">没有数据</div>
 			</infinite-loading>

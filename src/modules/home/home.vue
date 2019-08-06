@@ -70,7 +70,7 @@
         :label="item.approval.start_at+'至'+item.approval.close_at"
       />
     </van-cell-group>
-    <infinite-loading @infinite="getTask" spinner="spiral">
+    <infinite-loading @infinite="getTask"  spinner="waveDots">
       <div slot="no-more">没有更多数据啦...</div>
       <div slot="no-results">没有数据</div>
     </infinite-loading>

@@ -34,7 +34,7 @@
       <settle-filter @confirm="confirm"></settle-filter>
       <div class="list">
         <distributor-status-item :item="item" v-for="item in items" :key="item.id"></distributor-status-item>
-        <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler" spinner="spiral">
+        <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"  spinner="waveDots">
           <div slot="no-more">没有更多数据啦...</div>
           <div slot="no-results">没有数据</div>
         </infinite-loading>

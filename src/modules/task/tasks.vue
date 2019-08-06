@@ -30,7 +30,7 @@
 		<infinite-loading
 			:identifier="infiniteId"
 			@infinite="infiniteHandler"
-			spinner="spiral"
+			 spinner="waveDots"
 		>
 			<div slot="no-more">没有更多数据啦...</div>
 			<div slot="no-results">没有数据</div>

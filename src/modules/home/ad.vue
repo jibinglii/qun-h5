@@ -60,7 +60,7 @@
       />
     </van-cell-group>
 
-    <infinite-loading @infinite="adInfo" spinner="spiral">
+    <infinite-loading @infinite="adInfo"  spinner="waveDots">
       <div class="no-more" slot="no-more">没有更多数据啦...</div>
       <div class="no-results" slot="no-results">没有数据</div>
     </infinite-loading>
