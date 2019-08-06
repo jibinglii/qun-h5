@@ -43,7 +43,6 @@
 	import CellGroup from "vant/lib/cell-group";
 	import Cell from "vant/lib/cell";
 	import Button from "vant/lib/button";
-	import "vant/lib/button/style";
 	import "vant/lib/cell/style";
 	import XCell from "$components/XCell";
 	import XCellGroup from "$components/XCellGroup";
