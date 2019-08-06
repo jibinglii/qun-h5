@@ -1,42 +1,30 @@
 <template>
 	<div class="my-task">
 		<x-header title="推广计划管理"></x-header>
-		<div v-if="isShow">
-			<x-cell-group title="进行中">
-				<x-cell
-					:title="inner.task.title"
-					:inlineDesc="inner.start_at + '至' + inner.close_at"
-					v-for="(inner, index) in plans"
-					:key="index"
-					:is-link="true"
-					v-show="true"
-					router="plan.planingdetails"
-					:routerParams="{ id: inner.id }"
-				/>
-			</x-cell-group>
-			<infinite-loading @infinite="infiniteHandler" spinner="spiral">
-				<div slot="no-more">没有更多数据啦...</div>
-				<div class="no-results" slot="no-results">没有数据</div>
-			</infinite-loading>
-		</div>
-		<div v-if="isShow2">
-			<x-cell-group title="未开始">
-				<x-cell
-					:title="inner.task.title"
-					:inlineDesc="inner.start_at + '至' + inner.close_at"
-					v-for="(inner, index) in plans2"
-					:key="index"
-					:is-link="true"
-					v-show="true"
-					router="plan.plandetails"
-					:routerParams="{ id: inner.task.id }"
-				/>
-			</x-cell-group>
-			<infinite-loading @infinite="infiniteHandler2" spinner="spiral">
-				<div slot="no-more">没有更多数据啦...</div>
-				<div class="no-results" slot="no-results">没有数据</div>
-			</infinite-loading>
-		</div>
+		<van-tabs @click="tabClick" v-model="active" color="#191717">
+			<van-tab v-for="(item, index) in tasksType" :key="index" :title="item">
+				<x-cell-group>
+					<x-cell
+						:title="inner.task.title"
+						:inlineDesc="inner.start_at + '至' + inner.close_at"
+						v-for="(inner, index) in plans"
+						:key="index"
+						:is-link="true"
+						v-show="true"
+						:router="url"
+						:routerParams="{ id: inner.id }"
+					/>
+				</x-cell-group>
+				<infinite-loading
+					:identifier="infiniteId"
+					@infinite="infiniteHandler"
+					spinner="spiral"
+				>
+					<div slot="no-more">没有更多数据啦...</div>
+					<div class="no-results" slot="no-results">没有数据</div>
+				</infinite-loading>
+			</van-tab>
+		</van-tabs>
 	</div>
 </template>
 
@@ -47,6 +35,10 @@
 	import XCellGroup from "$components/XCellGroup";
 	import InfiniteLoading from "vue-infinite-loading";
 	import { mapGetters } from "vuex";
+	import Tab from 'vant/lib/tab';
+	import Tabs from 'vant/lib/tabs';
+	import 'vant/lib/tab/style';
+	import 'vant/lib/tabs/style'
 
 	export default {
 		//import引入的组件需要注入到对象中才能使用
@@ -55,15 +47,19 @@
 			XCell,
 			XCellGroup,
 			XGroup,
-			InfiniteLoading
+			InfiniteLoading,
+			'van-tabs': Tabs,
+			'van-tab': Tab,
 		},
 		data () {
 			//这里存放数据
 			return {
+				active: 0,
+				tasksType: ['进行中', '未开始'],
 				plans: [],
-				plans2: [],
-				isShow: true,
-				isShow2: true,
+				page: 1,
+				infiniteId: +new Date(),
+				url: 'plan.planingdetails',
 			}
 		},
 		//监听属性 类似于data概念
@@ -76,38 +72,31 @@
 		},
 		//方法集合
 		methods: {
+			tabClick (name, title) {
+				this.active = name;
+				this.page = 1;
+				this.plans = [],
+					this.infiniteId += 1;
+			},
 			infiniteHandler ($state) {
-				this.$http.get("api/v2/alliance/advertiser/task",
-					{ params: { page: this.page, include: 'task' } })
+				let params = { page: this.page, include: 'task' }
+				if (this.active == 1) {
+					params = { page: this.page, include: 'task', status: '1' }
+					this.url = "plan.plandetails";
+				}
+				this.$http.get("api/v2/alliance/advertiser/task", { params: params })
 					.then(({ data }) => {
+						console.log(data)
 						if (data.tasks.data.length > 0) {
 							this.page += 1
 							this.plans.push(...data.tasks.data);
 							$state.loaded();
-						} else {
-							//this.isShow = false
 						}
 						if (data.tasks.per_page > data.tasks.data.length) {
 							$state.complete();
 						}
 					});
-			},
-			infiniteHandler2 ($state) {
-				this.$http.get("api/v2/alliance/advertiser/task",
-					{ params: { page: this.page, status: '1', include: 'task' } })
-					.then(({ data }) => {
-						if (data.tasks.data.length > 0) {
-							this.page += 1
-							this.plans2.push(...data.tasks.data);
-							$state.loaded();
-						} else {
-							//this.isShow2 = false
-						}
-						if (data.tasks.per_page > data.tasks.data.length) {
-							$state.complete();
-						}
-					});
-			},
+			}
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {

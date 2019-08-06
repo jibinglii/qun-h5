@@ -25,6 +25,7 @@
 							v-for="(item, index) in list"
 							:key="index"
 							:title="item.title"
+              :value="'￥'+item.amount"
 							:label="'交易时间：' + item.created_at"
 						/>
 					</van-cell-group>
