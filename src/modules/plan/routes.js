@@ -1,5 +1,5 @@
 export default [{
-        path: 'plan/plan',
+        path: 'plan/plan/:active?',
         name: 'plan.plan',
         meta: {
             requiresAuth: true

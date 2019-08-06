@@ -104,9 +104,9 @@ export default {
           .get("api/v2/alliance/ads/target/del/" + adsId)
           .then(data => {
             this.$router.push({ name: "promotion.promotion-content" });
+            this.$toast.clear();
           });
       });
-
     },
     getAdsTarget() {
       let adsId = this.$route.params.id;

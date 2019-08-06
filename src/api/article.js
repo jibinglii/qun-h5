@@ -5,8 +5,5 @@ export default {
     },
     async view(id){
         return await http.get('api/v1/articles/' + id)
-    },
-    async hot(){
-        return await http.get('api/v1/articles/hot')
     }
 }

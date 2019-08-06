@@ -11,12 +11,7 @@
       </router-link>
     </van-cell-group>
     <van-cell-group title="计划概况">
-      <van-field
-        label="标题"
-        v-model="params.title"
-        placeholder="请输入标题"
-      />
-      
+
       <van-field
         is-link
         readonly
@@ -216,6 +211,10 @@ export default {
         this.$alert("请选择推广文案");
         return false;
       }
+      //构造TITLE
+      this.params.title = "[任务]" + this.typeColumns[this.params.show_type] + "/" + this.resource[this.params.show_category];
+      this.params.title += "/" + this.areaValue.replace(/\s*/g,"") + "/" + this.params.show_num + '次';
+
       this.$toast.loading('保存中');
       this.$http
         .post("api/v2/alliance/advertiser/add/task", this.params)

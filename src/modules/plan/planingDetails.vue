@@ -4,14 +4,31 @@
     <van-cell-group title="任务概况">
       <van-cell>
         <div class="top">
-          <div class="top-con" v-for="(item, index) in tops" :key="index">
+          <div
+            class="top-con"
+            v-for="(item, index) in tops"
+            :key="index"
+          >
             <span>{{item.num}}</span>
             <label for>{{item.label}}</label>
           </div>
         </div>
       </van-cell>
-      <van-cell is-link title="推广内容" value="推广内容的标题" :to="{name: 'plan.romotion'}" />
-      <van-cell is-link title="投放广告" value="投放广告的标题" />
+      <van-cell
+        title="名称"
+        value="推广标题"
+      />
+      <van-cell
+        is-link
+        title="推广内容"
+        value="推广内容的标题"
+        :to="{name: 'plan.romotion'}"
+      />
+      <van-cell
+        is-link
+        title="投放广告"
+        value="投放广告的标题"
+      />
     </van-cell-group>
     <van-cell-group title="任务进度">
       <van-cell>
@@ -35,7 +52,12 @@
     </van-cell-group>
 
     <div class="btn">
-      <van-button type="primary" hairline size="normal" @click="stopTask()">结束投放</van-button>
+      <van-button
+        type="primary"
+        hairline
+        size="normal"
+        @click="stopTask()"
+      >结束投放</van-button>
     </div>
   </div>
 </template>
@@ -84,7 +106,7 @@ export default {
             value: "180"
           }
         ],
-        color:['#d3d3d3', '#228B22']
+        color: ['#d3d3d3', '#228B22']
       },
       barShow: {
         id: "bar_show",
@@ -142,9 +164,29 @@ export default {
     };
   },
   computed: {},
-  created() {},
+  created() { },
   methods: {
-    stopTask() {}
+    stopTask() {
+      this.$confirm({
+        title: "温馨提示",
+        content: '您确定要停止本次推广吗？',
+        yesText: "取消", // 左边按钮文本,
+        yesStyle: { overflow: "inherit" },
+        noText: "确定", // 设置右边按钮文本,
+        noStyle: { overflow: "inherit" } // 设置右边按钮样式,
+      }).then(function () {
+      }).catch(() => {
+        this.$toast.loading();
+        let id = this.$route.params.id;
+        this.$http
+          .get("api/v2/alliance/approval/stop/" + id)
+          .then(data => {
+            this.$router.push({ name: "plan.plan" });
+            this.$toast.clear();
+          });
+      });
+
+    },
   }
 };
 </script>
