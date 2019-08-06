@@ -34,4 +34,13 @@ export default [{
         component: () =>
             import ('./invoiceInfo')
     },
+    {
+        path: 'wallet/invoiceapply',
+        name: 'wallet.invoiceapply',
+        meta: {
+            requiresAuth: true
+        },
+        component: () =>
+            import ('./invoiceApply')
+    },
 ]

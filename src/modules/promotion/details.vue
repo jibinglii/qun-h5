@@ -8,7 +8,7 @@
         slot="right"
         class="right"
       >
-        <van-icon name="delete" />
+        <van-icon size="1rem" name="delete" />
       </div>
     </x-header>
     <div
