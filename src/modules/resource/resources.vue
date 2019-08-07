@@ -1,6 +1,9 @@
 <template>
   <div class="resources">
-    <x-header title="资源管理" @click-right="$router.push({ name: 'resource.create', params:{ id:0 } })">
+    <x-header
+      title="资源管理"
+      @click-right="$router.push({ name: 'resource.create', params:{ id:0 } })"
+    >
       <i class="iconfont icon-add" slot="right"></i>
     </x-header>
     <x-cell-group>
@@ -15,12 +18,17 @@
         :routerParams="{'id': item.id}"
       ></x-cell>
     </x-cell-group>
-    <infinite-loading @infinite="infiniteHandler"  spinner="waveDots">
+    <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
       <div slot="no-more">没有更多数据啦...</div>
       <div slot="no-results">没有数据</div>
     </infinite-loading>
-    <div class="op" @click="$router.push({ name: 'resource.create' , params: {id:0}})">
-      <x-button type="primary" text="添加资源"></x-button>
+    <div class="btn">
+      <van-button
+        type="primary"
+        hairline
+        size="large"
+        @click="$router.push({ name: 'resource.create' , params: {id:0}})"
+      >添加资源</van-button>
     </div>
   </div>
 </template>
@@ -30,8 +38,10 @@ import XHeader from "$components/XHeader";
 import XCell from "$components/XCell";
 import XGroup from "$components/XGroup";
 import XCellGroup from "$components/XCellGroup";
-import XButton from "$components/XButton";
 import InfiniteLoading from "vue-infinite-loading";
+import Button from "vant/lib/button";
+import "vant/lib/button/style";
+
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
@@ -40,7 +50,7 @@ export default {
     XCellGroup,
     XGroup,
     InfiniteLoading,
-    XButton
+    "van-button": Button,
   },
   data() {
     //这里存放数据
@@ -83,13 +93,10 @@ export default {
 .resources {
   position: relative;
 
-  .op {
-    width: 90%;
-    margin: 0 auto;
-  }
-  .op a {
-    height: 50px;
-    line-height: 50px;
+  .btn {
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
   }
 }
 </style>

@@ -17,7 +17,7 @@
       <div class="top-con">
         <span>{{ flow.hot }}</span>
         <label for>热度</label>
-      </div>ß
+      </div>
     </div>
     <van-cell-group title="快捷入口">
       <van-cell>
@@ -30,6 +30,13 @@
           </div>
 
           <div class="fast-con">
+            <router-link :to="{ name: 'task.tasks' }">
+              <img src="/images/me/order.png" alt />
+              <label for>我的任务</label>
+            </router-link>
+          </div>
+
+          <div class="fast-con">
             <router-link :to="{ name: 'me.settlemanage' }">
               <img src="/images/me/account.png" alt />
               <label for>佣金管理</label>
@@ -37,14 +44,7 @@
           </div>
 
           <div class="fast-con">
-            <router-link :to="{ name: 'me.helps' }">
-              <img src="/images/me/order.png" alt />
-              <label for>我的订单</label>
-            </router-link>
-          </div>
-
-          <div class="fast-con">
-            <router-link :to="{ name: 'me.helps' }">
+            <router-link :to="{ name: 'me.helps.flow' }">
               <img src="/images/me/help.png" alt />
               <label for>帮助中心</label>
             </router-link>
@@ -53,12 +53,15 @@
       </van-cell>
     </van-cell-group>
     <van-cell-group title="最新任务">
+      <van-loading v-show="maxNewTask.length==0" class="loading" size="24px">加载中...</van-loading>
       <van-cell
         v-for="(item, index) in maxNewTask"
         :key="index"
-        :title="item.task.title"
+        is-link
+        :title="item.title"
         value="去处理"
-        :label="item.approval.start_at+'至'+item.approval.close_at"
+        :label="item.created_at"
+        :to="{ name: 'task.info', params:{id: item.id } }"
       />
     </van-cell-group>
     <van-cell-group title="公共任务">
@@ -70,9 +73,9 @@
         :label="item.approval.start_at+'至'+item.approval.close_at"
       />
     </van-cell-group>
-    <infinite-loading @infinite="getTask" spinner="waveDots">
+    <infinite-loading @infinite="getCommonTask" spinner="waveDots">
       <div slot="no-more">没有更多数据啦...</div>
-      <div slot="no-results">没有数据</div>
+      <div class="no-results" slot="no-results">没有数据</div>
     </infinite-loading>
     <nav-block />
     <tab></tab>
@@ -98,6 +101,7 @@ export default {
     "nav-block": Nav,
     "van-cell": Cell,
     "van-cell-group": CellGroup,
+    "van-loading": Loading,
     XHeader,
     InfiniteLoading
   },
@@ -105,7 +109,12 @@ export default {
     return {
       commonTask: [],
       maxNewTask: [],
-      flow: {}
+      flow: {
+        resource_count: 0,
+        task: 0,
+        money: 0,
+        hot: 0
+      }
     };
   },
   computed: {},
@@ -116,29 +125,31 @@ export default {
       });
     },
     getCommonTask($state) {
-      this.$http.get("api/v2/alliance/flow/common/task").then(({ data }) => {
-        this.commonTask = data.tasks.data;
-      });
-    },
-    getTask($state) {
+      //公共任务
       this.$http
         .get("api/v2/alliance/flow/task", {
           params: { page: this.page, status: -1, include: "task,approval" }
         })
         .then(({ data }) => {
           if (data.tasks.data.length > 0) {
-            this.maxNewTask.push(...data.tasks.data);
+            this.commonTask = data.tasks.data;
             $state.loaded();
           }
           if (data.tasks.per_page > data.tasks.data.length) {
             $state.complete();
           }
         });
+    },
+    getTask($state) {
+      //最新任务
+      this.$http.get("api/v2/alliance/flow/common/task").then(({ data }) => {
+        this.maxNewTask.push(...data.tasks.data);
+      });
     }
   },
   created() {
-    this.getCommonTask();
     this.flowInfo();
+    this.getTask();
   }
 };
 </script>
@@ -195,6 +206,10 @@ export default {
         margin: 0 auto;
       }
     }
+  }
+  .loading {
+    text-align: center;
+    line-height: 50px;
   }
 }
 </style>

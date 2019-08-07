@@ -25,7 +25,7 @@
     </van-tabs>
     <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler" spinner="waveDots">
       <div slot="no-more">没有更多数据啦...</div>
-      <div slot="no-results">没有数据</div>
+      <div class="no-results" slot="no-results">没有数据</div>
     </infinite-loading>
   </div>
 </template>
@@ -59,8 +59,7 @@ export default {
       active: -1,
       statusTypes: [
         { title: "全部" },
-        { title: "审核中" },
-        { title: "投放中" },
+        { title: "进行中" },
         { title: "已结束" }
       ],
       myTasks: [],
