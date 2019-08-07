@@ -53,6 +53,15 @@ export default [{
             import ('./Help')
     },
     {
+        path: 'me/helpflow',
+        name: 'me.helps.flow',
+        meta: {
+            requiresAuth: false
+        },
+        component: () =>
+            import ('./HelpFlow')
+    },
+    {
         path: 'me/help/view/:id.html',
         name: 'me.helps.view',
         meta: {
@@ -96,5 +105,14 @@ export default [{
         },
         component: () =>
             import ('./dataStatis')
+    },
+    {
+        path: 'me/datastatisflow',
+        name: 'me.datastatis.flow',
+        meta: {
+            requiresAuth: true
+        },
+        component: () =>
+            import ('./dataStatisFlow')
     },
 ]

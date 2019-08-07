@@ -26,47 +26,43 @@
         <div class="info-type"></div>
       </div>
     </van-cell-group>
-    <x-group>
-      <info-cell title="推广链接">
-        <span class="tg">{{ tg_url }}</span>
-        <button class="btns">复制链接</button>
-        <button class="btns">广告链接</button>
-      </info-cell>
-    </x-group>
     <van-cell-group title="任务进度">
       <van-cell>
         <pie :params="pieProgress" ref="pie" />
       </van-cell>
     </van-cell-group>
-    <van-cell-group title="任务完成">
+    <van-cell-group title="推广内容">
+      <van-cell title="推广广告" value="这里是对应广告的标题" />
+      <div class="tools">
+        <van-button type="info">复制链接</van-button>
+        <van-button type="warning">查看广告图</van-button>
+      </div>
+    </van-cell-group>
+    <van-cell-group title="完成任务">
       <van-field
         readonly
         clickable
-        label="相关资源"
-        :value="value"
+        label="投放资源"
+        :value="resource.name"
         placeholder="请选择..."
-        @click="showPicker = true"
+        @click="showResourcePicker = true"
       />
-      <van-popup v-model="showPicker" position="bottom">
+      <van-popup v-model="showResourcePicker" position="bottom">
         <van-picker
           show-toolbar
-          :columns="columns"
-          @cancel="showPicker = false"
-          @confirm="onConfirm"
+          :columns="resource.nameItem"
+          @cancel="showResourcePicker = false"
+          @confirm="onResourceConfirm"
         />
       </van-popup>
-      <x-uploader title="上传投放凭证" desc="请上传你完成任务的投放凭证" v-model="fileList" :limit="1"></x-uploader>
+      <x-uploader title="上传投放凭证" v-model="fileList" :limit="1"></x-uploader>
+      <div class="btns">
+        <van-button type="primary" size="large" @click="upProof()">提交投放凭证</van-button>
+      </div>
     </van-cell-group>
-    <div class="op" @click="upProof()">
-      <x-button type="primary" text="提交投放凭证"></x-button>
-    </div>
+
     <van-cell-group title="投放记录">
-      <van-cell
-        v-for="(item, index) in taskInfo.result"
-        :key="index"
-        :title="taskInfo.title"
-        :label="item.created_at"
-      ></van-cell>
+      <van-cell is-link v-for="(item, index) in taskInfo.result" :key="index" title="投放的资源名称" label="投放时间"></van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -74,34 +70,29 @@
 <script>
 import XHeader from "$components/XHeader";
 import Cell from "vant/lib/cell";
-import XGroup from "$components/XGroup";
 import CellGroup from "vant/lib/cell-group";
 import "vant/lib/cell/style";
 import "vant/lib/cell-group/style";
-import XButton from "$components/XButton";
-import InfoCell from "$components/InfoCell";
-import Circel from "vant/lib/circle";
-import "vant/lib/circle/style";
 import XUploader from "$components/XUploader";
 import Field from "vant/lib/field";
 import "vant/lib/field/style";
+import Button from "vant/lib/button";
+import "vant/lib/button/style";
 import Popup from "vant/lib/popup";
 import "vant/lib/popup/style";
 import Picker from "vant/lib/picker";
 import "vant/lib/picker/style";
 import Pie from "$components/Pie";
+
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
     XHeader,
-    XGroup,
-    XButton,
-    InfoCell,
+    XUploader,
     "van-cell": Cell,
     "van-cell-group": CellGroup,
-    "van-circle": Circel,
-    XUploader,
     "van-field": Field,
+    "van-button": Button,
     "van-popup": Popup,
     "van-picker": Picker,
     Pie
@@ -109,17 +100,27 @@ export default {
   data() {
     //这里存放数据
     return {
-      currentRate: 50,
-      text: "",
-      rate: 50,
-      resource: {},
-      taskInfo: {},
-      fileList: [],
+      taskInfo: {
+        show_category_label:'-',
+        show_type_label:'-',
+        show_area_id:'-',
+        max_show_price:'0',
+        max_click_price:'0',
+      },
+      resource: {
+        idItem: [],
+        nameItem: [],
+        id: "",
+        name: ""
+      },
+      resourceIdItem: [],
+      resourceNameItem: [],
       resourceId: "",
-      tg_url: "",
-      showPicker: false,
-      columns: [],
-      value: "",
+      resourceName: "",
+      url: "",
+      showInfo: {},
+      fileList: [],
+      showResourcePicker: false,
       pieProgress: {
         id: "pie_progress",
         name: "执行进度",
@@ -138,10 +139,10 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    onConfirm(value, index) {
-      this.value = value;
-      this.resourceId = this.findKey(this.resource, value);
-      this.showPicker = false;
+    onResourceConfirm(value, index) {
+      this.resource.name = value;
+      this.resource.id = this.resource.idItem[index];
+      this.showResourcePicker = false;
     },
     getTaskInfo() {
       let res_id = this.$route.params.id;
@@ -155,7 +156,7 @@ export default {
         })
         .then(({ data }) => {
           this.taskInfo = data.task_info;
-          this.tg_url = data.task_info.target.link;
+          this.url = data.task_info.target.link;
           this.pieProgress.data = [
             { name: "未执行", value: 100 - data.task_info.speed },
             { name: "已完成", value: data.task_info.speed }
@@ -165,7 +166,7 @@ export default {
     },
     upProof() {
       let params = {
-        task_id: this.taskInfo.id,
+        task_id: this.$route.params.id,
         resource_id: this.resourceId,
         attachment: this.fileList
       };
@@ -186,20 +187,16 @@ export default {
     getResource() {
       this.$http.get("api/v2/alliance/resources").then(({ data }) => {
         data.resources.data.map((item, index) => {
-          this.resource[item.id] = item.name;
-          this.columns.push(item.name);
+          this.resource.idItem.push(item.id);
+          this.resource.nameItem.push(item.name);
         });
       });
-    },
-    findKey(obj, value, compare = (a, b) => a === b) {
-      return Object.keys(obj).find(k => compare(obj[k], value));
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.text = this.currentRate.toFixed(0) + "%";
     this.getTaskInfo();
     this.getResource();
   }
@@ -228,24 +225,15 @@ export default {
       }
     }
   }
+  .tools {
+    text-align: right;
+    padding: 6px 0;
+    button {
+      margin-right: 10px;
+    }
+  }
   .btns {
-    width: 80px;
-    height: 30px;
-    margin-left: 5px;
-    line-height: 30px;
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 10px;
-  }
-
-  .op {
-    width: 80%;
-    margin: 10px auto;
-  }
-  .op a {
-    height: 46px;
-    line-height: 46px;
-    font-size: 14px;
+    padding: 10px;
   }
 }
 </style>
