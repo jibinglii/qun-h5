@@ -19,26 +19,26 @@
       <van-cell
         is-link
         title="推广内容"
-        value="推广内容的标题"
-        :to="{name: 'plan.romotion'}"
+        :value="taskInfo.target.title"
+        :to="{ name: 'plan.romotion',params:{id:taskInfo.target.id}}"
       />
       <van-cell
         title="总预算"
-        value="0"
+        :value="'￥'+taskInfo.budget"
       />
       <van-cell
         title="投放预算"
-        value="1~10元"
+        :value="'￥'+taskInfo.min_show_price+'~'+taskInfo.max_show_price"
       />
       <van-cell
         title="展现预算"
-        value="1~10元"
+        :value="'￥'+taskInfo.min_click_price+'~'+taskInfo.max_click_price"
       />
     </van-cell-group>
     <van-cell-group title="推广概况">
       <van-cell
         title="总消费"
-        value="0"
+        :value="'￥'+0"
       />
       <van-cell
         title="总投放数"

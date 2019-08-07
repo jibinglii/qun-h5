@@ -1,44 +1,69 @@
 <template>
-  <div class="my-task">
-    <x-header title="推广内容"></x-header>
-    <x-cell-group>
-      <x-cell
-        v-for="(item, index) in servings"
-        :key="index"
-        :is-link="true"
-        :title="item.title"
-      ></x-cell>
-    </x-cell-group>
+  <div class>
+    <x-header title="内容详情"></x-header>
+    <div class="skeleton" v-show="showSkeleton">
+      <van-skeleton title :row="3"></van-skeleton>
+    </div>
+    <van-panel :title="details.title" :desc="details.updated_at">
+      <div class="panel-content">
+        {{ details.content }}
+        <ul @click="preview()" class="panel-imgs" v-show="showPreview">
+          <li v-for="(item, index) in details.attachment" :key="index">
+            <img :src="item" />
+          </li>
+        </ul>
+        <div class="panel-footer">Link: {{ details.link }}</div>
+      </div>
+    </van-panel>
   </div>
 </template>
 
 <script>
 import XHeader from "$components/XHeader";
-import XCell from "$components/XCell";
-import XCellGroup from "$components/XCellGroup";
+import { Skeleton, Icon, Panel } from "vant";
+import "vant/lib/panel/style";
+import ImagePreview from "vant/lib/image-preview";
+import "vant/lib/image-preview/style";
+
 
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
     XHeader,
-    XCell,
-    XCellGroup
+    "van-icon": Icon,
+    "van-panel": Panel,
+    "van-skeleton": Skeleton,
+    ImagePreview
   },
   data() {
     //这里存放数据
     return {
-      servings: [
-        {
-          title: "母婴推广群",
-        }
-      ]
+      showSkeleton: true,
+      showPreview: false,
+      details: {}
     };
   },
   computed: {},
   watch: {},
-  methods: {},
+  methods: {
+    getAdsTarget() {
+      let adsId = this.$route.params.id;
+      this.$http
+        .get("api/v2/alliance/advertiser/adstarget/info/" + adsId)
+        .then(data => {
+          this.details = data.data.target;
+          if (this.details.attachment.length > 0) this.showPreview = true;
+          this.showSkeleton = false;
+        });
+    },
+    preview() {
+      ImagePreview(this.details.attachment);
+    }
+  },
   created() {},
-  mounted() {}
+  mounted() {
+    this.getAdsTarget();
+  }
 };
 </script>
 <style lang='scss' scoped>
@@ -46,10 +71,43 @@ export default {
 /deep/.weui-cells {
   margin-top: 0;
   .vux-label {
-    font-weight: 500;
+    line-height: 3;
   }
   .vux-label-desc {
     font-size: 12px;
   }
+}
+/deep/.van-icon {
+  font-size: 20px;
+  color: #333;
+}
+.panel-content {
+  padding: 10px;
+}
+.panel-imgs {
+  margin-top: 10px;
+  li {
+    padding: 8px;
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+.panel-footer {
+  color: #aaa;
+  font-size: 0.6rem;
+  padding: 10px 0;
+  margin-top: 10px;
+  border-top: solid 1px #f3f3f3;
+}
+.btn {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+}
+.skeleton {
+  background: #fff;
+  padding: 10px;
 }
 </style>
