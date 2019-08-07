@@ -79,7 +79,19 @@ export default {
               url:'wallet.wallet',
               img:'/images/me/finance.png',
               show: true
-            }
+            },
+            {
+              title:'数据统计',
+              url:'me.datastatis',
+              img:'/images/me/statistics.png',
+              show: true
+            },
+            {
+              title: '使用帮助',
+              url: 'me.helps',
+              img: '/images/me/help.png',
+              show: true
+            },
           ]
         },
         {
@@ -104,24 +116,24 @@ export default {
               img: '/images/me/jiesuan.png',
               show: true
             },
-          ]
-        },
-        {
-          title: '扩展功能',
-          show: true,
-          sub: [
-             {
+            {
               title:'数据统计',
-              url:'me.datastatis',
+              url:'me.datastatis.flow',
               img:'/images/me/statistics.png',
               show: true
             },
             {
               title: '使用帮助',
-              url: 'me.helps',
+              url: 'me.helps.flow',
               img: '/images/me/help.png',
               show: true
             },
+          ]
+        },
+        {
+          title: '帐号设置',
+          show: true,
+          sub: [
             {
               title: '更多',
               url: 'me.accountsetting',
