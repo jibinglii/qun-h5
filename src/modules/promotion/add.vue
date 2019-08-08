@@ -124,7 +124,8 @@ export default {
         min_click_price: "0.1",
         max_click_price: "1",
         duration: 1,
-        budget: "1000"
+        budget: "1000",
+        ads_target_id:0,
       },
       targetName: "请选择",
       typeValue: "请选择",
@@ -187,7 +188,7 @@ export default {
         "/" +
         this.params.show_num +
         "次";
-
+      this.params.ads_target_id = this.params.targetId
       this.$toast.loading("保存中");
       this.$http
         .post("api/v2/alliance/advertiser/add/task", this.params)

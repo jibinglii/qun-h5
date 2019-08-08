@@ -10,7 +10,7 @@
     <van-cell-group>
       <x-uploader title="相关图片" v-model="params.attachment" :limit="2"></x-uploader>
     </van-cell-group>
-    <van-cell-group>ß
+    <van-cell-group>
       <van-field label="推广链接" v-model="params.link" placeholder="请输入推广链接" />
     </van-cell-group>
     <div class="btn">

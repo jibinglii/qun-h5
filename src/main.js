@@ -17,8 +17,8 @@ import { Alert, Confirm } from 'wc-messagebox'
 import 'wc-messagebox/style.css'
 
 import 'vant/lib/toast/style'
-import 'vant/lib/skeleton/style';
-import 'vant/lib/button/style';
+import 'vant/lib/skeleton/style'
+import 'vant/lib/button/style'
 
 import VueFab from 'vue-float-action-button'
 

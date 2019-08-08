@@ -17,7 +17,7 @@ export default [{
             import ('./planDetails')
     },
     {
-        path: 'plan/serving',
+        path: 'plan/serving/:id',
         name: 'plan.serving',
         meta: {
             requiresAuth: true
@@ -44,7 +44,7 @@ export default [{
             import ('./planingDetails')
     },
     {
-        path: 'plan/romotion',
+        path: 'plan/romotion/:id',
         name: 'plan.romotion',
         meta: {
             requiresAuth: true
