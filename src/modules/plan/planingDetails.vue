@@ -26,17 +26,17 @@
 		</van-cell-group>
 		<van-cell-group title="投放情况">
 			<van-cell>
-				<bar :params="barShow" />
+				<bar :params="barShow" ref="bar" />
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="浏览情况">
 			<van-cell>
-				<bar :params="barClick" />
+				<bar :params="barClick"  />
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="消费情况">
 			<van-cell>
-				<bar :params="barCast" />
+				<bar :params="barCast"  />
 			</van-cell>
 		</van-cell-group>
 
@@ -94,9 +94,9 @@
 					width: '100%',
 					height: '300px',
 					showLegend: true,
-					xAxis: ['一', '二', '三', '四', '五', '六', '七'],
+					xAxis: [],
 					data: [
-						[120, 200, 150, 80, 70, 110, 130]
+						[]
 					]
 				},
 				barClick: {
@@ -107,9 +107,9 @@
 					width: '100%',
 					height: '300px',
 					showLegend: true,
-					xAxis: ['一', '二', '三', '四', '五', '六', '七'],
+					xAxis: [],
 					data: [
-						[120, 200, 150, 80, 70, 110, 130]
+						[]
 					]
 				},
 				barCast: {
@@ -120,9 +120,9 @@
 					width: '100%',
 					height: '300px',
 					showLegend: true,
-					xAxis: ['一', '二', '三', '四', '五', '六', '七'],
+					xAxis: [],
 					data: [
-						[120, 200, 150, 80, 70, 110, 130]
+						[]
 					]
 				},
 				tops: [
@@ -174,19 +174,20 @@
 						this.tops[0].num = res.task.budget
 						this.tops[1].num = res.result_num
 						this.tops[2].num = res.click_num
-						this.pieProgress.data = [{ name: '未完成', value: (100 - res.task_out) }, { name: '已完成', value: res.task_out }]
-						res.result.map(function (item, index) {
-							this.barShow.xAxis.push(...item.day)
-							this.barShow.data['data'].push(...item.num)
+            this.pieProgress.data = [{ name: '未完成', value: (100 - res.task_out) }, { name: '已完成', value: res.task_out }]
+						res.result_record.map((item, index) => {
+              this.barShow.xAxis.push(item.day)
+              this.barShow.data[0].push(item.num)
+            })
+						res.click_record.map((item, index) => {
+							this.barClick.xAxis.push(item.day)
+							this.barClick.data[0].push(item.num)
 						})
-						res.click.map(function (item, index) {
-							this.barClick.xAxis.push(...item.day)
-							this.barClick.data['data'].push(...item.num)
-						})
-						res.order.map(function (item, index) {
-							this.barCast.xAxis.push(...item.day)
-							this.barCast.data['data'].push(...item.num)
-						})
+						res.order.map((item, index) => {
+							this.barCast.xAxis.push(item.day)
+							this.barCast.data[0].push(item.num)
+            })
+             
 					})
 			}
 		},

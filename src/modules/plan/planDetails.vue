@@ -14,31 +14,31 @@
     <van-cell-group title="任务概况">
       <van-cell
         title="名称"
-        :value="taskInfo.title"
+        :value="taskInfo.task.title"
       />
       <van-cell
         is-link
         title="推广内容"
-        :value="taskInfo.target.title"
-        :to="{ name: 'plan.romotion',params:{id:taskInfo.target.id}}"
+        :value="taskInfo.task.target.title"
+        :to="{ name: 'plan.romotion',params:{id:taskInfo.task.target.id}}"
       />
       <van-cell
         title="总预算"
-        :value="'￥'+taskInfo.budget"
+        :value="'￥'+taskInfo.task.budget"
       />
       <van-cell
         title="投放预算"
-        :value="'￥'+taskInfo.min_show_price+'~'+taskInfo.max_show_price"
+        :value="'￥'+taskInfo.task.min_show_price+'~'+taskInfo.task.max_show_price"
       />
       <van-cell
         title="展现预算"
-        :value="'￥'+taskInfo.min_click_price+'~'+taskInfo.max_click_price"
+        :value="'￥'+taskInfo.task.min_click_price+'~'+taskInfo.task.max_click_price"
       />
     </van-cell-group>
     <van-cell-group title="推广概况">
       <van-cell
         title="总消费"
-        :value="'￥'+0"
+        :value="'￥'+taskInfo.total_amount"
       />
       <van-cell
         title="总投放数"
@@ -50,20 +50,22 @@
         title="总浏览数"
         :value="taskInfo.click_num"
         is-link
-        :to="{ name: 'plan.totalview', params:{taskId:taskInfo.id} }"
+        :to="{ name: 'plan.totalview', params:{taskId:taskInfo.ads.id} }"
       />
     </van-cell-group>
     <van-cell-group title="历史投放广告">
       <van-cell
         is-link
-        title="广告名称"
-        label="时间"
+        :title="taskInfo.ads.title"
+        :label="taskInfo.ads.created_at"
       />
     </van-cell-group>
     <van-cell-group title="历史流转情况">
-      <van-cell
+      <van-cell 
+        v-for="(item,index) in taskInfo.history"
+        :key="index"
         is-link
-        title="流转时间"
+        :title="item.start_at+'至'+item.close_at"
         label='投放1000次  点击100次  总消费1000元'
       />
     </van-cell-group>
@@ -94,7 +96,6 @@ import DropdownMenu from "vant/lib/dropdown-menu";
 import "vant/lib/dropdown-menu/style";
 import DropdownItem from "vant/lib/dropdown-item";
 import "vant/lib/dropdown-item/style";
-import "vant/lib/button/style";
 import { mapGetters } from "vuex";
 
 
@@ -122,7 +123,7 @@ export default {
   },
   methods: {
     again() {
-      this.$http.post('api/v2/alliance/advertiser/approval', { task_id: this.taskInfo.id })
+      this.$http.post('api/v2/alliance/advertiser/approval', { task_id: this.taskInfo.task_id,approval_id:this.taskInfo.id })
         .then(data => {
           if (data.code = 201) {
             this.$alert(data.message)
@@ -135,7 +136,7 @@ export default {
     getTaskInfo() {
       this.$toast.loading();
       let id = this.$route.params.id
-      this.$http.get('api/v2/alliance/advertiser/info/' + id, { params: { include: 'target,approval,ads' } }).then(({ data }) => {
+      this.$http.get('api/v2/alliance/advertiser/info/' + id, { params: { include: 'task.target,task,ads' } }).then(({ data }) => {
         this.taskInfo = data.task;
         this.$toast.clear();
       })

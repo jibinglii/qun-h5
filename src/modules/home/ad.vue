@@ -56,7 +56,7 @@
         :title="item.task.title"
         is-link
         :label="item.start_at + '至' + item.close_at"
-        :to="{ name: 'plan.planingdetails', params: { id: item.task.id } }"
+        :to="{ name: 'plan.planingdetails', params: { id: item.id } }"
       />
     </van-cell-group>
 
