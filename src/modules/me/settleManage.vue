@@ -29,8 +29,8 @@
         <van-cell
           v-for="item in items"
           :key="item.id"
-          :title="item.order_id"
-          :value="item.settle_amount | formatMoney"
+          :title="'【投放】'+item.serving_num+'次'"
+          :value="item.settlement_amount | formatMoney"
           :label="item.created_at"
         />
         <infinite-loading
@@ -114,10 +114,10 @@ export default {
         params: {
           month: this.month,
           page: this.page,
-          include: "order"
+          include: "user"
         }
       };
-      this.$http.get("api/v2/user/settles", param).then(({ data }) => {
+      this.$http.get("api/v2/alliance/settles", param).then(({ data }) => {
         if (data.settles.data.length > 0) {
           this.page += 1;
           this.items.push(...data.settles.data);

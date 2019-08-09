@@ -125,6 +125,11 @@ export default {
   computed: {},
   watch: {},
   methods: {
+    getBillInfo(){
+      this.$http.get('api/v2/alliance/bill/apply').then(data =>{
+        this.invoice = data.data.bill
+      })
+    },
     next() {//保存发票信息
       this.$toast.loading();
       this.$http.post('api/v2/alliance/bill/apply', this.invoice).then(data => {
@@ -138,7 +143,9 @@ export default {
     }
   },
   created() { },
-  mounted() { }
+  mounted() {
+    this.getBillInfo()
+   }
 };
 </script>
 <style lang='scss' scoped>

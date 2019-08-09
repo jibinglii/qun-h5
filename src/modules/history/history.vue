@@ -8,8 +8,8 @@
         :is-link="true"
         :title="item.task.title"
         :inlineDesc="item.start_at+'至'+item.close_at"
-        router="plan.planingdetails"
-        :routerParams="{'id': item.task.id}"
+        router="plan.plandetails"
+        :routerParams="{'id': item.id}"
       ></x-cell>
     </x-cell-group>
     <infinite-loading

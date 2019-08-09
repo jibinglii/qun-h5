@@ -20,15 +20,15 @@
       </van-cell>
     </van-cell-group>
     <van-cell-group title="开票记录">
-      <x-cell
+      <van-cell
         v-for="(item, index) in list"
         :key="index"
         :is-link="false"
         :title="item.bill.name"
         :value="'￥'+item.amount"
-        :inlineDesc="item.bill.mobile + '/' + item.created_at"
+        :label="item.bill.mobile + '/' + item.created_at"
       >
-      </x-cell>
+      </van-cell>
     </van-cell-group>
     <infinite-loading
       @infinite="getBillrecord"
