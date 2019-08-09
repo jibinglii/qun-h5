@@ -1,46 +1,58 @@
-export default [{
-        path: 'wallet/wallet',
-        name: 'wallet.wallet',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./wallet')
+export default [
+  {
+    path: 'wallet/wallet',
+    name: 'wallet.wallet',
+    meta: {
+      requiresAuth: true
     },
-    {
-        path: 'wallet/recharge',
-        name: 'wallet.recharge',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./recharge')
+    component: () => import('./wallet')
+  },
+  {
+    path: 'wallet/recharge',
+    name: 'wallet.recharge',
+    meta: {
+      requiresAuth: true
     },
-    {
-        path: 'wallet/invoice',
-        name: 'wallet.invoice',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./invoice')
+    component: () => import('./recharge')
+  },
+  {
+    path: 'wallet/invoice',
+    name: 'wallet.invoice',
+    meta: {
+      requiresAuth: true
     },
-    {
-        path: 'wallet/invoiceinfo',
-        name: 'wallet.invoiceinfo',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./invoiceInfo')
+    component: () => import('./invoice')
+  },
+  {
+    path: 'wallet/invoiceinfo',
+    name: 'wallet.invoiceinfo',
+    meta: {
+      requiresAuth: true
     },
-    {
-        path: 'wallet/invoiceapply',
-        name: 'wallet.invoiceapply',
-        meta: {
-            requiresAuth: true
-        },
-        component: () =>
-            import ('./invoiceApply')
+    component: () => import('./invoiceInfo')
+  },
+  {
+    path: 'wallet/invoiceapply',
+    name: 'wallet.invoiceapply',
+    meta: {
+      requiresAuth: true
     },
+    component: () => import('./invoiceApply')
+  },
+  {
+    path: 'wallet/success',
+    name: 'wallet.success',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('./success')
+  },
+  {
+    path: 'wallet/fail',
+    name: 'wallet.fail',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('./fail')
+  }
 ]

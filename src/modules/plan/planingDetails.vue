@@ -14,14 +14,14 @@
 			<van-cell
 				is-link
 				title="推广内容"
-				:value="approval.task.target.title"
-				:to="{ name: 'plan.romotion',params:{id:approval.task.target.id} }"
+				:value="approval.target.title"
+				:to="{ name: 'plan.romotion', params: { id: approval.target.id } }"
 			/>
 			<van-cell is-link title="投放广告" :value="approval.ads.title" />
 		</van-cell-group>
 		<van-cell-group title="任务进度">
 			<van-cell>
-				<pie :params="pieProgress" />
+				<pie :params="pieProgress" ref="pie" />
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="投放情况">
@@ -31,12 +31,12 @@
 		</van-cell-group>
 		<van-cell-group title="浏览情况">
 			<van-cell>
-				<bar :params="barClick"  />
+				<bar :params="barClick" ref="bar1" />
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="消费情况">
 			<van-cell>
-				<bar :params="barCast"  />
+				<bar :params="barCast" ref="bar2" />
 			</van-cell>
 		</van-cell-group>
 
@@ -75,7 +75,11 @@
 		},
 		data () {
 			return {
-				approval: [],
+				approval: {
+					task: {},
+					target: {},
+					ads: {},
+				},
 				pieProgress: {
 					id: "pie_progress",
 					name: "执行进度",
@@ -94,9 +98,9 @@
 					width: '100%',
 					height: '300px',
 					showLegend: true,
-					xAxis: [],
+					xAxis: [0],
 					data: [
-						[]
+						[0]
 					]
 				},
 				barClick: {
@@ -107,9 +111,9 @@
 					width: '100%',
 					height: '300px',
 					showLegend: true,
-					xAxis: [],
+					xAxis: [0],
 					data: [
-						[]
+						[0]
 					]
 				},
 				barCast: {
@@ -120,9 +124,9 @@
 					width: '100%',
 					height: '300px',
 					showLegend: true,
-					xAxis: [],
+					xAxis: [0],
 					data: [
-						[]
+						[0]
 					]
 				},
 				tops: [
@@ -171,23 +175,41 @@
 					.then(data => {
 						this.approval = data.data.approval
 						let res = data.data.approval;
+						this.approval.task = res.task
+						this.approval.target = res.task.target
+						this.approval.ads = res.ads
 						this.tops[0].num = res.task.budget
 						this.tops[1].num = res.result_num
 						this.tops[2].num = res.click_num
-            this.pieProgress.data = [{ name: '未完成', value: (100 - res.task_out) }, { name: '已完成', value: res.task_out }]
+						this.pieProgress.data = [{ name: '未完成', value: (100 - res.task_out) }, { name: '已完成', value: res.task_out }]
+						this.$refs['pie'].drawPie()
+						if (res.result_record.length > 0) {
+							this.barShow.xAxis = []
+							this.barShow.data[0].splice(0, 1)
+						}
+						if (res.click_record.length > 0) {
+							this.barClick.xAxis = []
+							this.barClick.data[0].splice(0, 1)
+						}
+						if (res.order.length > 0) {
+							this.barCast.xAxis = []
+							this.barCast.data[0].splice(0, 1)
+						}
 						res.result_record.map((item, index) => {
-              this.barShow.xAxis.push(item.day)
-              this.barShow.data[0].push(item.num)
-            })
+							this.barShow.xAxis.push(item.day)
+							this.barShow.data[0].push(item.num)
+						})
+						this.$refs['bar'].drawBar()
 						res.click_record.map((item, index) => {
 							this.barClick.xAxis.push(item.day)
 							this.barClick.data[0].push(item.num)
 						})
+						this.$refs['bar1'].drawBar()
 						res.order.map((item, index) => {
 							this.barCast.xAxis.push(item.day)
 							this.barCast.data[0].push(item.num)
-            })
-             
+						})
+						this.$refs['bar2'].drawBar()
 					})
 			}
 		},
