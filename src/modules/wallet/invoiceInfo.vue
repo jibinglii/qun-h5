@@ -2,18 +2,6 @@
   <div class>
     <x-header title="完善发票信息"></x-header>
     <van-cell-group title="发票信息">
-      <van-cell
-        title="发票类型："
-        is-link
-      >
-        <van-dropdown-menu>
-          <van-dropdown-item
-            v-model="invoice.type"
-            :options="invoiceType"
-          />
-        </van-dropdown-menu>
-      </van-cell>
-
       <van-field
         label="单位名称："
         v-model="invoice.company"
@@ -80,7 +68,6 @@ import "vant/lib/cell/style";
 import CellGroup from "vant/lib/cell-group";
 import "vant/lib/cell-group/style";
 import Button from "vant/lib/button";
-import "vant/lib/button/style";
 import DropdownMenu from "vant/lib/dropdown-menu";
 import "vant/lib/dropdown-menu/style";
 import DropdownItem from "vant/lib/dropdown-item";
@@ -103,7 +90,6 @@ export default {
     //这里存放数据
     return {
       invoice: {
-        type: "0",
         company: "",
         no: "",
         address: "",
@@ -113,13 +99,7 @@ export default {
         name: '',
         mobile: '',
         postal_address: '',
-      },
-      invoiceType: [
-        {
-          value: "0",
-          text: "普通发票"
-        }
-      ]
+      }
     };
   },
   computed: {},
@@ -127,14 +107,16 @@ export default {
   methods: {
     getBillInfo(){
       this.$http.get('api/v2/alliance/bill/apply').then(data =>{
-        this.invoice = data.data.bill
+        if(data.data.bill.id!=undefined){
+          this.invoice = data.data.bill
+        }
       })
     },
     next() {//保存发票信息
       this.$toast.loading();
       this.$http.post('api/v2/alliance/bill/apply', this.invoice).then(data => {
         if (data.code == 200) {
-          this.$alert(data.message)
+          this.$alert("保存成功");
           this.$router.push({ name: 'wallet.invoice' })
         }
       }).catch(fail => {
