@@ -31,6 +31,11 @@
 				</span>
 			</label>
 		</div>
+		<agree
+			title="搜瓜群盟用户充值协议"
+			ref="agree"
+			:content="registerProtocol"
+		/>
 		<div class="btn">
 			<van-button type="primary" hairline size="large" @click="next()"
 				>确认</van-button
@@ -54,8 +59,9 @@
 	import Radio from "vant/lib/radio";
 	import "vant/lib/radio/style";
 	import Button from "vant/lib/button";
-	import "vant/lib/button/style";
 	import { mapGetters } from "vuex";
+  import Agree from "$components/Agree";
+  import protocol from "$api/protocol";
 	export default {
 		//import引入的组件需要注入到对象中才能使用
 		components: {
@@ -66,7 +72,8 @@
 			"van-field": Field,
 			"van-radio-group": RadioGroup,
 			"van-radio": Radio,
-			"van-button": Button
+			"van-button": Button,
+			Agree
 		},
 		data () {
 			//这里存放数据
@@ -75,8 +82,9 @@
 				radio: "1",
 				isagree: true,
 				name: '充值',
-        callback: 'http://localhost:8080/me/me',//待处理
-        result:'',
+				callback: 'http://localhost:8080/me/me',//待处理
+        result: '',
+        registerProtocol:''
 			};
 		},
 		computed: {
@@ -85,31 +93,35 @@
 		watch: {},
 		methods: {
 			showAgree () {
-				// this.$refs.agree.show();
+				 this.$refs.agree.show();
 			},
 			next () {
-        if(this.value <= 0){
-          this.$alert('输入金额有误')
-          return false;
-        }
-        let params = {
-						user_id: this.$store.getters.currentUser.id,
-						order_name: this.name,
-						total_amount: this.value,
-						callback: this.callback
-					}
+				if (this.value <= 0) {
+					this.$alert('输入金额有误')
+					return false;
+				}
+				let params = {
+					user_id: this.$store.getters.currentUser.id,
+					order_name: this.name,
+					total_amount: this.value,
+					callback: this.callback
+				}
 				if (this.radio == 1) {
 					this.$http.post('api/v2/alliance/alipay', params).then(data => {
-            document.write(data)
+						document.write(data)
 					})
 				} else if (this.radio == 2) {
-					this.$http.post('api/v2/alliance/wechat',params).then(data => {
-            console.log(data)
+					this.$http.post('api/v2/alliance/wechat', params).then(data => {
+						console.log(data)
 					})
 				}
 			}
 		},
-		created () { },
+		created () {
+			protocol.getProtocol("register").then(({ data }) => {
+				this.registerProtocol = data.content;
+			});
+		},
 		mounted () { }
 	};
 </script>

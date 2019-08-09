@@ -19,8 +19,8 @@
       <van-cell
         is-link
         title="推广内容"
-        :value="taskInfo.task.target.title"
-        :to="{ name: 'plan.romotion',params:{id:taskInfo.task.target.id}}"
+        :value="taskInfo.target.title"
+        :to="{ name: 'plan.romotion',params:{id:taskInfo.target.id}}"
       />
       <van-cell
         title="总预算"
@@ -114,7 +114,9 @@ export default {
     //这里存放数据
     return {
       taskInfo: {
-        title: ''
+        task:{},
+        target:{},
+        ads:{},
       },
     };
   },
@@ -138,6 +140,9 @@ export default {
       let id = this.$route.params.id
       this.$http.get('api/v2/alliance/advertiser/info/' + id, { params: { include: 'task.target,task,ads' } }).then(({ data }) => {
         this.taskInfo = data.task;
+        this.taskInfo.task = data.task.task
+        this.taskInfo.target = data.task.task.target
+        this.taskInfo.ads = data.task.ads
         this.$toast.clear();
       })
     },

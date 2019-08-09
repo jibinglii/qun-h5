@@ -53,9 +53,6 @@
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="最新任务">
-			<van-loading v-show="maxNewTask.length == 0" class="loading" size="24px"
-				>加载中...</van-loading
-			>
 			<van-cell
 				v-for="(item, index) in maxNewTask"
 				:key="index"
@@ -65,6 +62,10 @@
 				:label="item.created_at"
 				:to="{ name: 'task.info', params: { id: item.id } }"
 			/>
+			<infinite-loading @infinite="getTask" spinner="spinner">
+				<div slot="no-more">没有更多数据啦...</div>
+				<div class="no-results" slot="no-results">没有数据</div>
+			</infinite-loading>
 		</van-cell-group>
 		<van-cell-group title="公共任务">
 			<van-cell
@@ -73,7 +74,7 @@
 				is-link
 				:title="item.task.title"
 				:label="item.approval.start_at + '至' + item.approval.close_at"
-        :to="{ name: 'task.info', params: { id: item.id } }"
+				:to="{ name: 'task.info', params: { id: item.id } }"
 			/>
 		</van-cell-group>
 		<infinite-loading @infinite="getCommonTask" spinner="waveDots">
@@ -133,6 +134,7 @@
 					if (data.tasks.data.length > 0) {
 						this.page += 1
 						this.commonTask = data.tasks.data;
+						$state.loaded();
 					}
 					if (data.tasks.per_page > data.tasks.data.length) {
 						$state.complete();
@@ -159,7 +161,7 @@
 		},
 		created () {
 			this.flowInfo();
-			this.getTask();
+	
 		}
 	};
 </script>
