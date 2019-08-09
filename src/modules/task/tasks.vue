@@ -56,7 +56,7 @@ export default {
   data() {
     //这里存放数据
     return {
-      active: -1,
+      active: 0,
       statusTypes: [
         { title: "全部" },
         { title: "进行中" },
@@ -64,7 +64,7 @@ export default {
       ],
       myTasks: [],
       page: 1,
-      status: -1,
+      status: 0,
       infiniteId: +new Date()
     };
   },
@@ -77,11 +77,8 @@ export default {
   //方法集合
   methods: {
     tabClick(name, title) {
-      if (name == 1) {
-        this.status = 0;
-      } else {
-        this.status = name;
-      }
+      console.log(name)
+      this.status = name;
       this.active = name;
       this.page = 1;
       this.myTasks = [];
