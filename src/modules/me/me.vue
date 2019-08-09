@@ -53,7 +53,7 @@ export default {
     return {
       list: [
         {
-          title: '广告主',
+          title: '操作面板',
           show: true,
           sub: [
             {
@@ -95,7 +95,7 @@ export default {
           ]
         },
         {
-          title:'流量主',
+          title:'操作面板',
           show:true,
           sub:[
             {

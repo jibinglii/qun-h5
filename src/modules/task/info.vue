@@ -75,6 +75,7 @@
 				:title="item.resource.name"
 				:label="item.created_at"
 			></van-cell>
+			<div v-show="taskInfo.result.length==0" class="no-results">暂无记录，请先提交投放凭证</div>
 		</van-cell-group>
 	</div>
 </template>
@@ -115,6 +116,7 @@
 				taskInfo: {
 					show_category: '-',
 					show_type: '-',
+					result:[],
 					task: {
 						show_area_id: '-',
 						max_show_price: '0',
@@ -185,15 +187,14 @@
 					approval_id: this.taskInfo.approval.id,
 					attachment: this.fileList
 				};
+				this.$toast.loading();
 				this.$http
 					.post("api/v2/alliance/flow/accept", params)
 					.then(data => {
+						this.$alert(data.message);
 						if (data.code == 201) {
-							this.$toast.loading(data.message);
-							this.$router.push({ name: "task.tasks" });
-						} else {
-							this.$toast.loading(data.message);
-						}
+							location.reload();
+						} 
 					})
 					.catch(faill => {
 						this.$toast.loading(fail.response.data.message);
@@ -249,6 +250,13 @@
 		}
 		.btns {
 			padding: 10px;
+		}
+		.no-results{
+			display: block;
+			text-align: center;
+			font-size: .6rem;
+			color:#999;
+			padding:15px 0;
 		}
 	}
 </style>
