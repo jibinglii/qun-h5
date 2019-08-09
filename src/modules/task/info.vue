@@ -5,23 +5,23 @@
       <div class="info">
         <div class="info-type">
           <label for>投放行业</label>
-          <span>{{ taskInfo.show_category_label }}</span>
+          <span>{{ taskInfo.show_category }}</span>
         </div>
         <div class="info-type">
           <label for>投放类型</label>
-          <span>{{ taskInfo.show_type_label }}</span>
+          <span>{{ taskInfo.show_type }}</span>
         </div>
         <div class="info-type">
           <label for>投放区域</label>
-          <span>{{ taskInfo.show_area_id }}</span>
+          <span>{{ taskInfo.task.show_area_id }}</span>
         </div>
         <div class="info-type">
           <label for>投放价格</label>
-          <span>￥{{ taskInfo.max_show_price }}</span>
+          <span>￥{{ taskInfo.task.max_show_price }}</span>
         </div>
         <div class="info-type">
           <label for>点击价格</label>
-          <span>￥{{ taskInfo.max_click_price }}</span>
+          <span>￥{{ taskInfo.task.max_click_price }}</span>
         </div>
         <div class="info-type"></div>
       </div>
@@ -32,7 +32,7 @@
       </van-cell>
     </van-cell-group>
     <van-cell-group title="推广内容">
-      <van-cell title="推广广告" value="这里是对应广告的标题" />
+      <van-cell title="推广广告" :value="taskInfo.task.title" />
       <div class="tools">
         <van-button type="info">复制链接</van-button>
         <van-button type="warning">查看广告图</van-button>
@@ -62,7 +62,7 @@
     </van-cell-group>
 
     <van-cell-group title="投放记录">
-      <van-cell is-link v-for="(item, index) in taskInfo.result" :key="index" title="投放的资源名称" label="投放时间"></van-cell>
+      <van-cell is-link v-for="(item, index) in taskInfo.result" :key="index" :title="item.resource.name" :label="item.created_at"></van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -149,25 +149,25 @@ export default {
       this.$http
         .get("api/v2/alliance/flow/task/info", {
           params: {
-            task_id: res_id,
-            include: "target",
-            append: "show_type_label,show_category_label"
+            assign_id: res_id,
+            include: "task.target,approval,task",
           }
         })
         .then(({ data }) => {
           this.taskInfo = data.task_info;
-          this.url = data.task_info.target.link;
+          this.url = data.task_info.task.target.link;
           this.pieProgress.data = [
             { name: "未执行", value: 100 - data.task_info.speed },
             { name: "已完成", value: data.task_info.speed }
           ];
-          this.$refs["pie"].drawPie();
+          //this.$refs["pie"].drawPie();
         });
     },
     upProof() {
       let params = {
-        task_id: this.$route.params.id,
-        resource_id: this.resourceId,
+        task_id: this.taskInfo.task_id,
+        resource_id: this.resource.id,
+        approval_id:this.taskInfo.approval.id,
         attachment: this.fileList
       };
       this.$http
