@@ -100,12 +100,7 @@
 					.then(({ data }) => {
 						if (data.tasks.data.length > 0) {
 							let info = data.tasks.data;
-							// if (this.active == 1) {
-							// 	Object.keys(info).forEach(el => {
-							// 		info[el].id = info[el].task_id
-							// 	});
-							// }
-							this.page += 1
+              this.page += 1
 							this.plans.push(...info);
 							$state.loaded();
 						}

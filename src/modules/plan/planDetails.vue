@@ -114,7 +114,14 @@ export default {
     //这里存放数据
     return {
       taskInfo: {
-        task:{},
+        total_amount:'',
+        task:{
+          budget:0,
+          min_show_price:'',
+          max_show_price:'',
+          min_click_price:'',
+          max_click_price:'',
+        },
         target:{},
         ads:{},
       },
