@@ -29,9 +29,9 @@
         <van-cell
           v-for="item in items"
           :key="item.id"
-          :title="'【投放】'+item.serving_num+'次'"
+          :title="'完成投放任务'+item.serving_num+'次'"
           :value="item.settlement_amount | formatMoney"
-          :label="item.created_at"
+          :label="'结算时间:'+item.created_at"
         />
         <infinite-loading
           :identifier="infiniteId"

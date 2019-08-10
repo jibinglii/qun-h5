@@ -155,7 +155,7 @@ export default {
         _value += item.name + " ";
       });
       this.areaValue = _value;
-      this.params.show_area_id = value[1].code;
+      this.params.show_area_id = this.areaValue;
       this.showAreaPicker = false;
     },
     getCategory() {

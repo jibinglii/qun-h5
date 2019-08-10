@@ -40,7 +40,7 @@
       </div>
       <div class="dec" v-if="showDec">
         额外扣除
-        <span>￥{{amount*0.01}}</span>（手续费0.01%）
+        <span>￥{{amount*0.01}}</span>（手续费1%）
       </div>
       <div class="btn">
         <van-button

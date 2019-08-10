@@ -66,7 +66,6 @@
         :key="index"
         is-link
         :title="item.start_at+'至'+item.close_at"
-        label='投放1000次  点击100次  总消费1000元'
       />
     </van-cell-group>
     <div class="btn">
@@ -132,7 +131,16 @@ export default {
   },
   methods: {
     again() {
-      this.$http.post('api/v2/alliance/advertiser/approval', { task_id: this.taskInfo.task_id,approval_id:this.taskInfo.id })
+      this.$confirm({
+        title: "温馨提示",
+        content: '您确定要再次投放该计划吗？',
+        yesText: "取消", // 左边按钮文本,
+        yesStyle: { overflow: "inherit" },
+        noText: "确定", // 设置右边按钮文本,
+        noStyle: { overflow: "inherit" } // 设置右边按钮样式,
+      }).then(function () {
+      }).catch(() => {
+         this.$http.post('api/v2/alliance/advertiser/approval', { task_id: this.taskInfo.task_id,approval_id:this.taskInfo.id })
         .then(data => {
           if (data.code = 201) {
             this.$alert(data.message)
@@ -141,6 +149,7 @@ export default {
         }).catch(fail => {
           this.$alert(fial.response.data.message)
         })
+      })
     },
     getTaskInfo() {
       this.$toast.loading();

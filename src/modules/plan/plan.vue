@@ -8,9 +8,19 @@
 				:title="item.name"
 			>
 				<x-cell-group>
-					<x-cell
+					<x-cell v-if="active == 0"
 						:title="inner.task.title"
-						:inlineDesc="inner.start_at + '至' + inner.close_at"
+						:inlineDesc="'状态:'+inner.status_label+' 生成时间:'+inner.created_at +' 持续:'+ inner.task.duration+'天'"
+						v-for="(inner, index) in plans"
+						:key="index"
+						:is-link="true"
+						v-show="true"
+						:router="item.router"
+						:routerParams="{ id: inner.id }"
+					/>
+          <x-cell v-if="active == 1"
+						:title="inner.task.title"
+						:inlineDesc="inner.start_at"
 						v-for="(inner, index) in plans"
 						:key="index"
 						:is-link="true"
@@ -91,9 +101,9 @@
 					this.infiniteId += 1;
 			},
 			infiniteHandler ($state) {
-				let params = { page: this.page, include: 'task' }
+				let params = { page: this.page, include: 'task',append:'status_label' }
 				if (this.active == 1) {
-					params = { page: this.page, include: 'task', status: '1' }
+					params = { page: this.page, include: 'task', status: '1' ,append:'status_label' }
 					this.url = "plan.plandetails";
 				}
 				this.$http.get("api/v2/alliance/advertiser/task", { params: params })

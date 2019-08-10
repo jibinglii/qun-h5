@@ -55,7 +55,7 @@
         :key="index"
         :title="item.task.title"
         is-link
-        :label="item.start_at + '至' + item.close_at"
+        :label="'状态:'+item.status_label+' 生成时间:'+item.created_at +' 持续:'+ item.task.duration+'天'"
         :to="{ name: 'plan.planingdetails', params: { id: item.id } }"
       />
     </van-cell-group>
@@ -108,7 +108,7 @@ export default {
   methods: {
     adInfo($state) {
       this.$http
-        .get("api/v2/alliance/advertiser/show", { params: { include: "task" } })
+        .get("api/v2/alliance/advertiser/show", { params: { include: "task",append:'status_label' } })
         .then(({ data }) => {
           this.adsCount = data.count_data;
           if (data.task.data.length > 0) {
