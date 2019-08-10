@@ -10,11 +10,10 @@
             :is-link="true"
             :title="item.task.title"
             :inlineDesc="
-							item.show_type +
-								'/' +
-								item.task.show_area_id +
-								'/' +
-								item.show_category
+							'状态:'+item.status +
+              ' 生成时间:'+item.created_at +
+								' 期限:' +
+								item.duration_label
 						"
             :value="item.approval.str_status"
             router="task.info"

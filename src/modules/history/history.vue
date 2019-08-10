@@ -7,8 +7,8 @@
         :key="index"
         :is-link="true"
         :title="item.task.title"
-        :inlineDesc="item.start_at+'至'+item.close_at"
-        router="plan.plandetails"
+        :inlineDesc="'状态:'+item.status_label+' 生成时间:'+item.created_at +' 持续:'+ item.task.duration+'天'"
+        router="plan.planingdetails"
         :routerParams="{'id': item.id}"
       ></x-cell>
     </x-cell-group>
@@ -47,7 +47,7 @@ export default {
   watch: {},
   methods: {
     getHistoryTask($state) {
-      this.$http.get('api/v2/alliance/advertiser/history/task', { params: { include: 'task' } }).then(({ data }) => {
+      this.$http.get('api/v2/alliance/advertiser/history/task', { params: { include: 'task',append:'status_label' } }).then(({ data }) => {
         if (data.tasks.data.length > 0) {
           this.historys = data.tasks.data
           $state.loaded();
