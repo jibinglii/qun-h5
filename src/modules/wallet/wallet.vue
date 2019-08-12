@@ -136,7 +136,7 @@
 		created () { },
 		mounted () {
 			this.$http.get('api/v2/alliance/advertiser/recharge').then(({ data }) => {
-				this.amount = data.total_amount
+				this.amount = data.total_amount.amount
 			})
 		}
 	};

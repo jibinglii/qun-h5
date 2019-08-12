@@ -82,7 +82,7 @@
 				radio: "1",
 				isagree: true,
 				name: '充值',
-				callback: 'http://localhost:8080/me/me',//待处理
+				callback: location.origin + '/wallet/success',//待处理
         result: '',
         registerProtocol:''
 			};
@@ -122,7 +122,9 @@
 				this.registerProtocol = data.content;
 			});
 		},
-		mounted () { }
+		mounted () { 
+      console.log(this.callback)
+    }
 	};
 </script>
 <style lang='scss' scoped>
