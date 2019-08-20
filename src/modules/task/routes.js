@@ -14,5 +14,29 @@ export default [
       requiresAuth: true
     },
     component: () => import('./info')
+  },
+  {
+    path: 'task/shop',
+    name: 'task.shop',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('./shop')
+  },
+  {
+    path: 'task/fulfill/:id',
+    name: 'task.fulfill',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('./fulfill')
+  },
+  {
+    path: 'task/showimg/:thumb',
+    name: 'task.showimg',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('./showimg')
   }
 ]

@@ -119,11 +119,11 @@
 				this.$http.get('api/v2/alliance/ads/statistics').then(data => {
 					let res = data.data.statistics
 					this.tops[0].num = res.day[0].serving_money_day != '' ? res.day[0].serving_money_day : 0
-					this.tops[1].num = res.day[0].ads_num
+					this.tops[1].num = res.day[0].ads_num[0].ads_num_day
 					this.tops[2].num = res.day[0].serving_num_day
-					this.tops[3].num = res.all[0].serving_money
+					this.tops[3].num = res.all[0].serving_money !='' ? res.all[0].serving_money : 0
 					this.tops[4].num = res.all[0].serving_num
-					this.tops[5].num = res.all[0].clicl_num
+					this.tops[5].num = res.all[0].click_num
 					if (res.history_click.length > 0) {
 						this.barShow.xAxis = []
 						this.barShow.data[0].splice(0, 1)
@@ -140,7 +140,6 @@
 						this.barShow.xAxis.push(item.day)
 						this.barShow.data[0].push(item.num)
 					})
-					console.log(this.barShow.data[0])
 					this.$refs['bar'].drawBar()
 					res.history_result.map((item, index) => {
 						this.barClick.xAxis.push(item.day)

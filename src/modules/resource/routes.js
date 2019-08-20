@@ -22,5 +22,13 @@ export default [
       requiresAuth: true
     },
     component: () => import('./create')
+  },
+  {
+    path: 'resource/search',
+    name: 'resource.search',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('./search')
   }
 ]
