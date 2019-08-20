@@ -35,25 +35,25 @@
 							<label for>我的任务</label>
 						</router-link>
 					</div>
-
+					<div class="fast-con">
+						<router-link :to="{ name: 'task.shop' }">
+							<img src="/images/me/help.png" alt />
+							<label for>高级群任务</label>
+						</router-link>
+					</div>
 					<div class="fast-con">
 						<router-link :to="{ name: 'me.settlemanage' }">
 							<img src="/images/me/account.png" alt />
 							<label for>佣金管理</label>
 						</router-link>
 					</div>
-
-					<div class="fast-con">
-						<router-link :to="{ name: 'me.helps.flow' }">
-							<img src="/images/me/help.png" alt />
-							<label for>帮助中心</label>
-						</router-link>
-					</div>
 				</div>
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="最新任务">
-			<van-loading v-show="maxNewTask.length==0" class="loading" size="24px">加载中...</van-loading>
+			<van-loading v-show="maxNewTask.length == 0" class="loading" size="24px"
+				>加载中...</van-loading
+			>
 			<van-cell
 				v-for="(item, index) in maxNewTask"
 				:key="index"

@@ -27,6 +27,9 @@
 import XHeader from "$components/XHeader";
 import Agree from "$components/Agree";
 import { Button, Field, Cell, CellGroup } from "vant";
+import 'vant/lib/field/style';
+import 'vant/lib/cell/style';
+import 'vant/lib/cell-group/style';
 import protocol from "$api/protocol";
 
 export default {
@@ -67,11 +70,12 @@ export default {
             this.$toast.clear();
             if (data.code == 200) {
               this.$alert('申请提交成功');
-              this.$router.push({ path: "/apply" });
+              this.$router.push({ name: "home.apply" });
             }
           })
           .catch(fail => {
-            this.$toast.loading(fail.response.data.message);
+            this.$toast.loading(fail.data.message);
+            this.$router.push({ name: "home.apply" });
           });
       }
     },

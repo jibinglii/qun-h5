@@ -12,8 +12,8 @@
         :key="index"
         :is-link="true"
         :title="item.name"
-        :inlineDesc="item.area_id + '/' + item.size + '人'"
-        :value="item.type_label"
+        :inlineDesc="item.area_id + '/' + item.size + '人/ '+item.type_label"
+        :value="item.status_label"
         router="resource.info"
         :routerParams="{'id': item.id}"
       ></x-cell>
@@ -68,7 +68,7 @@ export default {
     infiniteHandler($state) {
       this.$http
         .get("api/v2/alliance/resources", {
-          params: { page: this.page, append: "type_label" }
+          params: { page: this.page, append: "type_label,status_label" }
         })
         .then(({ data }) => {
           if (data.resources.data.length > 0) {

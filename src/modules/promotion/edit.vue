@@ -2,16 +2,19 @@
   <div class>
     <x-header :title="title"></x-header>
     <van-cell-group>
-      <van-field label="标题" v-model="params.title" placeholder="请输入文案标题" />
+      <van-field v-model="params.title" placeholder="请输入文案标题" />
     </van-cell-group>
     <van-cell-group>
-      <van-field v-model="params.content" type="textarea" placeholder="请输入文案内容" rows="8" autosize />
+      <van-field v-model="params.content" type="textarea" placeholder="请输入文案内容" rows="5" autosize />
     </van-cell-group>
     <van-cell-group>
+      <van-field  v-model="params.link" placeholder="请输入推广链接" />
+    </van-cell-group>
+      <van-cell-group>
+      <van-field v-model="params.stats_code" type="textarea" placeholder="请输入自定义统计代码" rows="2" autosize />
+    </van-cell-group>
+     <van-cell-group>
       <x-uploader title="相关图片" v-model="params.attachment" :limit="2"></x-uploader>
-    </van-cell-group>
-    <van-cell-group>
-      <van-field label="推广链接" v-model="params.link" placeholder="请输入推广链接" />
     </van-cell-group>
     <div class="btn">
       <van-button type="primary" :disabled="saving" hairline size="large" @click="save()">保存</van-button>
@@ -27,7 +30,6 @@ import Field from "vant/lib/field";
 import "vant/lib/field/style";
 import XUploader from "$components/XUploader";
 import Button from "vant/lib/button";
-import "vant/lib/button/style";
 import { fail } from "assert";
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -45,7 +47,8 @@ export default {
         title: "",
         content: "",
         link: "",
-        attachment: []
+        attachment: [],
+        stats_code:"",
       },
       title: "添加文案",
       saving: false

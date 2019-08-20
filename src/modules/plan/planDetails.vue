@@ -64,8 +64,8 @@
       <van-cell 
         v-for="(item,index) in taskInfo.history"
         :key="index"
-        is-link
-        :title="item.start_at+'至'+item.close_at"
+        :label="item.start_at+'至'+item.close_at"
+        :title="taskInfo.task.title"
       />
     </van-cell-group>
     <div class="btn">

@@ -32,10 +32,10 @@
 			</van-cell>
 		</van-cell-group>
 		<van-cell-group title="推广内容">
-			<van-cell title="推广广告" :value="taskInfo.task.title" />
+			<van-cell title="推广广告" :value="taskInfo.ads.title" />
 			<div class="tools">
 				<van-button type="info">复制链接</van-button>
-				<van-button type="warning">查看广告图</van-button>
+				<van-button type="warning" @click="showImg">查看广告图</van-button>
 			</div>
 		</van-cell-group>
 		<van-cell-group title="完成任务">
@@ -69,7 +69,6 @@
 
 		<van-cell-group title="投放记录">
 			<van-cell
-				is-link
 				v-for="(item, index) in taskInfo.result"
 				:key="index"
 				:title="item.resource.name"
@@ -90,7 +89,6 @@
 	import Field from "vant/lib/field";
 	import "vant/lib/field/style";
 	import Button from "vant/lib/button";
-	import "vant/lib/button/style";
 	import Popup from "vant/lib/popup";
 	import "vant/lib/popup/style";
 	import Picker from "vant/lib/picker";
@@ -121,7 +119,8 @@
 						show_area_id: '-',
 						max_show_price: '0',
 						max_click_price: '0',
-					}
+          },
+          ads:{},
 				},
 				resource: {
 					idItem: [],
@@ -146,7 +145,8 @@
 					legend: ["未执行", "已完成"],
 					data: [],
 					color: ["#d3d3d3", "#228B22"]
-				}
+        },
+        resourceType:'',
 			};
 		},
 		//监听属性 类似于data概念
@@ -166,17 +166,20 @@
 					.get("api/v2/alliance/flow/task/info", {
 						params: {
 							assign_id: res_id,
-							include: "task.target,approval,task",
+							include: "task.target,approval,approval.ads,task",
 						}
 					})
 					.then(({ data }) => {
 						this.taskInfo = data.task_info;
-						this.taskInfo.task = data.task_info.task
-						this.url = data.task_info.task.target.link;
+            this.taskInfo.task = data.task_info.task
+            this.taskInfo.ads = data.task_info.approval.ads
+            this.url = data.task_info.task.target.link;
+            this.resourceType = data.task_info.task.show_category;
 						this.pieProgress.data = [
 							{ name: "未执行", value: 100 - data.task_info.speed },
 							{ name: "已完成", value: data.task_info.speed }
-						];
+            ];
+            this.getResource(data.task_info.task.show_category)
 						this.$refs["pie"].drawPie();
 					});
 			},
@@ -200,21 +203,23 @@
 						this.$toast.loading(fail.response.data.message);
 					});
 			},
-			getResource () {
-				this.$http.get("api/v2/alliance/resources").then(({ data }) => {
+			getResource (type) {
+				this.$http.get("api/v2/alliance/resources?category="+type).then(({ data }) => {
 					data.resources.data.map((item, index) => {
 						this.resource.idItem.push(item.id);
 						this.resource.nameItem.push(item.name);
 					});
 				});
-			}
+      },
+      showImg(){
+        this.$router.push({name:'task.showimg',params:{thumb:this.taskInfo.approval.ads.thumb}})
+      }
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () { },
 		//生命周期 - 挂载完成（可以访问DOM元素）
 		mounted () {
 			this.getTaskInfo();
-			this.getResource();
 		}
 	};
 </script>

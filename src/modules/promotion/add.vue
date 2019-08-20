@@ -199,7 +199,7 @@ export default {
           }
         })
         .catch(fial => {
-          this.$alert(fial.response.data.message);
+          this.$alert(fial.data.message);
         });
     }
   },

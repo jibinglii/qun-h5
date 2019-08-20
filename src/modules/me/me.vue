@@ -69,6 +69,12 @@ export default {
               show: true
             },
             {
+              title:'高级群搜索',
+              url:'resource.search',
+              img:'/images/me/search.png',
+              show: true
+            },
+            {
               title:'历史任务查看',
               url:'history.history',
               img:'/images/me/history.png',
