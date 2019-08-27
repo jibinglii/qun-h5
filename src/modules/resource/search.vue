@@ -13,7 +13,7 @@
 		<van-card
 			v-for="(item, index) in resources"
 			:key="index"
-			:num="'规格' + item.size"
+			:num="'规格' + item.size+'人'"
 			:price="item.show_price"
 			:desc="item.desc"
 			:title="item.name"

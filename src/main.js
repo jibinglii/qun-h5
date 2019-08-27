@@ -15,14 +15,9 @@ import VueCookies from 'vue-cookies'
 import Lazyload from 'vant/lib/lazyload'
 import { Alert, Confirm } from 'wc-messagebox'
 import 'wc-messagebox/style.css'
-
-import 'vant/lib/toast/style'
-import 'vant/lib/skeleton/style'
-import 'vant/lib/button/style'
-
 import VueFab from 'vue-float-action-button'
-
 import FastClick from 'fastclick'
+
 Vue.use(Lazyload)
 Vue.use(Alert)
 Vue.use(Confirm)
