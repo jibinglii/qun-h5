@@ -19,4 +19,3 @@ export function setToken (token) {
 http.defaults.headers['Accept'] = 'application/json'
 
 export default http
-

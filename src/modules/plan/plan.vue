@@ -1,6 +1,10 @@
 <template>
 	<div class="my-task">
-		<x-header title="推广计划管理"></x-header>
+		<x-header title="推广计划管理" @click-right="add">
+      <div slot="right" class="right">
+        <van-icon size="1rem" name="plus" />
+      </div>
+    </x-header>
 		<van-tabs @click="tabClick" v-model="active" color="#191717">
 			<van-tab
 				v-for="(item, index) in tasksType"
@@ -52,7 +56,8 @@
 	import Tab from 'vant/lib/tab';
 	import Tabs from 'vant/lib/tabs';
 	import 'vant/lib/tab/style';
-	import 'vant/lib/tabs/style'
+  import 'vant/lib/tabs/style'
+  import { Skeleton, Icon, Panel } from "vant";
 
 	export default {
 		//import引入的组件需要注入到对象中才能使用
@@ -63,7 +68,8 @@
 			XGroup,
 			InfiniteLoading,
 			'van-tabs': Tabs,
-			'van-tab': Tab,
+      'van-tab': Tab,
+      "van-icon": Icon,
 		},
 		data () {
 			//这里存放数据
@@ -118,7 +124,10 @@
 							$state.complete();
 						}
 					});
-			}
+      },
+      add(){
+        this.$router.push({name:'promotion.addevent'})
+      }
 		},
 		//生命周期 - 创建完成（可以访问当前this实例）
 		created () {
